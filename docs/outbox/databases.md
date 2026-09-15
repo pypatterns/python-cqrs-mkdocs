@@ -8,6 +8,18 @@
 
     [:octicons-arrow-left-24: Back to Overview](index.md)
 
+-   :material-code-tags: **Implementation**
+
+    Repository interface, SQLAlchemy model and outbox table structure.
+
+    [:octicons-arrow-right-24: Read More](implementation.md)
+
+-   :material-play-circle: **Usage**
+
+    Event registration and publishing with at-least-once delivery guarantees.
+
+    [:octicons-arrow-right-24: Read More](usage.md)
+
 </div>
 
 ---
@@ -24,13 +36,19 @@ PostgreSQL, and a portable `BLOB` fallback everywhere else.
 
     MySQL, MariaDB and PostgreSQL are covered by built-in dialect handlers.
 
+    [:octicons-arrow-right-24: Support Matrix](#support-matrix)
+
 -   :material-database-plus: **Extensible**
 
     Any other dialect works via the portable fallback or a one-line `register_dialect()` call.
 
+    [:octicons-arrow-right-24: Add Your Database](#adding-your-own-database)
+
 -   :material-database-sync: **Backward compatible**
 
     MySQL DDL is unchanged — existing deployments need no migration.
+
+    [:octicons-arrow-right-24: Compatibility Notes](#backward-compatibility)
 
 </div>
 

@@ -115,6 +115,7 @@
             // Outbox
             { title: 'Transaction Outbox', url: 'outbox/', path: 'outbox/index' },
             { title: 'Outbox Implementation', url: 'outbox/implementation/', path: 'outbox/implementation' },
+            { title: 'Database Support', url: 'outbox/databases/', path: 'outbox/databases' },
             { title: 'Outbox Usage', url: 'outbox/usage/', path: 'outbox/usage' },
             { title: 'Outbox Examples', url: 'outbox/examples/', path: 'outbox/examples' },
             { title: 'Outbox Best Practices', url: 'outbox/best_practices/', path: 'outbox/best_practices' },
