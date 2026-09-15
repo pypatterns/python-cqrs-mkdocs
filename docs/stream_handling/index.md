@@ -1,3 +1,8 @@
+---
+title: Stream Handling in python-cqrs
+description: Incremental request streaming and Server-Sent Events (SSE) with python-cqrs and FastAPI integration.
+---
+
 # Stream Handling
 
 Stream handling allows you to process requests incrementally and yield results as they become available. This is particularly useful for processing large batches of items, file uploads, or any operation that benefits from real-time progress updates.

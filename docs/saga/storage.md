@@ -97,7 +97,7 @@ Database-backed implementation for production. It uses a session factory. When t
 
 - `id` (UUID) - Primary key
 - `status` (VARCHAR) - PENDING, RUNNING, COMPENSATING, COMPLETED, FAILED
-- `context` (JSON)
+- `context` (JSON) - Serialized saga context; declared with `JSONType` (see [Database Support](#database-support))
 - `version` (INTEGER) - Optimistic locking version (default: 1)
 - `recovery_attempts` (INTEGER) - Number of failed recovery attempts (default: 0); used by `get_sagas_for_recovery`, `increment_recovery_attempts`, and `set_recovery_attempts`
 - `created_at`, `updated_at` (TIMESTAMP)
@@ -113,6 +113,77 @@ Database-backed implementation for production. It uses a session factory. When t
 - `created_at` (TIMESTAMP)
 
 **Indexes:** `saga_id`, `created_at`
+
+### Database Support
+
+The saga storage schema is verified against **MySQL** and **PostgreSQL** — both are covered by integration
+tests — and works on either without any configuration. See
+[Outbox Database Support](../outbox/databases.md) for the full database matrix and the Alembic setup shared by
+all SQLAlchemy models in the package.
+
+The `context` column is declared with `cqrs.sqlalchemy_types.JSONType`, a dialect-aware type that resolves to a
+plain `sqlalchemy.JSON()` on **every** dialect, PostgreSQL and MySQL included. The rendered DDL is therefore
+identical to a bare `sqlalchemy.JSON` column:
+
+```sql
+-- PostgreSQL
+context JSON NOT NULL
+
+-- MySQL
+context JSON NOT NULL COMMENT 'Serialized context'
+```
+
+!!! success "No migration needed"
+    `JSONType` ships without a single per-dialect registration, so upgrading the package does not change the
+    `saga_executions` DDL on any database. Existing deployments need no migration.
+
+#### Optional: `JSONB` on PostgreSQL
+
+The point of the type is the extension point it adds. If you want PostgreSQL's binary JSON, register it once:
+
+```python
+from sqlalchemy.dialects import postgresql
+
+from cqrs.sqlalchemy_types import DialectTypeHandler, JSONType
+
+JSONType.register_dialect(
+    "postgresql",
+    DialectTypeHandler(type_factory=lambda dialect: postgresql.JSONB()),
+)
+```
+
+The `context` column then renders as `context JSONB NOT NULL` on PostgreSQL and stays `JSON` everywhere else.
+
+Why it can be worth it:
+
+| | `JSON` | `JSONB` |
+|---|--------|---------|
+| Storage | Text, re-parsed on every access | Decomposed binary form |
+| Indexing | No GIN indexes | GIN indexes, containment operators like `@>` |
+| Writes | Cheaper | Slightly more expensive |
+| Fidelity | Preserves key order and duplicates | Does not preserve key order |
+
+So `JSONB` pays off if you intend to **query sagas by the content of `context`** — for example finding all
+sagas for a given order id. If `context` is only ever read back whole by the saga engine, plain `JSON` is fine
+and the default is the cheaper choice.
+
+!!! warning "Existing PostgreSQL deployments need a manual migration"
+    Registering the handler only changes what *new* DDL renders to. An existing `saga_executions` table keeps
+    its `json` column until you convert it yourself:
+
+    ```sql
+    ALTER TABLE saga_executions ALTER COLUMN context TYPE jsonb USING context::jsonb;
+    ```
+
+    On a large table this rewrites every row while holding an `ACCESS EXCLUSIVE` lock, so schedule it like any
+    other rewriting migration.
+
+!!! note "No `bind`/`result` converters for JSON"
+    Serialization stays the responsibility of the dialect's JSON type, so the handler needs only
+    `type_factory`. You still have to register **before the first use** — bind/result processors are memoized
+    per dialect instance — and in both the application entry point and `alembic/env.py`; the reasoning is
+    spelled out in
+    [Register before the first use](../outbox/databases.md#step-4-register-before-the-first-use-not-later).
 
 ### Usage
 

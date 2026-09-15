@@ -1,3 +1,8 @@
+---
+title: python-cqrs documentation
+description: Python CQRS framework for event-driven architecture — Saga, Mediator, Outbox, streaming, FastAPI and FastStream integrations.
+---
+
 <div class="hero-section">
     <img src="img.png" alt="Python CQRS" class="hero-image">
     <h1 class="hero-title">Python CQRS</h1>

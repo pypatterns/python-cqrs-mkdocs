@@ -1,3 +1,8 @@
+---
+title: FastAPI Integration with python-cqrs
+description: Integrate python-cqrs with FastAPI for typed commands, queries, and streaming responses over HTTP.
+---
+
 # FastAPI Integration
 
 ## Overview

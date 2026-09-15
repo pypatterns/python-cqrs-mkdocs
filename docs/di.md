@@ -1,3 +1,8 @@
+---
+title: Dependency Injection in python-cqrs
+description: Configure DI containers (di and dependency-injector) for handlers and mediators in python-cqrs.
+---
+
 # Dependency Injection
 
 Dependency Injection (DI) is a design pattern that allows injecting dependencies into application components, simplifying their management and improving code testability.

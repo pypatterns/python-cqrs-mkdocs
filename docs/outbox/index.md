@@ -1,3 +1,8 @@
+---
+title: Transactional Outbox in python-cqrs
+description: Reliable event publishing with the transactional outbox pattern in Python — SQLAlchemy storage, database support, and at-least-once delivery.
+---
+
 # Transactional Outbox
 
 The Transactional Outbox pattern ensures reliable event publishing by storing events in a database table within the same transaction as business logic. This guarantees that events are persisted even if the system crashes before they can be published to a message broker.
@@ -11,6 +16,12 @@ The Transactional Outbox pattern ensures reliable event publishing by storing ev
     Interface and SQLAlchemy implementation for transactional outbox.
 
     [:octicons-arrow-right-24: Read More](implementation.md)
+
+-   :material-database-cog: **Database Support**
+
+    Supported databases, dialect-specific DDL, Alembic setup and custom dialects.
+
+    [:octicons-arrow-right-24: Read More](databases.md)
 
 -   :material-play-circle: **Usage**
 

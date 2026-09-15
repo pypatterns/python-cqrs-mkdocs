@@ -1,3 +1,8 @@
+---
+title: Protobuf Integration with python-cqrs
+description: Efficient Protobuf serialization for python-cqrs events over Kafka and RabbitMQ.
+---
+
 # Protobuf Integration
 
 ## Overview

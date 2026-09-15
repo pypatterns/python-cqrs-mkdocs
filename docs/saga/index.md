@@ -1,3 +1,8 @@
+---
+title: Saga Pattern in python-cqrs
+description: Orchestrated Saga for distributed transactions in Python with compensation, recovery, storage, and eventual consistency.
+---
+
 # Saga Pattern
 
 The Saga pattern enables distributed transactions across multiple services by executing a series of steps where each step can be compensated if a subsequent step fails. This allows for eventual consistency across distributed systems without requiring two-phase commit.

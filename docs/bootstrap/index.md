@@ -1,3 +1,8 @@
+---
+title: Bootstrap python-cqrs
+description: Bootstrap request, event, saga, and streaming mediators with DI containers, middlewares, and message brokers in python-cqrs.
+---
+
 # Bootstrap
 
 ## Overview

@@ -1,3 +1,8 @@
+---
+title: Request and Response Types in python-cqrs
+description: Use Pydantic, dataclasses, attrs, msgspec, TypedDict, and more as request and response types in python-cqrs.
+---
+
 # Request and Response Types
 
 ## Overview

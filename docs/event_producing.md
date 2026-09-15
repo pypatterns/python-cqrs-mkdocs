@@ -1,3 +1,8 @@
+---
+title: Event Producing in python-cqrs
+description: Publish domain and notification events to Kafka or RabbitMQ with python-cqrs message brokers.
+---
+
 # Event Producing
 
 ## Overview

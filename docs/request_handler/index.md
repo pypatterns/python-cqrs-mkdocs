@@ -1,3 +1,8 @@
+---
+title: Request Handlers in python-cqrs
+description: Commands and queries in python-cqrs — typed request handlers resolved via dependency injection.
+---
+
 # Request Handlers
 
 ## Overview

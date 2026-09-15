@@ -1,3 +1,8 @@
+---
+title: Event Handling in python-cqrs
+description: Domain and notification event handling in python-cqrs with runtime, parallel processing, and best practices.
+---
+
 # Event Handling
 
 ## Overview

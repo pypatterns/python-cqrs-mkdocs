@@ -1,3 +1,8 @@
+---
+title: Mermaid Diagrams in python-cqrs
+description: Generate Mermaid sequence and class diagrams for Saga and Chain of Responsibility components in python-cqrs.
+---
+
 # Mermaid Diagram Generation
 
 The `python-cqrs` package includes built-in support for generating Mermaid diagrams from various components. This feature is perfect for documentation, visualization, and understanding component structure and execution flow.

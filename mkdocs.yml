@@ -73,6 +73,7 @@ nav:
     - Transaction Outbox:
       - Overview: outbox/index.md
       - Implementation: outbox/implementation.md
+      - Database Support: outbox/databases.md
       - Usage: outbox/usage.md
       - Examples: outbox/examples.md
       - Best Practices: outbox/best_practices.md
@@ -83,6 +84,7 @@ nav:
     - Protobuf Integration: protobuf.md
 theme:
   name: material
+  custom_dir: overrides
   features:
     - content.code.copy
     - content.code.annotate
@@ -97,6 +99,7 @@ theme:
       primary: blue
       accent: blue
 markdown_extensions:
+  - meta
   - admonition
   - toc:
       permalink: true
@@ -131,6 +134,32 @@ plugins:
   - search
   - awesome-pages
   - autorefs
+  - llmstxt:
+      full_output: llms-full.txt
+      markdown_description: |
+        python-cqrs is a Python framework for CQRS, Saga, Mediator, and event-driven
+        architectures. Use these docs for bootstrap, request/event handlers, transaction
+        outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
+      sections:
+        Getting started:
+          - index.md: Overview of python-cqrs and core features
+          - bootstrap/index.md: Bootstrap mediators, brokers, middlewares, and DI
+          - di.md: Dependency injection with di and dependency-injector
+        Core patterns:
+          - request_handler/*.md: Commands, queries, and request handlers
+          - request_response_types/*.md: Request/response type implementations
+          - event_handler/*.md: Domain and notification event handling
+          - saga/*.md: Orchestrated Saga, storage, recovery, and compensation
+          - saga/fallback/*.md: Saga fallback and circuit breaker
+          - outbox/*.md: Transactional outbox for reliable event publishing
+          - chain_of_responsibility/*.md: Sequential handler chains
+          - stream_handling/*.md: Streaming requests and SSE
+          - mermaid/*.md: Mermaid diagram generation
+        Integrations:
+          - fastapi.md: FastAPI HTTP integration
+          - faststream.md: Kafka and RabbitMQ with FastStream
+          - event_producing.md: Publishing events to message brokers
+          - protobuf.md: Protobuf serialization for events
 use_directory_urls: true
 strict: true
 docs_dir: docs

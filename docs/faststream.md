@@ -1,3 +1,8 @@
+---
+title: FastStream Integration with python-cqrs
+description: Process Kafka and RabbitMQ events with python-cqrs handlers via FastStream integration.
+---
+
 # FastStream Integration
 
 ## Overview

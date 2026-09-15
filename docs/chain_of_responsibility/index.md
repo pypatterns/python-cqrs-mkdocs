@@ -1,3 +1,8 @@
+---
+title: Chain of Responsibility in python-cqrs
+description: Sequential request processing with Chain of Responsibility handlers, fallbacks, and advanced chaining in python-cqrs.
+---
+
 # Chain of Responsibility
 
 The Chain of Responsibility pattern allows multiple handlers to process a request in sequence until one successfully handles it. This pattern is particularly useful when you have multiple processing strategies or need to implement fallback mechanisms.
