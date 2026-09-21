@@ -1,0 +1,81 @@
+# python-cqrs
+
+> Документация по библиотеке python-cqrs. Паттерны CQRS, Saga, Mediator и Event Driven на Python.
+
+python-cqrs is a Python framework for CQRS, Saga, Mediator, and event-driven
+architectures. Use these docs for bootstrap, request/event handlers, transaction
+outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
+
+
+## Getting started
+
+- [Home](https://vadikko2.github.io/python-cqrs-mkdocs/index.md): Overview of python-cqrs and core features
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/bootstrap/index.md): Bootstrap mediators, brokers, middlewares, and DI
+- [Dependency Injection](https://vadikko2.github.io/python-cqrs-mkdocs/di/index.md): Dependency injection with di and dependency-injector
+
+## Core patterns
+
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/request_handler/index.md): Commands, queries, and request handlers
+- [Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/request_handler/fallback/index.md): Commands, queries, and request handlers
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/index.md): Request/response type implementations
+- [Attrs](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/attrs/index.md): Request/response type implementations
+- [Best Practices](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/best_practices/index.md): Request/response type implementations
+- [Dataclasses](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/dataclasses/index.md): Request/response type implementations
+- [Mixed Usage](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/mixed_usage/index.md): Request/response type implementations
+- [Msgspec](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/msgspec/index.md): Request/response type implementations
+- [NamedTuple](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/namedtuple/index.md): Request/response type implementations
+- [Pydantic](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/pydantic/index.md): Request/response type implementations
+- [Standard Classes](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/standard_classes/index.md): Request/response type implementations
+- [TypedDict](https://vadikko2.github.io/python-cqrs-mkdocs/request_response_types/typeddict/index.md): Request/response type implementations
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/event_handler/index.md): Domain and notification event handling
+- [Best Practices](https://vadikko2.github.io/python-cqrs-mkdocs/event_handler/best_practices/index.md): Domain and notification event handling
+- [Event Flow](https://vadikko2.github.io/python-cqrs-mkdocs/event_handler/event_flow/index.md): Domain and notification event handling
+- [Event Types](https://vadikko2.github.io/python-cqrs-mkdocs/event_handler/event_types/index.md): Domain and notification event handling
+- [Examples](https://vadikko2.github.io/python-cqrs-mkdocs/event_handler/examples/index.md): Domain and notification event handling
+- [Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/event_handler/fallback/index.md): Domain and notification event handling
+- [Parallel Processing](https://vadikko2.github.io/python-cqrs-mkdocs/event_handler/parallel_processing/index.md): Domain and notification event handling
+- [Runtime Processing](https://vadikko2.github.io/python-cqrs-mkdocs/event_handler/runtime_processing/index.md): Domain and notification event handling
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/saga/index.md): Orchestrated Saga, storage, recovery, and compensation
+- [Compensation Strategy](https://vadikko2.github.io/python-cqrs-mkdocs/saga/compensation/index.md): Orchestrated Saga, storage, recovery, and compensation
+- [Examples](https://vadikko2.github.io/python-cqrs-mkdocs/saga/examples/index.md): Orchestrated Saga, storage, recovery, and compensation
+- [Flow Diagrams](https://vadikko2.github.io/python-cqrs-mkdocs/saga/flow/index.md): Orchestrated Saga, storage, recovery, and compensation
+- [Recovery & Eventual Consistency](https://vadikko2.github.io/python-cqrs-mkdocs/saga/recovery/index.md): Orchestrated Saga, storage, recovery, and compensation
+- [Storage](https://vadikko2.github.io/python-cqrs-mkdocs/saga/storage/index.md): Orchestrated Saga, storage, recovery, and compensation
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/saga/fallback/index.md): Saga fallback and circuit breaker
+- [Circuit Breaker](https://vadikko2.github.io/python-cqrs-mkdocs/saga/fallback/circuit_breaker/index.md): Saga fallback and circuit breaker
+- [Examples](https://vadikko2.github.io/python-cqrs-mkdocs/saga/fallback/examples/index.md): Saga fallback and circuit breaker
+- [Mechanics](https://vadikko2.github.io/python-cqrs-mkdocs/saga/fallback/mechanics/index.md): Saga fallback and circuit breaker
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/outbox/index.md): Transactional outbox for reliable event publishing
+- [Best Practices](https://vadikko2.github.io/python-cqrs-mkdocs/outbox/best_practices/index.md): Transactional outbox for reliable event publishing
+- [Database Support](https://vadikko2.github.io/python-cqrs-mkdocs/outbox/databases/index.md): Transactional outbox for reliable event publishing
+- [Examples](https://vadikko2.github.io/python-cqrs-mkdocs/outbox/examples/index.md): Transactional outbox for reliable event publishing
+- [Implementation](https://vadikko2.github.io/python-cqrs-mkdocs/outbox/implementation/index.md): Transactional outbox for reliable event publishing
+- [Usage](https://vadikko2.github.io/python-cqrs-mkdocs/outbox/usage/index.md): Transactional outbox for reliable event publishing
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/chain_of_responsibility/index.md): Sequential handler chains
+- [Advanced](https://vadikko2.github.io/python-cqrs-mkdocs/chain_of_responsibility/advanced/index.md): Sequential handler chains
+- [Examples](https://vadikko2.github.io/python-cqrs-mkdocs/chain_of_responsibility/examples/index.md): Sequential handler chains
+- [Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/chain_of_responsibility/fallback/index.md): Sequential handler chains
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/stream_handling/index.md): Streaming requests and SSE
+- [Configuration](https://vadikko2.github.io/python-cqrs-mkdocs/stream_handling/configuration/index.md): Streaming requests and SSE
+- [Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/stream_handling/fallback/index.md): Streaming requests and SSE
+- [FastAPI Integration](https://vadikko2.github.io/python-cqrs-mkdocs/stream_handling/fastapi_integration/index.md): Streaming requests and SSE
+- [Reference](https://vadikko2.github.io/python-cqrs-mkdocs/stream_handling/reference/index.md): Streaming requests and SSE
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/mermaid/index.md): Mermaid diagram generation
+- [Chain of Responsibility](https://vadikko2.github.io/python-cqrs-mkdocs/mermaid/chain_of_responsibility/index.md): Mermaid diagram generation
+- [Saga Pattern](https://vadikko2.github.io/python-cqrs-mkdocs/mermaid/saga/index.md): Mermaid diagram generation
+- [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/scoped_dependencies/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+- [Advanced](https://vadikko2.github.io/python-cqrs-mkdocs/scoped_dependencies/advanced/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+- [Containers](https://vadikko2.github.io/python-cqrs-mkdocs/scoped_dependencies/containers/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+- [Custom Container](https://vadikko2.github.io/python-cqrs-mkdocs/scoped_dependencies/custom_container/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+- [Strategies](https://vadikko2.github.io/python-cqrs-mkdocs/scoped_dependencies/strategies/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+- [Troubleshooting](https://vadikko2.github.io/python-cqrs-mkdocs/scoped_dependencies/troubleshooting/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+- [Tutorial](https://vadikko2.github.io/python-cqrs-mkdocs/scoped_dependencies/tutorial/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+- [Why](https://vadikko2.github.io/python-cqrs-mkdocs/scoped_dependencies/why/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+
+## Integrations
+
+- [FastAPI Integration](https://vadikko2.github.io/python-cqrs-mkdocs/fastapi/index.md): FastAPI HTTP integration
+- [FastStream Integration](https://vadikko2.github.io/python-cqrs-mkdocs/faststream/index.md): Kafka and RabbitMQ with FastStream
+- [Event Producing](https://vadikko2.github.io/python-cqrs-mkdocs/event_producing/index.md): Publishing events to message brokers
+- [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/protobuf/index.md): Protobuf serialization for events
+
