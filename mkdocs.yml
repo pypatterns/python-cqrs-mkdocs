@@ -22,11 +22,13 @@ nav:
     - Dependency Injection: di.md
     - Scoped Dependencies:
       - Overview: scoped_dependencies/index.md
-      - Why: scoped_dependencies/why.md
+      - Tutorial: scoped_dependencies/tutorial.md
       - Strategies: scoped_dependencies/strategies.md
       - Containers: scoped_dependencies/containers.md
+      - Advanced: scoped_dependencies/advanced.md
       - Custom Container: scoped_dependencies/custom_container.md
       - Troubleshooting: scoped_dependencies/troubleshooting.md
+      - Why: scoped_dependencies/why.md
     - Commands / Requests Handling:
       - Overview: request_handler/index.md
       - Fallback: request_handler/fallback.md
