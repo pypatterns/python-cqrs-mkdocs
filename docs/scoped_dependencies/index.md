@@ -1,64 +1,179 @@
 ---
 title: Scoped Dependencies
-description: Request-scoped DI with generator providers, ScopeStrategy, enter_scope, and bind_scope in python-cqrs.
+description: Keep a SQLAlchemy session or UoW alive for the whole mediator.send(), including domain events.
 ---
 
 # Scoped Dependencies
 
-python-cqrs can keep a DI **scope** open for the duration of command / event handling so generator providers (`async def uow() -> AsyncIterator[IUoW]: ... yield uow`) finalize **after** `handle`, not before. Scopes are opt-in: pass `scope_strategy=ScopeStrategy.SEND` (or `HANDLER`) to bootstrap, since the default `ScopeStrategy.NONE` opens no framework scopes.
+By default, the container opens and closes a scope **inside** `resolve()`. A generator such as `async def session() -> AsyncIterator[AsyncSession]` therefore finishes **before** `handle`, which is why people inject factories.
 
-```mermaid
-flowchart TD
-    Send["mediator.send(command)"] --> Strategy{scope_strategy}
-    Strategy -->|SEND| OpenSend["enter_scope"]
-    Strategy -->|HANDLER| Dispatch
-    Strategy -->|NONE| Dispatch
-    OpenSend --> Dispatch["RequestDispatcher.dispatch"]
-    Dispatch --> Resolve["ScopeAwareContainer.resolve\n→ contextvar or root"]
-    Resolve --> Handle["handler.handle"]
-    Handle --> Events["EventProcessor / EventEmitter"]
-    Events --> CloseSend["scope exit → cleanup"]
-    External["FastAPI / dishka middleware\ncqrs.bind_scope(scoped)"] -.-> Resolve
-```
+Pass `scope_strategy=ScopeStrategy.SEND` and that session lives until `mediator.send()` returns — including domain-event handlers that run afterwards.
 
-## What you get
+If you do not use generator providers, leave the default `ScopeStrategy.NONE` and change nothing.
 
-| Capability | Description |
-|------------|-------------|
-| Generator providers | UoW / sessions stay alive until the scope exits |
-| Shared UoW (SEND) | Command, its fallback, and domain-event handlers see the same instance |
-| Per-handler UoW (HANDLER) | Each resolve+handle gets a fresh scope, **including fallback** (primary rolls back first) |
-| No framework scopes (NONE) | Default; one-shot resolve, same as before scoped dependencies |
-| External scopes | `bind_scope` attaches a scope opened by FastAPI/dishka middleware |
-| Multi-command UoW | Wrap several `send()` calls in `async with enter_scope(...)` |
+## Example
 
-## Quick start
+Copy this as-is. Cleanup (`close`) runs after `handle`. Runnable file: [`examples/di/scoped_dependencies_di.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/di/scoped_dependencies_di.py).
 
 ```python
-async def uow_provider() -> typing.AsyncIterator[IUoW]:
-    async with create_uow() as uow:
+from __future__ import annotations
+
+import asyncio
+import typing
+
+import di
+from di import dependent
+
+import cqrs
+from cqrs.requests import bootstrap
+
+
+class IUoW(typing.Protocol):
+    async def commit(self) -> None: ...
+
+
+class UoW:
+    async def commit(self) -> None:
+        print("commit")
+
+    async def close(self) -> None:
+        print("close")
+
+
+async def uow_provider() -> typing.AsyncIterator[UoW]:
+    uow = UoW()
+    try:
         yield uow
+    finally:
+        await uow.close()  # after handle, not before
 
-container = di.Container()
-container.bind(di.bind_by_type(dependent.Dependent(uow_provider, scope="request"), IUoW))
 
-mediator = bootstrap.bootstrap(
-    di_container=container,
-    commands_mapper=...,
-    scope_strategy=ScopeStrategy.SEND,
-)
-await mediator.send(CancelTask(task_id=1))  # cleanup runs after handle
+class CancelTask(cqrs.Request):
+    task_id: int
+
+
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+    def __init__(self, uow: IUoW) -> None:
+        self._uow = uow
+
+    @property
+    def events(self) -> typing.List[cqrs.Event]:
+        return []
+
+    async def handle(self, request: CancelTask) -> None:
+        await self._uow.commit()
+
+
+def setup_di() -> di.Container:
+    container = di.Container()
+    container.bind(
+        di.bind_by_type(
+            dependent.Dependent(uow_provider, scope="request"),
+            IUoW,
+        ),
+    )
+    return container
+
+
+def commands_mapper(mapper: cqrs.RequestMap) -> None:
+    mapper.bind(CancelTask, CancelTaskHandler)
+
+
+async def main() -> None:
+    mediator = bootstrap.bootstrap(
+        di_container=setup_di(),
+        commands_mapper=commands_mapper,
+        scope_strategy=cqrs.ScopeStrategy.SEND,
+    )
+    await mediator.send(CancelTask(task_id=42))
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
-`RequestMediator(..., SEND)`, `saga.bootstrap(..., SEND)`, and `StreamingRequestMediator(..., SEND)` construct with sequential events (`concurrent_event_handle_enable=None` → `False`). Do not pass `concurrent_event_handle_enable=True` with SEND.
+!!! note "di scope=request is not a CQRS scope"
+    `di`'s `scope="request"` only describes **provider lifetime** inside the `di` library. python-cqrs opens a CQRS scope **only** when you pass `scope_strategy=`. Without it, the generator still finishes before `handle`.
 
-!!! note "Default `NONE`"
-    Without an explicit `scope_strategy=`, the mediator opens no scopes and dependencies resolve exactly as in releases before scoped dependencies existed. Details: [Strategies](strategies.md).
+## Which strategy?
+
+- **SEND** — one UoW per `send()` (command, fallback, and domain events).
+- **HANDLER** — a fresh UoW per handler, including fallback (the primary rolls back first).
+- **NONE** — legacy one-shot resolve; the default.
 
 ## Next
 
-- [Why scoped dependencies](why.md)
-- [Strategies (`SEND` / `HANDLER` / `NONE`)](strategies.md)
-- [Containers (`di`, dishka, dependency-injector)](containers.md)
-- [Custom container](custom_container.md)
-- [Troubleshooting](troubleshooting.md)
+<div class="grid cards" markdown>
+
+-   :material-school: **Tutorial**
+
+    Command + domain event + outbox on one `AsyncSession` under SEND. The page to copy.
+
+    [:octicons-arrow-right-24: Read More](tutorial.md)
+
+-   :material-sitemap: **Strategies**
+
+    SEND vs HANDLER vs NONE, a decision table, and fallback in one screen.
+
+    [:octicons-arrow-right-24: Read More](strategies.md)
+
+-   :material-puzzle: **Containers**
+
+    Full `di`, dishka, and dependency-injector snippets (not fragments).
+
+    [:octicons-arrow-right-24: Read More](containers.md)
+
+-   :material-cog: **Advanced**
+
+    `enter_scope`, `bind_scope`, several `send()` calls, FastAPI middleware.
+
+    [:octicons-arrow-right-24: Read More](advanced.md)
+
+-   :material-code-tags: **Custom Container**
+
+    When you need `SupportsScope.open_scope` for a DI library we do not ship.
+
+    [:octicons-arrow-right-24: Read More](custom_container.md)
+
+-   :material-wrench: **Troubleshooting**
+
+    Generator finished too early, dirty sessions, streams, sagas.
+
+    [:octicons-arrow-right-24: Read More](troubleshooting.md)
+
+</div>
+
+## Before / after
+
+Without a CQRS scope you inject a factory and open the UoW yourself:
+
+```python
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+    def __init__(self, uow_factory: Callable[[], AbstractAsyncContextManager[IUoW]]) -> None:
+        self._uow_factory = uow_factory
+
+    async def handle(self, command: CancelTask) -> None:
+        async with self._uow_factory() as uow:
+            await uow.tasks.cancel(command.task_id)
+            await uow.commit()
+```
+
+With `scope_strategy=ScopeStrategy.SEND`, inject the live object:
+
+```python
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+    def __init__(self, uow: IUoW) -> None:
+        self._uow = uow
+
+    async def handle(self, command: CancelTask) -> None:
+        await self._uow.tasks.cancel(command.task_id)
+        await self._uow.commit()
+```
+
+| Benefit | Detail |
+|---------|--------|
+| Less boilerplate | No factory / context-manager parameters in handlers |
+| Shared unit of work | SEND: fallback and domain events reuse the command’s UoW |
+| Isolated fallback | HANDLER: primary rolls back, then fallback gets a fresh scope |
+| Guaranteed cleanup | Exceptions still exit the scope (rollback / close) |
+| Easier tests | Mock `IUoW` directly instead of a factory of context managers |

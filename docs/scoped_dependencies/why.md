@@ -1,14 +1,32 @@
 ---
 title: Why Scoped Dependencies
-description: Remove factory boilerplate and guarantee UoW cleanup after handle.
+description: Generator providers need a CQRS-owned scope so UoW cleanup runs after handle.
 ---
 
 # Why Scoped Dependencies
 
-Without a framework-owned scope, containers open and close a scope **inside** `resolve()`. Generator providers finish before the handler runs, so you end up injecting factories:
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Scoped Dependencies Overview**
+
+    Start with the problem, a full example, and when to use SEND.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+-   :material-school: **Tutorial**
+
+    Command + domain event + outbox on one `AsyncSession`.
+
+    [:octicons-arrow-right-24: Read More](tutorial.md)
+
+</div>
+
+---
+
+The onboarding story now lives on [Overview](index.md) (three sentences, a copy-paste example, then when to pick SEND / HANDLER / NONE). This page keeps the before/after handler shape for old links.
 
 ```python
-# Before — factory boilerplate (issue #70)
+# Before — factory boilerplate
 class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def __init__(self, uow_factory: Callable[[], AbstractAsyncContextManager[IUoW]]) -> None:
         self._uow_factory = uow_factory
@@ -19,10 +37,8 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
             await uow.commit()
 ```
 
-With scopes enabled (`scope_strategy=ScopeStrategy.SEND` on bootstrap), inject the live dependency:
-
 ```python
-# After
+# After — live dependency; cleanup on CQRS scope exit
 class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
@@ -32,12 +48,4 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
         await self._uow.commit()
 ```
 
-## Benefits
-
-| Benefit | Detail |
-|---------|--------|
-| Less boilerplate | No factory / context-manager parameters in handlers |
-| Shared unit of work | With `ScopeStrategy.SEND`, fallback and domain events reuse the command’s UoW |
-| Isolated fallback | With `ScopeStrategy.HANDLER`, each resolve+handle — **including fallback** — gets a fresh scope after the primary rolls back |
-| Guaranteed cleanup | Exceptions still exit the scope (rollback / close) |
-| Easier tests | Mock `IUoW` directly instead of a factory of context managers |
+Enable that with `scope_strategy=ScopeStrategy.SEND` on bootstrap. `di`'s `scope="request"` alone does not open a CQRS scope.

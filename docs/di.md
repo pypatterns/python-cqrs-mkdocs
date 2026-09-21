@@ -89,11 +89,11 @@ The `di` library supports different scopes:
 | Scope | Lifetime | Use Case |
 |-------|----------|----------|
 | **`"singleton"`** | One instance per container (shared across all requests) | Stateless services, configuration |
-| **`"request"`** | One instance per CQRS scope (see [Scoped Dependencies](scoped_dependencies/index.md)) | Stateful services, database connections / UoW |
+| **`"request"`** | Provider lifetime inside `di` / dishka. Becomes one instance per CQRS `send()` / handler **only** if you also pass `scope_strategy=` | Stateful services, database sessions / UoW |
 | **`"scoped"`** | One instance per scope (custom scope management) | Request-scoped resources |
 
 !!! tip "CQRS request scope"
-    With `scope_strategy=ScopeStrategy.SEND`, `"request"` dependencies live for the whole `mediator.send()` (including domain events). The default `ScopeStrategy.NONE` opens no framework scopes. Details: [Scoped Dependencies](scoped_dependencies/index.md).
+    `di`'s `scope="request"` is **not** a CQRS scope by itself. Without `scope_strategy=`, a generator provider still finishes before `handle`. Pass `scope_strategy=ScopeStrategy.SEND` so `"request"` dependencies live for the whole `mediator.send()` (including domain events). Details: [Scoped Dependencies](scoped_dependencies/index.md).
 
 <details>
 <summary><strong>Scope Examples</strong></summary>
@@ -164,12 +164,14 @@ Using dependency injection with `python-cqrs` provides:
 | **Use interfaces** | Always bind implementations to interfaces, not concrete classes | `ServiceProtocol` → `ServiceImplementation` |
 | **Choose scopes wisely** | Use singleton for stateless services, request for stateful ones | Config: singleton, DB: request |
 | **Keep constructors simple** | Avoid complex logic in constructors | Move logic to methods |
-| **Use factory functions** | For complex object creation, use factory functions | `create_database_connection()` |
+| **UoW / sessions: generator + SEND** | Do not inject a UoW factory as best practice. Bind an async generator and pass `scope_strategy=ScopeStrategy.SEND` so cleanup runs after `handle` | See [Scoped Dependencies](scoped_dependencies/index.md) |
+| **Factories for construction only** | Use a factory when the object does not need a request-scoped lifetime | `create_database_connection()` for a pool, not for the per-send session |
 | **Test with mocks** | Always test handlers with mocked dependencies | Mock `ServiceProtocol` in tests |
 
 !!! warning "Common Mistakes"
     - ❌ Binding concrete classes instead of interfaces
     - ❌ Using singleton for stateful services
+    - ❌ Injecting a UoW/session **factory** instead of a generator + `scope_strategy=SEND`
     - ❌ Complex logic in constructors
     - ❌ Not testing with mocks
 

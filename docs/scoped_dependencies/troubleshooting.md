@@ -5,6 +5,18 @@ description: Common pitfalls with open_scope, streams, singletons, fallback UoW,
 
 # Troubleshooting
 
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Scoped Dependencies Overview**
+
+    Return to the Scoped Dependencies overview page with all topics.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+</div>
+
+---
+
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
 | Concurrent requests share one UoW | `open_scope` yields `self` | Always return a **new** scoped container instance |
@@ -13,6 +25,7 @@ description: Common pitfalls with open_scope, streams, singletons, fallback UoW,
 | Same UoW for the whole process | Singleton / process-level provider | Use request-scoped providers (`di` scope `"request"`, dishka `Scope.REQUEST`) |
 | Use-after-close / detached session | Accessing dependency after scope exit | Do not store scoped UoW on long-lived objects outside `handle` |
 | Scopes seem to do nothing; generator provider finalizes before `handle` | `scope_strategy` not passed, so the default `NONE` is in effect | Pass `scope_strategy=ScopeStrategy.SEND` (or `HANDLER`) to bootstrap / the mediator |
+| Bound `scope="request"` / dishka `Scope.REQUEST` but the session still dies before `handle` | That flag is the **DI library** lifetime. It is not a CQRS scope until `scope_strategy=` is set | Pass `scope_strategy=ScopeStrategy.SEND` (or `HANDLER`). `di` `scope=request` ≠ CQRS scope by itself |
 | Event handler got a different UoW unexpectedly | `ScopeStrategy.HANDLER`, or `bind_scope` under HANDLER | Use `SEND` for a shared UoW; `bind_scope` only shares under SEND/NONE — HANDLER always nests |
 | Command and its events use different UoWs although both are SEND | Hand-built `EventEmitter` created with a different `scope_strategy` than the mediator | Pass the same strategy to both (bootstrap does this for you); the mediator logs a warning on mismatch |
 | `ValueError`: SEND cannot be used with `concurrent_event_handle_enable=True` | Explicit `True` with SEND (any `max`) | Omit `concurrent_event_handle_enable` under SEND (`None` → `False`). For parallel events use `HANDLER` / `NONE` |
