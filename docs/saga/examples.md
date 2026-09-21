@@ -18,6 +18,7 @@ import uuid
 import di
 
 import cqrs
+from cqrs import ScopeStrategy
 from cqrs.saga import bootstrap
 from cqrs.saga.saga import Saga
 from cqrs.saga.step import SagaStepHandler, SagaStepResult
@@ -70,29 +71,35 @@ mediator = bootstrap.bootstrap(
     di_container=di_container,
     sagas_mapper=saga_mapper,
     saga_storage=storage,
+    scope_strategy=ScopeStrategy.SEND,  # sequential events; no concurrent=False needed
 )
 
-# Execute saga
+# Execute saga — exhaust or aclose(); abandoned SEND holds UoW until GC
+from contextlib import aclosing
+
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async for step_result in mediator.stream(context, saga_id=saga_id):
-    print(f"Step completed: {step_result.step_type.__name__}")
+async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+    async for step_result in stream:
+        print(f"Step completed: {step_result.step_type.__name__}")
 ```
 
-**Complete example:** [`examples/saga.py`](https://github.com/vadikko2/cqrs/blob/master/examples/saga.py)
+**Complete example:** [`examples/saga/saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga.py)
 
 ---
 
 ## Recovery Example
 
 ```python
+from cqrs import ScopeStrategy
 from cqrs.saga.recovery import recover_saga
 
 # Get saga instance (or keep reference to saga class)
 saga = OrderSaga()
 
-# Recover interrupted saga
+# Recover interrupted saga — same container, storage, and scope_strategy as bootstrap.
+# A plain di.Container is enough; do not wrap ScopeAwareContainer yourself.
 saga_id = uuid.UUID("550e8400-e29b-41d4-a716-446655440000")
 
 try:
@@ -102,6 +109,7 @@ try:
         context_builder=OrderContext,
         container=di_container,  # Same container used in bootstrap
         storage=storage,
+        scope_strategy=ScopeStrategy.SEND,  # same strategy as the original run
     )
     print("Saga recovered successfully!")
 except RuntimeError:
@@ -109,7 +117,7 @@ except RuntimeError:
     print("Compensation completed")
 ```
 
-**Complete example:** [`examples/saga_recovery.py`](https://github.com/vadikko2/cqrs/blob/master/examples/saga_recovery.py)
+**Complete example:** [`examples/saga/saga_recovery.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_recovery.py)
 
 ---
 
@@ -119,6 +127,7 @@ except RuntimeError:
 import fastapi
 import json
 import uuid
+from cqrs import ScopeStrategy
 from cqrs.saga import bootstrap
 
 def mediator_factory() -> cqrs.SagaMediator:
@@ -127,6 +136,7 @@ def mediator_factory() -> cqrs.SagaMediator:
         di_container=di_container,
         sagas_mapper=saga_mapper,
         saga_storage=storage,
+        scope_strategy=ScopeStrategy.SEND,
     )
 
 @app.post("/process-order")
@@ -150,7 +160,7 @@ async def process_order(
     )
 ```
 
-**Complete example:** [`examples/saga_fastapi_sse.py`](https://github.com/vadikko2/cqrs/blob/master/examples/saga_fastapi_sse.py)
+**Complete example:** [`examples/saga/saga_fastapi_sse.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_fastapi_sse.py)
 
 ---
 
@@ -158,6 +168,7 @@ async def process_order(
 
 ```python
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from cqrs import ScopeStrategy
 from cqrs.saga.storage.sqlalchemy import SqlAlchemySagaStorage, Base
 from cqrs.saga import bootstrap
 
@@ -180,14 +191,18 @@ mediator = bootstrap.bootstrap(
     di_container=di_container,
     sagas_mapper=saga_mapper,
     saga_storage=storage,
+    scope_strategy=ScopeStrategy.SEND,
 )
 
-# Execute saga
+# Execute saga — exhaust or aclose()
+from contextlib import aclosing
+
 context = OrderContext(...)
 saga_id = uuid.uuid4()
 
-async for step_result in mediator.stream(context, saga_id=saga_id):
-    print(f"Step: {step_result.step_type.__name__}")
+async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+    async for step_result in stream:
+        print(f"Step: {step_result.step_type.__name__}")
 
 await storage.session.commit()
 ```
@@ -210,6 +225,7 @@ For advanced retry configuration, you can access the transaction directly:
 
 ```python
 import asyncio
+from cqrs import ScopeStrategy
 from cqrs.saga.recovery import recover_saga
 
 async def recovery_job():
@@ -224,6 +240,7 @@ async def recovery_job():
                     context_builder=OrderContext,
                     container=di_container,
                     storage=storage,
+                    scope_strategy=ScopeStrategy.SEND,
                 )
             except RuntimeError:
                 pass  # Compensation completed
@@ -239,6 +256,7 @@ import di
 from di import dependent
 
 import cqrs
+from cqrs import ScopeStrategy
 from cqrs.saga import bootstrap
 from cqrs.saga.fallback import Fallback
 from cqrs.adapters.circuit_breaker import AioBreakerAdapter
@@ -294,23 +312,27 @@ mediator = bootstrap.bootstrap(
     di_container=di_container,
     sagas_mapper=saga_mapper,
     saga_storage=storage,
+    scope_strategy=ScopeStrategy.SEND,  # fallback shares the saga UoW
 )
 
 # Execute
+from contextlib import aclosing
+
 context = OrderContext(order_id="123")
 saga_id = uuid.uuid4()
 
-async for step_result in mediator.stream(context, saga_id=saga_id):
-    print(f"Step: {step_result.step_type.__name__}")
+async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+    async for step_result in stream:
+        print(f"Step: {step_result.step_type.__name__}")
 ```
 
-**Complete example:** [`examples/saga_fallback.py`](https://github.com/vadikko2/cqrs/blob/master/examples/saga_fallback.py)
+**Complete example:** [`examples/saga/saga_fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_fallback.py)
 
 ---
 
 ## More Examples
 
-- [Basic Saga](https://github.com/vadikko2/cqrs/blob/master/examples/saga.py)
-- [Recovery](https://github.com/vadikko2/cqrs/blob/master/examples/saga_recovery.py)
-- [FastAPI SSE](https://github.com/vadikko2/cqrs/blob/master/examples/saga_fastapi_sse.py)
-- [Fallback Pattern](https://github.com/vadikko2/cqrs/blob/master/examples/saga_fallback.py)
+- [Basic Saga](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga.py)
+- [Recovery](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_recovery.py)
+- [FastAPI SSE](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_fastapi_sse.py)
+- [Fallback Pattern](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_fallback.py)

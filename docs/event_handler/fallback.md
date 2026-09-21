@@ -79,6 +79,14 @@ mapper.bind(
 
 When a command handler emits `NotificationSent`, the event emitter runs the primary handler first. On exception (or when the circuit is open), the fallback handler is invoked. Events from the handler that actually ran are collected and processed.
 
+| Strategy | Fallback UoW |
+|----------|----------------|
+| **SEND** | Same unit of work as the command and the primary event handler. After a DB error the session may need `rollback()` / a savepoint. |
+| **HANDLER** | New scope after the primary event handler is rolled back. Primary writes are not visible. |
+| **NONE** | No framework scopes. |
+
+This applies both to the event dispatcher and to domain events emitted after `send()` (the event emitter). See [Scope Strategies](../scoped_dependencies/strategies.md).
+
 ## Circuit Breaker (optional)
 
 To use a circuit breaker with event handlers:

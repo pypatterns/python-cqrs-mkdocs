@@ -40,6 +40,8 @@ mediator = bootstrap.bootstrap(
 )
 ```
 
+`saga.bootstrap(..., scope_strategy=ScopeStrategy.SEND)` works out of the box: domain events run sequentially in the saga UoW. `concurrent_event_handle_enable` defaults to `None` (`False` under SEND, `True` otherwise). Do not pass `concurrent_event_handle_enable=True` with SEND — that raises `ValueError`.
+
 ### With Domain Events
 
 Steps can emit domain events; the mediator uses an event emitter and event map (same as request bootstrap). Register handlers via `domain_events_mapper`:
@@ -108,19 +110,21 @@ mediator = bootstrap.bootstrap(
 
 ### Executing a Saga
 
-Use `mediator.stream(context, saga_id=...)` to run the saga. It returns an async iterator; consume it with `async for`:
+Use `mediator.stream(context, saga_id=...)` to run the saga. It returns an async iterator; consume it fully with `async for`, or close it with `aclose()` / `async with aclosing(...)`. An abandoned SEND stream holds the UoW until garbage collection.
 
 ```python
 import uuid
+from contextlib import aclosing
 
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async for step_result in mediator.stream(context, saga_id=saga_id):
-    print(f"Step completed: {step_result.step_type.__name__}")
+async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+    async for step_result in stream:
+        print(f"Step completed: {step_result.step_type.__name__}")
 ```
 
-For recovery, use the same `saga_id` and call `recover_saga()` (see [Saga Recovery](../saga/recovery.md)).
+For recovery, use the same `saga_id` and call `recover_saga(..., container=..., storage=..., scope_strategy=...)` with the **same** strategy as bootstrap. A plain container is enough — do not wrap `ScopeAwareContainer` yourself (see [Saga Recovery](../saga/recovery.md)).
 
 ### Complete Example
 
@@ -176,13 +180,17 @@ mediator = bootstrap.bootstrap(
     di_container=di_container,
     sagas_mapper=saga_mapper,
     saga_storage=storage,
+    scope_strategy=cqrs.ScopeStrategy.SEND,  # sequential events; no concurrent=False needed
 )
+
+from contextlib import aclosing
 
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async for step_result in mediator.stream(context, saga_id=saga_id):
-    print(f"Step: {step_result.step_type.__name__}")
+async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+    async for step_result in stream:
+        print(f"Step: {step_result.step_type.__name__}")
 ```
 
 ## Bootstrap Parameters
@@ -196,5 +204,6 @@ async for step_result in mediator.stream(context, saga_id=saga_id):
 | `message_broker` | Optional message broker for event publishing; defaults to `DevnullMessageBroker` |
 | `middlewares` | Optional list of middlewares for request processing |
 | `on_startup` | Optional list of callables invoked once when bootstrap runs |
+| `scope_strategy` | `ScopeStrategy.NONE` (default), `SEND`, or `HANDLER`. SEND shares one UoW for the saga, fallback, and domain events. |
 | `max_concurrent_event_handlers` | Max concurrent event handlers (default: 1) |
-| `concurrent_event_handle_enable` | Whether to process events in parallel (default: True) |
+| `concurrent_event_handle_enable` | `None` by default: `False` under SEND (sequential BFS), `True` otherwise. Explicit `True` with SEND raises `ValueError`. |

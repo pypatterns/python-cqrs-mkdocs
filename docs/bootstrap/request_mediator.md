@@ -48,6 +48,19 @@ mediator = bootstrap.bootstrap(
 )
 ```
 
+`RequestMediator(..., scope_strategy=ScopeStrategy.SEND)` and `setup_mediator(..., scope_strategy=ScopeStrategy.SEND)` work out of the box: `concurrent_event_handle_enable` defaults to `None` (`False` under SEND, sequential BFS). Do not pass `concurrent_event_handle_enable=True` with SEND — that raises `ValueError`. `requests.bootstrap` still defaults concurrent processing to `False`. For a shared UoW between command, fallback, and domain events, pass `scope_strategy=ScopeStrategy.SEND` (see [Scope Strategies](../scoped_dependencies/strategies.md)).
+
+```python
+from cqrs import ScopeStrategy
+
+mediator = bootstrap.bootstrap(
+    di_container=di.Container(),
+    commands_mapper=commands_mapper,
+    domain_events_mapper=events_mapper,
+    scope_strategy=ScopeStrategy.SEND,  # sequential events; no concurrent=False needed
+)
+```
+
 ### With Message Broker
 
 ```python
@@ -82,12 +95,17 @@ mediator = bootstrap.bootstrap(
 
 ### With Parallel Event Processing
 
+Parallel events require `HANDLER` or `NONE` (the default). SEND infers sequential processing and rejects an explicit `True`.
+
 ```python
-# Enable parallel event processing
+from cqrs import ScopeStrategy
+
+# Enable parallel event processing (HANDLER / NONE only)
 mediator = bootstrap.bootstrap(
     di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
+    scope_strategy=ScopeStrategy.HANDLER,  # or omit for NONE
     max_concurrent_event_handlers=5,  # Process up to 5 events concurrently
     concurrent_event_handle_enable=True,  # Enable parallel processing
 )

@@ -35,13 +35,18 @@ The saga pattern ensures eventual consistency through:
 ## Recovery Process
 
 ```python
+from cqrs import ScopeStrategy
 from cqrs.saga.recovery import recover_saga
 
-# Recover interrupted saga
+# Recover interrupted saga — same strategy, container, and storage as the original run.
+# A plain di.Container / DIContainer is enough; do not wrap ScopeAwareContainer yourself.
 await recover_saga(
     saga=saga,
     saga_id=saga_id,
     context_builder=OrderContext,  # or lambda d: OrderContext(**d)
+    container=container,
+    storage=storage,
+    scope_strategy=ScopeStrategy.SEND,  # must match bootstrap / the original stream
 )
 ```
 
@@ -73,7 +78,11 @@ This ensures that **only one worker** can actively recover and execute a specifi
 
 ```python
 status, _, _ = await storage.load_saga_state(saga_id)  # RUNNING
-await recover_saga(saga, saga_id, OrderContext)
+await recover_saga(
+    saga, saga_id, OrderContext,
+    container=container, storage=storage,
+    scope_strategy=ScopeStrategy.SEND,
+)
 # Skips completed steps, continues execution
 ```
 
@@ -85,7 +94,11 @@ await recover_saga(saga, saga_id, OrderContext)
 ```python
 status, _, _ = await storage.load_saga_state(saga_id)  # COMPENSATING
 try:
-    await recover_saga(saga, saga_id, OrderContext)
+    await recover_saga(
+        saga, saga_id, OrderContext,
+        container=container, storage=storage,
+        scope_strategy=ScopeStrategy.SEND,
+    )
 except RuntimeError:
     pass  # Expected - compensation completed
 ```
@@ -147,6 +160,7 @@ Use `storage.get_sagas_for_recovery()` to get saga IDs that need recovery. On re
 
 ```python
 import asyncio
+from cqrs import ScopeStrategy
 from cqrs.saga.recovery import recover_saga
 
 async def recovery_job(storage, saga, context_builder, container, saga_name=None):
@@ -165,6 +179,7 @@ async def recovery_job(storage, saga, context_builder, container, saga_name=None
                     context_builder=context_builder,
                     container=container,
                     storage=storage,
+                    scope_strategy=ScopeStrategy.SEND,  # same as the original run
                 )
             except RuntimeError:
                 pass  # Expected when compensation completed (forward execution not allowed)
@@ -195,6 +210,8 @@ scheduler.start()
 2. **Use `max_recovery_attempts`** — Exclude sagas that fail recovery too many times (e.g. 5) to avoid infinite retries
 3. **Use `stale_after_seconds`** — Avoid picking sagas that are currently being executed by another worker
 4. **Use `saga_name` for per-type recovery** — When running separate recovery jobs per saga type, pass `saga_name` so each job only processes its own sagas
-5. **Handle failures** — Log errors and send alerts; `increment_recovery_attempts` is called automatically by `recover_saga`
-6. **Monitor metrics** — Track recovery rate, duration, failures, and sagas exceeding max attempts
-7. **Use persistent storage** — Memory storage loses data on restart
+5. **Match `scope_strategy`** — Pass the same strategy, `container`, and `storage` as the original run. A plain container is enough; `SagaTransaction` wraps it internally
+6. **Do not recover from an open SEND request** — `recover_saga(SEND)` inside `send()` joins that request UoW (`reuse_existing=True`). Run recovery from a worker
+7. **Handle failures** — Log errors and send alerts; `increment_recovery_attempts` is called automatically by `recover_saga`
+8. **Monitor metrics** — Track recovery rate, duration, failures, and sagas exceeding max attempts
+9. **Use persistent storage** — Memory storage loses data on restart

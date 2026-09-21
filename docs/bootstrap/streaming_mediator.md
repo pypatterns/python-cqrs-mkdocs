@@ -40,16 +40,34 @@ mediator = bootstrap.bootstrap_streaming(
 )
 ```
 
-### With Parallel Event Processing
+`StreamingRequestMediator(..., scope_strategy=ScopeStrategy.SEND)` and `bootstrap_streaming(..., scope_strategy=ScopeStrategy.SEND)` work out of the box: `concurrent_event_handle_enable` defaults to `None` (`False` under SEND). Do not pass `concurrent_event_handle_enable=True` with SEND. Consume the stream fully or close it with `aclose()` / `async with aclosing(...)` — an abandoned SEND stream holds the UoW until GC.
 
 ```python
-# Streaming mediator defaults to parallel event processing
+from cqrs import ScopeStrategy
+
 mediator = bootstrap.bootstrap_streaming(
     di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
+    scope_strategy=ScopeStrategy.SEND,  # sequential events; no concurrent=False needed
+)
+```
+
+### With Parallel Event Processing
+
+Without SEND, `concurrent_event_handle_enable=None` becomes `True` (streaming default). Under SEND it becomes `False` (sequential BFS). Parallel events need `HANDLER` or `NONE`.
+
+```python
+from cqrs import ScopeStrategy
+
+# Streaming mediator: None → True unless SEND
+mediator = bootstrap.bootstrap_streaming(
+    di_container=di.Container(),
+    commands_mapper=commands_mapper,
+    domain_events_mapper=events_mapper,
+    scope_strategy=ScopeStrategy.HANDLER,  # or omit for NONE
     max_concurrent_event_handlers=10,  # Default: 10
-    concurrent_event_handle_enable=True,  # Default: True for streaming
+    concurrent_event_handle_enable=True,
 )
 ```
 
@@ -137,10 +155,13 @@ mediator = bootstrap.bootstrap_streaming(
     concurrent_event_handle_enable=True,
 )
 
-# Stream results
-async for result in mediator.stream(
-    ProcessFilesCommand(file_ids=["1", "2", "3"])
-):
-    if result:
-        print(f"Processed: {result.file_id} - {result.status}")
+# Stream results — exhaust or aclose(); abandoned SEND holds UoW until GC
+from contextlib import aclosing
+
+async with aclosing(
+    mediator.stream(ProcessFilesCommand(file_ids=["1", "2", "3"]))
+) as stream:
+    async for result in stream:
+        if result:
+            print(f"Processed: {result.file_id} - {result.status}")
 ```

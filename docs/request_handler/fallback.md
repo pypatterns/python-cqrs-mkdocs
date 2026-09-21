@@ -99,6 +99,14 @@ mapper.bind(
 
 The mediator dispatches to the primary handler; on exception (or when the circuit is open), the fallback handler is invoked. The response and events from the handler that actually ran are returned.
 
+| Strategy | Fallback UoW |
+|----------|----------------|
+| **SEND** | Same unit of work as the primary (and domain events). After a DB error the session may need `rollback()` / a savepoint. |
+| **HANDLER** | New scope. Primary rolls back (exception through the generator UoW), then fallback runs. Primary writes are not visible. |
+| **NONE** | No framework scopes. |
+
+There is no `fallback_shares_scope` flag — use SEND to share the transaction, HANDLER for a clean alternative path. See [Scope Strategies](../scoped_dependencies/strategies.md).
+
 ## Circuit Breaker (optional)
 
 To use a circuit breaker, install the optional dependency and pass an adapter instance:

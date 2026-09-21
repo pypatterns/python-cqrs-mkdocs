@@ -13,7 +13,7 @@ The `CoRMermaid` class can generate two types of diagrams:
 
 You can find a complete working example in the repository:
 
-[**View Example: `cor_mermaid.py`**](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor_mermaid.py)
+[**View Example: `cor_mermaid.py`**](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/cor_mermaid.py)
 
 ### Basic Usage
 
@@ -328,7 +328,7 @@ Generated diagrams can be:
 To see the diagrams generated from a real handler chain, run:
 
 ```bash
-python examples/cor_mermaid.py
+python examples/cor/cor_mermaid.py
 ```
 
 This will output both Sequence and Class diagrams in a format ready to copy and paste into any Mermaid-compatible viewer.
@@ -364,5 +364,5 @@ Generate a Mermaid Class diagram showing handler chain structure, types, and rel
 - [Chain of Responsibility Overview](../chain_of_responsibility/index.md) - Learn about the Chain of Responsibility pattern implementation
 - [Chain of Responsibility Examples](../chain_of_responsibility/examples.md) - Complete examples
 - [Chain of Responsibility Advanced Topics](../chain_of_responsibility/advanced.md) - Advanced usage patterns
-- [Example: Basic CoR](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor_request_handler.py)
-- [Example: CoR Mermaid Diagrams](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor_mermaid.py)
+- [Example: Basic CoR](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/cor_request_handler.py)
+- [Example: CoR Mermaid Diagrams](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/cor_mermaid.py)

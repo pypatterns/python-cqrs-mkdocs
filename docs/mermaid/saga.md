@@ -13,7 +13,7 @@ The `SagaMermaid` class can generate two types of diagrams:
 
 You can find a complete working example in the repository:
 
-[**View Example: `saga_mermaid.py`**](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga_mermaid.py)
+[**View Example: `saga_mermaid.py`**](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_mermaid.py)
 
 ### Basic Usage
 
@@ -341,7 +341,7 @@ Generated diagrams can be:
 To see the diagrams generated from a real saga, run:
 
 ```bash
-python examples/saga_mermaid.py
+python examples/saga/saga_mermaid.py
 ```
 
 This will output both Sequence and Class diagrams in a format ready to copy and paste into any Mermaid-compatible viewer.
@@ -379,5 +379,5 @@ Generate a Mermaid Class diagram showing saga structure, types, and relationship
 - [Saga Recovery](../saga/recovery.md) - Understanding saga recovery mechanisms
 - [Saga Compensation](../saga/compensation.md) - Compensation strategies
 - [Saga Examples](../saga/examples.md) - Complete examples
-- [Example: Basic Saga](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga.py)
-- [Example: Saga Mermaid Diagrams](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga_mermaid.py)
+- [Example: Basic Saga](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga.py)
+- [Example: Saga Mermaid Diagrams](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_mermaid.py)

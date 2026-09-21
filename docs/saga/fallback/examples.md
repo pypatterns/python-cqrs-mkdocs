@@ -98,14 +98,18 @@ mediator = bootstrap.bootstrap(
     di_container=di_container,
     sagas_mapper=saga_mapper,
     saga_storage=storage,
+    scope_strategy=cqrs.ScopeStrategy.SEND,  # fallback shares the saga UoW
 )
 
-# Execute
+# Execute — exhaust or aclose()
+from contextlib import aclosing
+
 context = OrderContext(order_id="123", user_id="user_1")
 saga_id = uuid.uuid4()
 
-async for step_result in mediator.stream(context, saga_id=saga_id):
-    print(f"Step: {step_result.step_type.__name__}")
-    if hasattr(step_result.response, "source"):
-        print(f"Source: {step_result.response.source}")
+async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+    async for step_result in stream:
+        print(f"Step: {step_result.step_type.__name__}")
+        if hasattr(step_result.response, "source"):
+            print(f"Source: {step_result.response.source}")
 ```

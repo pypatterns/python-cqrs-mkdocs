@@ -52,6 +52,9 @@ The `Fallback` wrapper enables saga steps to have backup execution paths. When a
 | **Context Snapshot** | Deep copy of context state before primary step execution |
 | **Context Restore** | Restoring context to snapshot state before fallback execution |
 | **Circuit Breaker** | Optional protection mechanism to prevent cascading failures |
+| **SEND fallback** | Same UoW as the primary step (and domain events). After a DB error the session may need `rollback()` / a savepoint. |
+| **HANDLER fallback** | New scope after the primary is **rolled back** (exception re-raised through the generator UoW). Primary writes are not visible; persist step state in `SagaContext`. |
+| **NONE** | No framework scopes. |
 
 !!! tip "When to Use"
     Use Fallback pattern when:
@@ -116,3 +119,4 @@ class OrderSaga(Saga[OrderContext]):
 5. **Idempotent Fallback Steps**: Ensure fallback steps are idempotent (safe to retry during recovery)
 6. **Proper Compensation**: Define `compensate()` methods for both primary and fallback steps
 7. **Failure Exception Filtering**: Use `failure_exceptions` to control which exceptions trigger fallback
+8. **Match the scope strategy**: SEND shares the saga UoW with fallback; HANDLER rolls the primary back first. There is no extra fallback-scope flag.

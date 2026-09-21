@@ -100,12 +100,15 @@ async def compensate(self, context: OrderContext) -> None:
 Automatic retry for compensation failures is configured on **`saga.transaction(...)`**:
 
 ```python
+from cqrs import ScopeStrategy
+
 saga = OrderSaga()  # steps defined on class
 
 async with saga.transaction(
     context=context,
     container=container,
     storage=storage,
+    scope_strategy=ScopeStrategy.SEND,  # same as the original run; plain container is enough
     compensation_retry_count=3,      # Number of retry attempts
     compensation_retry_delay=1.0,   # Initial delay in seconds
     compensation_retry_backoff=2.0, # Exponential backoff multiplier
@@ -192,9 +195,18 @@ async def compensate(self, context: OrderContext) -> None:
         await service.release_items(context.inventory_reservation_id)
 ```
 
+## Scoped compensation
+
+- **SEND** — compensation runs on the **same step instance and UoW** as `act` (one saga scope).
+- **HANDLER** — each step (and compensation) is re-resolved in a **fresh** scope, so `self` state from `act` is gone. Persist what `compensate` needs in `SagaContext` and keep compensation idempotent.
+- **NONE** — no framework scopes.
+
+Do not wrap the container with `ScopeAwareContainer` yourself; `saga.transaction` wraps a plain container internally. See [Scope Strategies](../scoped_dependencies/strategies.md).
+
 ## Best Practices
 
 1. **Idempotent** — Safe to call multiple times
 2. **Check Context** — Verify compensation is needed
 3. **Handle Failures** — Log errors appropriately
 4. **Test Logic** — Ensure compensation works correctly
+5. **Match `scope_strategy`** — Pass the same strategy as the original run; under HANDLER do not store compensation state on `self`

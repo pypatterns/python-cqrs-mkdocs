@@ -21,9 +21,16 @@ The **Stream Handling Fallback** uses the same `RequestHandlerFallback` wrapper 
 | **Primary** | `StreamingRequestHandler` that yields first; may raise during iteration |
 | **Fallback** | `StreamingRequestHandler` used when primary raises |
 | **Flow** | `mediator.stream(request)` yields from primary until it raises, then yields from fallback |
+| **Already yielded items** | Stay with the client; fallback does not rewind them. Only the unit of work changes. |
 
 !!! tip "When to Use"
-    Use streaming fallback when you stream results from a primary source that can fail partway through (e.g. connection lost). The fallback can yield from cache or a degraded path so the client still receives a complete stream.
+    Use streaming fallback when you stream results from a primary source that can fail partway through (e.g. connection lost). The fallback can yield from cache or a degraded path so the client still receives a complete stream. Always exhaust or `aclose()` / `async with aclosing(...)` the mediator stream; an abandoned SEND stream holds the UoW until GC.
+
+| Strategy | Fallback UoW |
+|----------|----------------|
+| **SEND** | Same session as the primary. After a DB error call `rollback()` / savepoint, or use HANDLER. |
+| **HANDLER** | New scope after the primary is rolled back (exception through the generator). |
+| **NONE** | No framework scopes. |
 
 ## Registration
 
@@ -107,13 +114,18 @@ mapper.bind(
     ),
 )
 
-# Usage: bootstrap_streaming(...), then:
-async for response in mediator.stream(StreamItemsCommand(item_ids=["a", "b", "c", "d"])):
-    if response is not None:
-        print(response.item_id, response.source)  # primary, primary, fallback, fallback...
+# Usage: bootstrap_streaming(...), then exhaust or aclose:
+from contextlib import aclosing
+
+async with aclosing(
+    mediator.stream(StreamItemsCommand(item_ids=["a", "b", "c", "d"]))
+) as stream:
+    async for response in stream:
+        if response is not None:
+            print(response.item_id, response.source)  # primary, primary, fallback, fallback...
 ```
 
-The client receives items from the primary stream until it raises, then items from the fallback stream. Optional `failure_exceptions` and `circuit_breaker` behave as for non-streaming [Request Handler Fallback](../request_handler/fallback.md).
+The client receives items from the primary stream until it raises, then items from the fallback stream. Items already yielded are **not** cancelled. Optional `failure_exceptions` and `circuit_breaker` behave as for non-streaming [Request Handler Fallback](../request_handler/fallback.md).
 
 ## Circuit Breaker configuration
 

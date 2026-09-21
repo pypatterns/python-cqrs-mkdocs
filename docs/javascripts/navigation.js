@@ -67,6 +67,13 @@
             { title: 'Advanced', url: 'bootstrap/advanced/', path: 'bootstrap/advanced' },
             // Dependency Injection
             { title: 'Dependency Injection', url: 'di/', path: 'di' },
+            // Scoped Dependencies
+            { title: 'Scoped Dependencies', url: 'scoped_dependencies/', path: 'scoped_dependencies/index' },
+            { title: 'Why Scoped Dependencies', url: 'scoped_dependencies/why/', path: 'scoped_dependencies/why' },
+            { title: 'Scope Strategies', url: 'scoped_dependencies/strategies/', path: 'scoped_dependencies/strategies' },
+            { title: 'Scoped Containers', url: 'scoped_dependencies/containers/', path: 'scoped_dependencies/containers' },
+            { title: 'Custom Container', url: 'scoped_dependencies/custom_container/', path: 'scoped_dependencies/custom_container' },
+            { title: 'Scoped Troubleshooting', url: 'scoped_dependencies/troubleshooting/', path: 'scoped_dependencies/troubleshooting' },
             // Request Handler
             { title: 'Commands / Requests Handling', url: 'request_handler/', path: 'request_handler/index' },
             { title: 'Request Handler Fallback', url: 'request_handler/fallback/', path: 'request_handler/fallback' },

@@ -20,6 +20,13 @@ nav:
       - DI Containers: bootstrap/di_containers.md
       - Advanced: bootstrap/advanced.md
     - Dependency Injection: di.md
+    - Scoped Dependencies:
+      - Overview: scoped_dependencies/index.md
+      - Why: scoped_dependencies/why.md
+      - Strategies: scoped_dependencies/strategies.md
+      - Containers: scoped_dependencies/containers.md
+      - Custom Container: scoped_dependencies/custom_container.md
+      - Troubleshooting: scoped_dependencies/troubleshooting.md
     - Commands / Requests Handling:
       - Overview: request_handler/index.md
       - Fallback: request_handler/fallback.md
@@ -155,6 +162,7 @@ plugins:
           - chain_of_responsibility/*.md: Sequential handler chains
           - stream_handling/*.md: Streaming requests and SSE
           - mermaid/*.md: Mermaid diagram generation
+          - scoped_dependencies/*.md: Request-scoped DI, ScopeStrategy, enter_scope
         Integrations:
           - fastapi.md: FastAPI HTTP integration
           - faststream.md: Kafka and RabbitMQ with FastStream

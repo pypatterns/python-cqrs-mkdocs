@@ -26,22 +26,23 @@ sequenceDiagram
         Executor->>Primary: act(context)
         Primary-->>Executor: Success
         Note over Executor: Return primary result
-    else Primary Step Fails
+    else Primary fails under SEND or NONE
         Executor->>Primary: act(context)
         Primary-->>Executor: Exception
-        
+        Note over Executor: Catch inside the same scope — do not re-raise through it
         Executor->>Executor: Restore context from snapshot
-        Executor->>Fallback: act(restored_context)
-        
-        alt Fallback Succeeds
-            Fallback-->>Executor: Success
-            Note over Executor: Return fallback result
-        else Fallback Fails
-            Fallback-->>Executor: Exception
-            Note over Executor: Saga fails
-        end
+        Executor->>Fallback: act(restored_context) in the same UoW
+    else Primary fails under HANDLER
+        Executor->>Primary: act(context)
+        Primary-->>Executor: Exception
+        Note over Executor: Re-raise through primary handler_scope so generator UoW rolls back
+        Executor->>Executor: Restore context from snapshot
+        Executor->>Fallback: act(restored_context) in a new scope
     end
 ```
+
+!!! important "HANDLER rolls the primary back"
+    Under `HANDLER` the framework does **not** swallow the primary error inside the step scope. The exception is re-raised through `handler_scope` so a generator UoW (`yield session; commit()`) sees `except` and rolls back. Then fallback opens a **new** scope. Under `SEND` / `NONE` the error is caught inside the outer scope so fallback shares the same UoW. See [Scope Strategies](../../scoped_dependencies/strategies.md).
 
 ### Context Management
 
@@ -53,9 +54,10 @@ The Fallback pattern implements a **snapshot and restore** mechanism for context
 
 This ensures that:
 
-- Fallback steps start with a clean state (no side effects from failed primary)
+- Fallback steps start with a clean **SagaContext** (no side effects from failed primary)
 - Context mutations from primary step are not visible to fallback
 - Each step execution is isolated
+- **UoW is separate from SagaContext**: SEND shares the session (it may be dirty / `needs rollback`); HANDLER rolls the primary back, then opens a new scope for fallback
 
 ```python
 # Simplified context snapshot/restore logic
@@ -83,7 +85,7 @@ except Exception:
    - If Circuit Breaker present: `circuit_breaker.call(step_type, primary_step.act, context)`
    - Otherwise: `primary_step.act(context)` directly
 4. **Success**: Context updated, step completion logged
-5. **Failure**: Exception caught, fallback logic triggered
+5. **Failure**: Exception caught. Under **HANDLER** it is re-raised through the primary `handler_scope` (rollback), then fallback runs in a new scope. Under **SEND** / **NONE** fallback runs in the same UoW.
 
 ### Fallback Step Execution
 
@@ -130,6 +132,7 @@ class FallbackStep(SagaStepHandler[OrderContext, ReserveInventoryResponse]):
 - Only the **actually executed step** (primary or fallback) is compensated
 - If primary succeeded → only primary's `compensate()` is called
 - If fallback executed → only fallback's `compensate()` is called
+- Under **SEND**, compensation uses the same step instance and UoW as `act`. Under **HANDLER**, the step is re-resolved in a fresh scope — persist what compensation needs in `SagaContext`.
 
 ## Storage and Logging
 

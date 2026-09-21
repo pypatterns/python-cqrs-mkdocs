@@ -13,28 +13,30 @@ The `python-cqrs` package supports multiple DI container libraries:
 
 - **`di`** — Lightweight, modern dependency injection library (default)
 - **`dependency-injector`** — Feature-rich DI library with configuration management and FastAPI integration
+- **dishka** — Optional (`pip install python-cqrs[dishka]`) with first-class request scopes
 
-Both libraries allow you to bind implementations to interfaces and automatically resolve dependencies in your handlers.
+Both `di` and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See [Scoped Dependencies](scoped_dependencies/index.md).
 
 !!! note "Prerequisites"
     This section assumes you've already configured [Bootstrap](bootstrap/index.md). The DI container is passed to bootstrap functions to resolve handlers and their dependencies.
 
 !!! tip "Next Steps"
-    After understanding DI, proceed to [Request Handlers](request_handler/index.md) to learn how handlers use dependency injection.
+    After understanding DI, proceed to [Request Handlers](request_handler/index.md) to learn how handlers use dependency injection. For request-scoped UoW / sessions, read [Scoped Dependencies](scoped_dependencies/index.md).
 
 ## Supported Libraries
 
-| Feature | `di` | `dependency-injector` |
-|---------|------|----------------------|
-| **Default** | ✅ Yes (default) | ❌ No |
-| **Type-based resolution** | ✅ Yes | ✅ Yes |
-| **Scoped dependencies** | ✅ Yes | ✅ Yes |
-| **Configuration management** | ❌ No | ✅ Yes (YAML, dict, Pydantic) |
-| **Resource management** | ❌ No | ✅ Yes |
-| **FastAPI integration** | ✅ Yes | ✅ Yes (direct wiring) |
-| **Nested containers** | ❌ No | ✅ Yes |
-| **Learning curve** | 🟢 Easy | 🟡 Moderate |
-| **Best for** | Small to medium apps | Large, complex apps |
+| Feature | `di` | dishka | `dependency-injector` |
+|---------|------|--------|----------------------|
+| **Default** | ✅ Yes (default) | ❌ Optional extra | ❌ No |
+| **Type-based resolution** | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Per-request scope (CQRS)** | ✅ Yes | ✅ Yes | ❌ No (`SupportsScope` not implemented) |
+| **Async generator providers** | ✅ Yes | ✅ Yes | ❌ No |
+| **Configuration management** | ❌ No | ❌ No | ✅ Yes (YAML, dict, Pydantic) |
+| **Resource management** | ❌ No | ✅ Yes | ✅ Yes |
+| **FastAPI integration** | ✅ Yes | ✅ Yes | ✅ Yes (direct wiring) |
+| **Nested containers** | ❌ No | ✅ Yes | ✅ Yes |
+| **Learning curve** | 🟢 Easy | 🟢 Easy | 🟡 Moderate |
+| **Best for** | Small to medium apps | Apps already on dishka | Large, complex apps |
 
 ### `di` Library
 
@@ -87,8 +89,11 @@ The `di` library supports different scopes:
 | Scope | Lifetime | Use Case |
 |-------|----------|----------|
 | **`"singleton"`** | One instance per container (shared across all requests) | Stateless services, configuration |
-| **`"request"`** | One instance per request (new instance for each handler) | Stateful services, database connections |
+| **`"request"`** | One instance per CQRS scope (see [Scoped Dependencies](scoped_dependencies/index.md)) | Stateful services, database connections / UoW |
 | **`"scoped"`** | One instance per scope (custom scope management) | Request-scoped resources |
+
+!!! tip "CQRS request scope"
+    With `scope_strategy=ScopeStrategy.SEND`, `"request"` dependencies live for the whole `mediator.send()` (including domain events). The default `ScopeStrategy.NONE` opens no framework scopes. Details: [Scoped Dependencies](scoped_dependencies/index.md).
 
 <details>
 <summary><strong>Scope Examples</strong></summary>

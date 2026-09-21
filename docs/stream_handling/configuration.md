@@ -35,22 +35,36 @@ def streaming_mediator_factory() -> cqrs.StreamingRequestMediator:
         domain_events_mapper=domain_events_mapper,
         message_broker=broker,
         max_concurrent_event_handlers=3,  # Process up to 3 events in parallel
-        concurrent_event_handle_enable=True,  # Enable parallel processing
+        concurrent_event_handle_enable=True,  # Enable parallel processing (HANDLER / NONE)
     )
 ```
 
-
-Once you have a streaming mediator, you can stream results:
+`StreamingRequestMediator(..., scope_strategy=ScopeStrategy.SEND)` no longer needs a manual `concurrent_event_handle_enable=False`: `None` becomes `False` under SEND. Do not pass `True` with SEND.
 
 ```python
+from cqrs import ScopeStrategy
+
+mediator = bootstrap.bootstrap_streaming(
+    di_container=container,
+    commands_mapper=commands_mapper,
+    domain_events_mapper=domain_events_mapper,
+    scope_strategy=ScopeStrategy.SEND,  # sequential events out of the box
+)
+```
+
+Once you have a streaming mediator, you can stream results. Exhaust the iterator or close it with `aclose()` / `async with aclosing(...)`. An abandoned SEND stream holds the UoW until garbage collection.
+
+```python
+from contextlib import aclosing
+
 mediator = streaming_mediator_factory()
 
 command = ProcessFilesCommand(file_ids=["file1", "file2", "file3"])
 
-# Stream results as they become available
-async for result in mediator.stream(command):
-    if result is not None:
-        print(f"Processed: {result.file_id} - {result.status}")
+async with aclosing(mediator.stream(command)) as stream:
+    async for result in stream:
+        if result is not None:
+            print(f"Processed: {result.file_id} - {result.status}")
 ```
 
 
@@ -92,13 +106,16 @@ class ProcessOrdersCommandHandler(
 Control parallel event processing with these parameters:
 
 - **`max_concurrent_event_handlers`** — Maximum number of event handlers that can run simultaneously (default: `10` for streaming mediator)
-- **`concurrent_event_handle_enable`** — Enable/disable parallel processing (default: `True` for streaming mediator)
+- **`concurrent_event_handle_enable`** — `None` by default: `False` under SEND (sequential BFS), `True` otherwise. Explicit `True` with SEND raises `ValueError`.
 
 ```python
+from cqrs import ScopeStrategy
+
 mediator = bootstrap.bootstrap_streaming(
     di_container=container,
     commands_mapper=commands_mapper,
     domain_events_mapper=domain_events_mapper,
+    scope_strategy=ScopeStrategy.HANDLER,  # or omit for NONE; not SEND
     max_concurrent_event_handlers=5,  # Process up to 5 events in parallel
     concurrent_event_handle_enable=True,  # Enable parallel processing
 )
@@ -106,5 +123,7 @@ mediator = bootstrap.bootstrap_streaming(
 
 !!! tip "Configuration Tips"
     - Set `max_concurrent_event_handlers` to limit resource consumption
-    - Set `concurrent_event_handle_enable=False` to process events sequentially
+    - Omit `concurrent_event_handle_enable` under SEND (`None` → `False`); do not pass `True`
+    - For parallel events use `HANDLER` or `NONE` plus `concurrent_event_handle_enable=True`
     - Higher concurrency improves performance but uses more resources
+    - Always exhaust or `aclose()` / `aclosing` the stream so SEND UoW is released

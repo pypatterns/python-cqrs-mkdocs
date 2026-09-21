@@ -107,22 +107,33 @@ The `EventEmitter.emit()` returns follow-up events from domain event handlers; t
 ### Configuration
 
 ```python
+from cqrs import ScopeStrategy
 from cqrs.requests import bootstrap
 
-# Enable parallel processing with max 3 concurrent handlers
+# Enable parallel processing with max 3 concurrent handlers (HANDLER / NONE only)
 mediator = bootstrap.bootstrap(
     di_container=container,
     commands_mapper=commands_mapper,
     domain_events_mapper=domain_events_mapper,
+    scope_strategy=ScopeStrategy.HANDLER,  # or omit for NONE; not SEND
     max_concurrent_event_handlers=3,  # Max 3 handlers at once
     concurrent_event_handle_enable=True,  # Enable parallel processing
 )
 ```
 
+!!! warning "SEND is sequential"
+    Do not combine `ScopeStrategy.SEND` with `concurrent_event_handle_enable=True`. Omit the concurrent flag under SEND (`None` → `False`). For parallel events use `HANDLER` or `NONE`.
+
 ### Default Values
 
-- **`RequestMediator`** — `max_concurrent_event_handlers=1`, `concurrent_event_handle_enable=True`
-- **`StreamingRequestMediator`** — `max_concurrent_event_handlers=10`, `concurrent_event_handle_enable=True`
+`concurrent_event_handle_enable` defaults to `None` on `RequestMediator`, `StreamingRequestMediator`, `SagaMediator`, and on `saga.bootstrap` / `setup_mediator` / `setup_streaming_mediator` / `setup_saga_mediator`:
+
+- **`None` + SEND** → `False` (sequential BFS in one UoW). `RequestMediator(..., SEND)`, `saga.bootstrap(..., SEND)`, and `StreamingRequestMediator(..., SEND)` work out of the box.
+- **`None` without SEND** → `True` (parallel, FIRST_COMPLETED).
+- **Explicit `True` + SEND** → `ValueError` (any `max_concurrent_event_handlers`). Use `HANDLER` or `NONE` for parallel events.
+- **`requests.bootstrap`** still defaults concurrent processing to `False`.
+
+Max handlers: **`RequestMediator` / `SagaMediator`** default `max_concurrent_event_handlers=1`; **`StreamingRequestMediator`** defaults to `10`.
 
 ### Example: Parallel Processing
 
