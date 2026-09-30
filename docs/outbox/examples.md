@@ -95,3 +95,17 @@ mediator = bootstrap.bootstrap(
 # Use mediator
 await mediator.send(JoinMeetingCommand(user_id="123", meeting_id="456"))
 ```
+
+## Protobuf outbox (opt-in)
+
+JSON remains the default codec. To store and publish selected events as Protobuf, register a `ProtobufEventSerializer` on an isolated `OutboxedEventMap` and pass that map into the repository.
+
+Runnable produce + consume (no Kafka):
+
+```bash
+pip install -e ".[examples]"
+python examples/outbox/protobuf_outbox.py
+```
+
+Full walkthrough: [Protobuf Integration](../protobuf.md).
+Source: [protobuf_outbox.py](https://github.com/vadikko2/python-cqrs/blob/master/examples/outbox/protobuf_outbox.py).
