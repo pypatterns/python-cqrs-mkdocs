@@ -23,7 +23,7 @@ FastStream is a powerful framework for building event-driven applications with m
 
 !!! tip "Related Topics"
     - [Event Producing](event_producing.md) — For publishing events to message brokers
-    - [Protobuf Integration](protobuf.md) — For Protobuf serialization/deserialization
+    - [Protobuf Integration](protobuf.md) — Opt-in Protobuf produce / consume codecs
     - [Transaction Outbox](outbox/index.md) — For reliable event delivery
 
 ## Setup
@@ -334,7 +334,7 @@ async def handle_order_event(
     await mediator.send(body)
 ```
 
-For Protobuf event handling, see the [Protobuf Integration](protobuf.md) documentation.
+For opt-in Protobuf consumers (`ProtobufDeserializer`), see [Protobuf Integration](protobuf.md).
 
 ## Event Mediator Factory
 

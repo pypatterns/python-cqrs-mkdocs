@@ -15,7 +15,9 @@
 ## Overview
 
 
-Events must be registered in `OutboxedEventMap` before they can be stored:
+Events must be registered in `OutboxedEventMap` before they can be stored.
+
+Prefer an **isolated** map instance. Class-level `OutboxedEventMap.register(...)` still works but mutates a process-global singleton.
 
 ```python
 import cqrs
@@ -25,18 +27,25 @@ class UserJoinedPayload(BaseModel, frozen=True):
     user_id: str
     meeting_id: str
 
-# Register event type
-cqrs.OutboxedEventMap.register(
+events = cqrs.OutboxedEventMap()
+events.register(
     "user_joined",
     cqrs.NotificationEvent[UserJoinedPayload],
+)
+
+repository = cqrs.SqlAlchemyOutboxedEventRepository(
+    session,
+    event_map=events,
 )
 ```
 
 This registration is required for:
+
 - Type safety when storing events
 - Deserialization when reading events
 - Validation of event structure
 
+Optional `serializer=` on `register` (or the repository `serializer=` fallback) controls how payload bytes are stored. JSON is the default; Protobuf is opt-in — see [Protobuf Integration](../protobuf.md).
 
 Events are published by a separate process using `EventProducer`:
 

@@ -60,6 +60,7 @@ The Outbox pattern solves this by:
     - [Event Producing](../event_producing.md) — For configuring message brokers
     - [FastStream Integration](../faststream.md) — For consuming events from message brokers
     - [Bootstrap](../bootstrap/index.md) — For configuring outbox in bootstrap process
+    - [Protobuf Integration](../protobuf.md) — Opt-in Protobuf codecs for outbox storage and publish
 
 ## Why Use Transactional Outbox?
 

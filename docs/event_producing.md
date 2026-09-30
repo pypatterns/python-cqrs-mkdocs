@@ -7,12 +7,12 @@ description: Publish domain and notification events to Kafka or RabbitMQ with py
 
 ## Overview
 
-Event producing allows you to publish events to message brokers (Kafka, RabbitMQ) for asynchronous processing. The `python-cqrs` package provides message broker abstractions that support both JSON and Protobuf serialization.
+Event producing allows you to publish events to message brokers (Kafka, RabbitMQ) for asynchronous processing. The `python-cqrs` package provides message broker abstractions with **JSON as the default** codec. Protobuf is available as an opt-in per-event serializer — see [Protobuf Integration](protobuf.md).
 
 **Key Features:**
 
 - **Multiple Brokers** — Support for Kafka and RabbitMQ
-- **Serialization Formats** — JSON support (Protobuf support available, see [Protobuf Integration](protobuf.md))
+- **Serialization Formats** — JSON by default; opt-in Protobuf via `ProtobufEventSerializer` / `OutboxedEventMap`
 - **Type Safety** — Full Pydantic v2 support for event payloads
 - **Error Handling** — Built-in retry and error handling
 
@@ -177,7 +177,7 @@ amqp_broker = amqp.AMQPMessageBroker(
 )
 ```
 
-For Protobuf event producing, see the [Protobuf Integration](protobuf.md) documentation.
+For opt-in Protobuf producing (per-event codec, `payload_bytes`, bootstrap `serializer=`), see [Protobuf Integration](protobuf.md).
 
 ## Complete Examples
 
@@ -249,8 +249,8 @@ mediator = bootstrap.bootstrap(
 
 Choose serialization format based on your needs:
 
-- **JSON** — Human-readable, easy to debug, larger message size
-- **Protobuf** — See [Protobuf Integration](protobuf.md) for Protobuf serialization
+- **JSON** — Default. Human-readable, easy to debug
+- **Protobuf** — Opt-in per event — see [Protobuf Integration](protobuf.md)
 
 ### 2. Configure Producer Settings
 
@@ -291,7 +291,7 @@ except Exception as e:
 
 ### 5. Protobuf Serialization
 
-For Protobuf serialization, see the [Protobuf Integration](protobuf.md) documentation.
+JSON stays the default. Register `ProtobufEventSerializer` only for events that need binary payloads — see [Protobuf Integration](protobuf.md).
 
 ### 6. Logging
 

@@ -134,3 +134,7 @@ mediator = bootstrap.bootstrap(
     message_broker=CustomMessageBroker(),
 )
 ```
+
+### Event serializer (optional)
+
+`bootstrap(..., serializer=...)` forwards a codec into `EventEmitter`. The default is JSON. Pass `OutboxedEventMap.as_serializer()` when some notification events use Protobuf — see [Protobuf Integration](../protobuf.md).
