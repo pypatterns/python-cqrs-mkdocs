@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://mkdocs.python-cqrs.dev/sitemap.xml
+# LLM-friendly index: https://mkdocs.python-cqrs.dev/llms.txt
+# Full docs dump for agents: https://mkdocs.python-cqrs.dev/llms-full.txt
