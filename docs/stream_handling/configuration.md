@@ -19,7 +19,7 @@ To use streaming handlers, you need to bootstrap a `StreamingRequestMediator`:
 
 ```python
 import functools
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
     mapper.bind(ProcessFilesCommand, ProcessFilesCommandHandler)

@@ -25,7 +25,7 @@ The `RequestMediator` is the standard mediator for handling commands and queries
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
     mapper.bind(CreateUserCommand, CreateUserCommandHandler)
@@ -153,7 +153,7 @@ mediator = bootstrap.bootstrap(
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 from cqrs.middlewares import base
 

@@ -52,7 +52,7 @@ import di
 import faststream
 import cqrs
 from faststream import kafka
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 from cqrs import deserializers
 
 # Create Kafka broker
@@ -223,7 +223,7 @@ import di
 import faststream
 import cqrs
 from faststream import rabbitmq
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 from cqrs import deserializers
 
 # Create RabbitMQ broker
@@ -346,7 +346,7 @@ The event mediator factory is crucial for dependency injection in FastStream sub
 import functools
 import di
 import cqrs
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 @functools.lru_cache(maxsize=1)
 def mediator_factory() -> cqrs.EventMediator:
@@ -502,7 +502,7 @@ from faststream import kafka, types
 
 import cqrs
 from cqrs import deserializers
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("aiokafka").setLevel(logging.ERROR)
@@ -597,7 +597,7 @@ from faststream import rabbitmq
 
 import cqrs
 from cqrs import deserializers
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 logging.basicConfig(level=logging.INFO)
 

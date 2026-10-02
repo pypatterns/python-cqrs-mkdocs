@@ -19,12 +19,12 @@ import di
 
 import cqrs
 from cqrs import ScopeStrategy
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 @dataclasses.dataclass
 class OrderContext(SagaContext):
@@ -80,7 +80,7 @@ from contextlib import aclosing
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step completed: {step_result.step_type.__name__}")
 ```
@@ -128,7 +128,7 @@ import fastapi
 import json
 import uuid
 from cqrs import ScopeStrategy
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 
 def mediator_factory() -> cqrs.SagaMediator:
     """Create saga mediator using bootstrap."""
@@ -150,7 +150,7 @@ async def process_order(
         
         yield f"data: {json.dumps({'type': 'start', 'saga_id': str(saga_id)})}\n\n"
         
-        async for step_result in mediator.stream(context, saga_id=saga_id):
+        async for step_result in mediator.execute(context, saga_id=saga_id):
             yield f"data: {json.dumps({'type': 'step_progress', 'step': step_result.step_type.__name__})}\n\n"
         
         yield f"data: {json.dumps({'type': 'complete'})}\n\n"
@@ -170,7 +170,7 @@ async def process_order(
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from cqrs import ScopeStrategy
 from cqrs.saga.storage.sqlalchemy import SqlAlchemySagaStorage, Base
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 
 # Setup
 engine = create_async_engine("postgresql+asyncpg://user:pass@localhost/db")
@@ -200,7 +200,7 @@ from contextlib import aclosing
 context = OrderContext(...)
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step: {step_result.step_type.__name__}")
 
@@ -217,7 +217,7 @@ For advanced retry configuration, you can access the transaction directly:
 
 ```python
 # Note: Compensation retry is configured at the SagaTransaction level
-# When using mediator.stream(), default retry settings are used
+# When using mediator.execute(), default retry settings are used
 # For custom retry configuration, you may need to access the transaction directly
 ```
 
@@ -257,14 +257,14 @@ from di import dependent
 
 import cqrs
 from cqrs import ScopeStrategy
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.fallback import Fallback
 from cqrs.adapters.circuit_breaker import AioBreakerAdapter
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 @dataclasses.dataclass
 class OrderContext(SagaContext):
@@ -321,7 +321,7 @@ from contextlib import aclosing
 context = OrderContext(order_id="123")
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step: {step_result.step_type.__name__}")
 ```

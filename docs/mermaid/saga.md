@@ -18,7 +18,7 @@ You can find a complete working example in the repository:
 ### Basic Usage
 
 ```python
-from cqrs.saga.mermaid import SagaMermaid
+from cqrs.mermaid.saga import SagaMermaid
 from cqrs.saga.saga import Saga
 from cqrs.saga.storage.memory import MemorySagaStorage
 
@@ -54,9 +54,9 @@ The Sequence diagram visualizes the complete execution flow of a saga, including
 
 ```python
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 import dataclasses
 
 @dataclasses.dataclass

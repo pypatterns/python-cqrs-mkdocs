@@ -81,10 +81,10 @@ The `python-cqrs` package provides four types of mediators:
 
 | Mediator Type | Use Case | Bootstrap Function |
 |---------------|----------|-------------------|
-| **`RequestMediator`** | Standard commands and queries | `cqrs.requests.bootstrap.bootstrap()` |
-| **`StreamingRequestMediator`** | Streaming requests with incremental results | `cqrs.requests.bootstrap.bootstrap_streaming()` |
-| **`EventMediator`** | Processing events from message brokers | `cqrs.events.bootstrap.bootstrap()` |
-| **`SagaMediator`** | Orchestrated sagas with step streaming and recovery | `cqrs.saga.bootstrap.bootstrap()` |
+| **`RequestMediator`** | Standard commands and queries | `cqrs.bootstrap.requests.bootstrap()` |
+| **`StreamingRequestMediator`** | Streaming requests with incremental results | `cqrs.bootstrap.requests.bootstrap_streaming()` |
+| **`EventMediator`** | Processing events from message brokers | `cqrs.bootstrap.events.bootstrap()` |
+| **`SagaMediator`** | Orchestrated sagas with step streaming and recovery | `cqrs.bootstrap.saga.bootstrap()` |
 
 !!! note "Mediator Comparison"
     Each mediator type has its own bootstrap function and configuration options. Choose based on your use case:

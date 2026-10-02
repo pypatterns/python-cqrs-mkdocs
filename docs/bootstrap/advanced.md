@@ -25,7 +25,7 @@ Here's a complete example combining all configuration options:
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import kafka
 from cqrs.adapters.kafka import KafkaProducerAdapter
 from cqrs.middlewares import base
@@ -82,7 +82,7 @@ mediator = bootstrap.bootstrap(
 For advanced use cases, you can manually set up mediators and emitters:
 
 ```python
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.events import EventEmitter
 
 # Manually create event emitter

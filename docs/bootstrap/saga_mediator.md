@@ -18,14 +18,14 @@
 
 ## Overview
 
-The `SagaMediator` runs orchestrated sagas: it resolves the saga by context type, creates a transaction, and streams step results. It is bootstrapped via `cqrs.saga.bootstrap.bootstrap()` with a saga map, DI container, optional saga storage, and optional event mapping for domain events emitted by steps.
+The `SagaMediator` runs orchestrated sagas: it resolves the saga by context type, creates a transaction, and streams step results. It is bootstrapped via `cqrs.bootstrap.saga.bootstrap()` with a saga map, DI container, optional saga storage, and optional event mapping for domain events emitted by steps.
 
 ### Basic Configuration
 
 ```python
 import di
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.storage.memory import MemorySagaStorage
 
 def saga_mapper(mapper: cqrs.SagaMap) -> None:
@@ -110,7 +110,7 @@ mediator = bootstrap.bootstrap(
 
 ### Executing a Saga
 
-Use `mediator.stream(context, saga_id=...)` to run the saga. It returns an async iterator; consume it fully with `async for`, or close it with `aclose()` / `async with aclosing(...)`. An abandoned SEND stream holds the UoW until garbage collection.
+Use `mediator.execute(context, saga_id=...)` to run the saga. It returns an async iterator; consume it fully with `async for`, or close it with `aclose()` / `async with aclosing(...)`. An abandoned SEND stream holds the UoW until garbage collection.
 
 ```python
 import uuid
@@ -119,7 +119,7 @@ from contextlib import aclosing
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step completed: {step_result.step_type.__name__}")
 ```
@@ -133,12 +133,12 @@ import dataclasses
 import uuid
 import di
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 @dataclasses.dataclass
 class OrderContext(SagaContext):
@@ -188,7 +188,7 @@ from contextlib import aclosing
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step: {step_result.step_type.__name__}")
 ```

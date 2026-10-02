@@ -59,7 +59,7 @@ In-memory implementation for testing and development.
 
 ```python
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.storage.memory import MemorySagaStorage
 
 storage = MemorySagaStorage()
@@ -192,7 +192,7 @@ The storage requires an `async_sessionmaker` to create short-lived sessions for 
 ```python
 import uuid
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from cqrs.saga.storage.sqlalchemy import SqlAlchemySagaStorage, Base
 
@@ -229,7 +229,7 @@ context = OrderContext(...)
 saga_id = uuid.uuid4()
 
 # With SqlAlchemySagaStorage, commits occur at checkpoints (after each step, etc.)
-async for step_result in mediator.stream(context, saga_id=saga_id):
+async for step_result in mediator.execute(context, saga_id=saga_id):
     print(f"Step: {step_result.step_type.__name__}")
 ```
 

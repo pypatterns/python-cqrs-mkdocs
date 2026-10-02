@@ -30,10 +30,10 @@ description: Python CQRS framework for event-driven architecture — Saga, Media
 
 </div>
 
-!!! warning "Breaking Changes in v5.0.0"
-    Starting with version 5.0.0, **Pydantic support will become optional**. The default implementations of `Request`, `Response`, `DomainEvent`, and `NotificationEvent` will be migrated to dataclasses-based implementations.
+!!! success "Documentation for python-cqrs 5.x"
+    You are viewing **5.0** docs (dataclass defaults, optional Pydantic/SQLAlchemy, new package layout, `SagaMediator.execute`).
 
-    See the [planned release discussion on GitHub](https://github.com/vadikko2/python-cqrs/discussions/57) for the full list of breaking changes and migration details.
+    Migrating from 4.x? Follow the [4→5 migration guide](migration/4-to-5.md). Use the version selector for frozen **4.0** docs.
 
 ---
 
@@ -155,7 +155,7 @@ uv pip install python-cqrs
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 # Define command, response and handler
 class CreateUserCommand(cqrs.Request):

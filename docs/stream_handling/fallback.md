@@ -58,7 +58,7 @@ Use `bootstrap_streaming` to obtain a `StreamingRequestMediator`; when you call 
 ```python
 from typing import AsyncIterator
 import cqrs
-from cqrs.requests.request_handler import StreamingRequestHandler
+from cqrs.handlers.request import StreamingRequestHandler
 
 class StreamItemsCommand(cqrs.Request):
     item_ids: list[str]

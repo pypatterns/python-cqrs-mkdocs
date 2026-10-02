@@ -56,8 +56,8 @@ the domain model. As a result of executing the command, an event may be produced
 </details>
 
 ```python
-from cqrs.requests.request_handler import RequestHandler
-from cqrs.events.event import Event
+from cqrs.handlers.request import RequestHandler
+from cqrs.models.event import Event
 
 class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
 
@@ -101,8 +101,8 @@ the [read model](https://radekmaziarka.pl/2018/01/08/cqrs-third-step-simple-read
 </details>
 
 ```python
-from cqrs.requests.request_handler import RequestHandler
-from cqrs.events.event import Event
+from cqrs.handlers.request import RequestHandler
+from cqrs.models.event import Event
 
 class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery, ReadMeetingQueryResult]):
 

@@ -87,7 +87,7 @@ Here's a simple example demonstrating the Chain of Responsibility pattern:
 ```python
 import typing
 import cqrs
-from cqrs.requests.cor_request_handler import CORRequestHandler
+from cqrs.handlers.cor import CORRequestHandler
 
 class ProcessPaymentCommand(cqrs.Request):
     amount: float

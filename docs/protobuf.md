@@ -153,7 +153,7 @@ emitter = cqrs.EventEmitter(
 Bootstrap accepts the same codec:
 
 ```python
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 mediator = bootstrap.bootstrap(
     di_container=container,
@@ -199,7 +199,7 @@ from faststream import kafka
 
 import cqrs
 from cqrs.deserializers import DeserializeProtobufError, ProtobufDeserializer
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 broker = kafka.KafkaBroker(bootstrap_servers=["localhost:9092"])
 app = faststream.FastStream(broker)

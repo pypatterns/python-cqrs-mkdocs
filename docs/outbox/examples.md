@@ -21,7 +21,7 @@ Here's a complete example showing the outbox pattern:
 import asyncio
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 # Register events

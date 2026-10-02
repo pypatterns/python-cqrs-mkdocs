@@ -18,7 +18,7 @@
 You can also build chains manually using the `build_chain()` function:
 
 ```python
-from cqrs.requests.cor_request_handler import build_chain
+from cqrs.handlers.cor import build_chain
 
 # Create handler instances
 handler1 = CreditCardHandler()

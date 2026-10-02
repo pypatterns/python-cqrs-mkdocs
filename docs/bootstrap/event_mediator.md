@@ -25,7 +25,7 @@ The `EventMediator` processes events received from message brokers (like Kafka, 
 ### Basic Configuration
 
 ```python
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 def events_mapper(mapper: cqrs.EventMap) -> None:
     mapper.bind(
@@ -77,7 +77,7 @@ event_mediator = bootstrap.bootstrap(
 ```python
 import di
 import cqrs
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 from faststream import kafka
 import faststream
 

@@ -39,7 +39,7 @@ import di
 from di import dependent
 
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class IUoW(typing.Protocol):
@@ -123,7 +123,7 @@ from dishka import Provider, Scope, make_async_container, provide
 
 import cqrs
 from cqrs.container.dishka import DishkaCQRSContainer
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class UoW:
@@ -199,7 +199,7 @@ from dependency_injector import containers, providers
 
 import cqrs
 from cqrs.container.dependency_injector import DependencyInjectorCQRSContainer
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class ConnectionPool:

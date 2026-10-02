@@ -19,7 +19,7 @@ To register a chain of handlers, bind the request type to a list of handler clas
 
 ```python
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def payment_mapper(mapper: cqrs.RequestMap) -> None:
     """Register the chain of payment handlers."""
@@ -63,8 +63,8 @@ import asyncio
 import typing
 import di
 import cqrs
-from cqrs.requests import bootstrap
-from cqrs.requests.cor_request_handler import CORRequestHandler
+from cqrs.bootstrap import requests as bootstrap
+from cqrs.handlers.cor import CORRequestHandler
 
 # Domain models
 class ProcessPaymentCommand(cqrs.Request):

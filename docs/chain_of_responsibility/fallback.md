@@ -31,7 +31,7 @@ Bind the request type to `RequestHandlerFallback` with a **wrapper** handler as 
 
 ```python
 import cqrs
-from cqrs.requests.cor_request_handler import CORRequestHandler, build_chain
+from cqrs.handlers.cor import CORRequestHandler, build_chain
 
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
     mapper.bind(

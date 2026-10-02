@@ -25,7 +25,7 @@ The `StreamingRequestMediator` processes requests incrementally, yielding result
 ### Basic Configuration
 
 ```python
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
     mapper.bind(ProcessFilesCommand, ProcessFilesCommandHandler)
@@ -96,8 +96,8 @@ import typing
 import asyncio
 import di
 import cqrs
-from cqrs.requests import bootstrap
-from cqrs.requests.request_handler import StreamingRequestHandler
+from cqrs.bootstrap import requests as bootstrap
+from cqrs.handlers.request import StreamingRequestHandler
 from cqrs.message_brokers import devnull
 
 class ProcessFilesCommand(cqrs.Request):
