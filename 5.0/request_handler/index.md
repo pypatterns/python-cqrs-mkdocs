@@ -48,8 +48,8 @@ By default, the command handler does not return any result, but it is not mandat
 - **Transactional**: Often wrapped in database transactions
 
 ```python
-from cqrs.requests.request_handler import RequestHandler
-from cqrs.events.event import Event
+from cqrs.handlers.request import RequestHandler
+from cqrs.models.event import Event
 
 class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
 
@@ -88,8 +88,8 @@ The read model can be constructed based on domain events produced by the `Comman
 - **Fast**: Should be fast and efficient
 
 ```python
-from cqrs.requests.request_handler import RequestHandler
-from cqrs.events.event import Event
+from cqrs.handlers.request import RequestHandler
+from cqrs.models.event import Event
 
 class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery, ReadMeetingQueryResult]):
 

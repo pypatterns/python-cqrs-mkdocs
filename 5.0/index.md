@@ -6,11 +6,11 @@ Event-Driven Architecture Framework for Distributed Systems
 
 [📦 PyPI](https://pypi.org/project/python-cqrs/) [📊 Downloads](https://clickpy.clickhouse.com/dashboard/python-cqrs)
 
-Breaking Changes in v5.0.0
+Documentation for python-cqrs 5.x
 
-Starting with version 5.0.0, **Pydantic support will become optional**. The default implementations of `Request`, `Response`, `DomainEvent`, and `NotificationEvent` will be migrated to dataclasses-based implementations.
+You are viewing **5.0** docs (dataclass defaults, optional Pydantic/SQLAlchemy, new package layout, `SagaMediator.execute`).
 
-See the [planned release discussion on GitHub](https://github.com/vadikko2/python-cqrs/discussions/57) for the full list of breaking changes and migration details.
+Migrating from 4.x? Follow the [4→5 migration guide](https://vadikko2.github.io/python-cqrs-mkdocs/latest/migration/4-to-5/index.md). Use the version selector for frozen **4.0** docs.
 
 ______________________________________________________________________
 
@@ -125,7 +125,7 @@ ______________________________________________________________________
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 # Define command, response and handler
 class CreateUserCommand(cqrs.Request):

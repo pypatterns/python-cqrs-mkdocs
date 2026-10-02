@@ -20,7 +20,7 @@ import di
 from di import dependent
 
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class IUoW(typing.Protocol):

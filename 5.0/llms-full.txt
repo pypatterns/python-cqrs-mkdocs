@@ -17,11 +17,11 @@ Event-Driven Architecture Framework for Distributed Systems
 
 [📦 PyPI](https://pypi.org/project/python-cqrs/) [📊 Downloads](https://clickpy.clickhouse.com/dashboard/python-cqrs)
 
-Breaking Changes in v5.0.0
+Documentation for python-cqrs 5.x
 
-Starting with version 5.0.0, **Pydantic support will become optional**. The default implementations of `Request`, `Response`, `DomainEvent`, and `NotificationEvent` will be migrated to dataclasses-based implementations.
+You are viewing **5.0** docs (dataclass defaults, optional Pydantic/SQLAlchemy, new package layout, `SagaMediator.execute`).
 
-See the [planned release discussion on GitHub](https://github.com/vadikko2/python-cqrs/discussions/57) for the full list of breaking changes and migration details.
+Migrating from 4.x? Follow the [4→5 migration guide](https://vadikko2.github.io/python-cqrs-mkdocs/latest/migration/4-to-5/index.md). Use the version selector for frozen **4.0** docs.
 
 ______________________________________________________________________
 
@@ -136,7 +136,7 @@ ______________________________________________________________________
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 # Define command, response and handler
 class CreateUserCommand(cqrs.Request):
@@ -239,10 +239,10 @@ The `python-cqrs` package provides four types of mediators:
 
 | Mediator Type                  | Use Case                                            | Bootstrap Function                              |
 | ------------------------------ | --------------------------------------------------- | ----------------------------------------------- |
-| **`RequestMediator`**          | Standard commands and queries                       | `cqrs.requests.bootstrap.bootstrap()`           |
-| **`StreamingRequestMediator`** | Streaming requests with incremental results         | `cqrs.requests.bootstrap.bootstrap_streaming()` |
-| **`EventMediator`**            | Processing events from message brokers              | `cqrs.events.bootstrap.bootstrap()`             |
-| **`SagaMediator`**             | Orchestrated sagas with step streaming and recovery | `cqrs.saga.bootstrap.bootstrap()`               |
+| **`RequestMediator`**          | Standard commands and queries                       | `cqrs.bootstrap.requests.bootstrap()`           |
+| **`StreamingRequestMediator`** | Streaming requests with incremental results         | `cqrs.bootstrap.requests.bootstrap_streaming()` |
+| **`EventMediator`**            | Processing events from message brokers              | `cqrs.bootstrap.events.bootstrap()`             |
+| **`SagaMediator`**             | Orchestrated sagas with step streaming and recovery | `cqrs.bootstrap.saga.bootstrap()`               |
 
 Mediator Comparison
 
@@ -500,8 +500,8 @@ By default, the command handler does not return any result, but it is not mandat
 - **Transactional**: Often wrapped in database transactions
 
 ```python
-from cqrs.requests.request_handler import RequestHandler
-from cqrs.events.event import Event
+from cqrs.handlers.request import RequestHandler
+from cqrs.models.event import Event
 
 class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
 
@@ -540,8 +540,8 @@ The read model can be constructed based on domain events produced by the `Comman
 - **Fast**: Should be fast and efficient
 
 ```python
-from cqrs.requests.request_handler import RequestHandler
-from cqrs.events.event import Event
+from cqrs.handlers.request import RequestHandler
+from cqrs.models.event import Event
 
 class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery, ReadMeetingQueryResult]):
 
@@ -2642,7 +2642,7 @@ Here's a complete example demonstrating event handling:
 import asyncio
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 # Domain event
 class UserJoined(cqrs.DomainEvent, frozen=True):
@@ -2713,7 +2713,7 @@ Event handlers can produce **follow-up events** via the `events` property. These
 ```python
 import typing
 import cqrs
-from cqrs.events.event import IEvent
+from cqrs.models.event import IEvent
 
 # Level 1: emitted by command handler
 class EventL1(cqrs.DomainEvent, frozen=True):
@@ -3022,7 +3022,7 @@ The `EventEmitter.emit()` returns follow-up events from domain event handlers; t
 
 ```python
 from cqrs import ScopeStrategy
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 # Enable parallel processing with max 3 concurrent handlers (HANDLER / NONE only)
 mediator = bootstrap.bootstrap(
@@ -3330,12 +3330,12 @@ import uuid
 import di
 
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 # Context
 @dataclasses.dataclass
@@ -3390,13 +3390,13 @@ mediator = bootstrap.bootstrap(
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async for step_result in mediator.stream(context, saga_id=saga_id):
+async for step_result in mediator.execute(context, saga_id=saga_id):
     print(f"Step completed: {step_result.step_type.__name__}")
 ```
 
 Stream API
 
-`mediator.stream(context, saga_id=...)` is called **without** `await` and returns an `AsyncIterator[SagaStepResult]`. Consume it with `async for` as shown above.
+`mediator.execute(context, saga_id=...)` is called **without** `await` and returns an `AsyncIterator[SagaStepResult]`. Consume it with `async for` as shown above.
 
 ## Key Features
 
@@ -3634,12 +3634,12 @@ import di
 
 import cqrs
 from cqrs import ScopeStrategy
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 @dataclasses.dataclass
 class OrderContext(SagaContext):
@@ -3695,7 +3695,7 @@ from contextlib import aclosing
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step completed: {step_result.step_type.__name__}")
 ```
@@ -3743,7 +3743,7 @@ import fastapi
 import json
 import uuid
 from cqrs import ScopeStrategy
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 
 def mediator_factory() -> cqrs.SagaMediator:
     """Create saga mediator using bootstrap."""
@@ -3765,7 +3765,7 @@ async def process_order(
 
         yield f"data: {json.dumps({'type': 'start', 'saga_id': str(saga_id)})}\n\n"
 
-        async for step_result in mediator.stream(context, saga_id=saga_id):
+        async for step_result in mediator.execute(context, saga_id=saga_id):
             yield f"data: {json.dumps({'type': 'step_progress', 'step': step_result.step_type.__name__})}\n\n"
 
         yield f"data: {json.dumps({'type': 'complete'})}\n\n"
@@ -3785,7 +3785,7 @@ ______________________________________________________________________
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from cqrs import ScopeStrategy
 from cqrs.saga.storage.sqlalchemy import SqlAlchemySagaStorage, Base
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 
 # Setup
 engine = create_async_engine("postgresql+asyncpg://user:pass@localhost/db")
@@ -3815,7 +3815,7 @@ from contextlib import aclosing
 context = OrderContext(...)
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step: {step_result.step_type.__name__}")
 
@@ -3832,7 +3832,7 @@ For advanced retry configuration, you can access the transaction directly:
 
 ```python
 # Note: Compensation retry is configured at the SagaTransaction level
-# When using mediator.stream(), default retry settings are used
+# When using mediator.execute(), default retry settings are used
 # For custom retry configuration, you may need to access the transaction directly
 ```
 
@@ -3872,14 +3872,14 @@ from di import dependent
 
 import cqrs
 from cqrs import ScopeStrategy
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.fallback import Fallback
 from cqrs.adapters.circuit_breaker import AioBreakerAdapter
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 @dataclasses.dataclass
 class OrderContext(SagaContext):
@@ -3936,7 +3936,7 @@ from contextlib import aclosing
 context = OrderContext(order_id="123")
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step: {step_result.step_type.__name__}")
 ```
@@ -4380,7 +4380,7 @@ In-memory implementation for testing and development.
 
 ```python
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.storage.memory import MemorySagaStorage
 
 storage = MemorySagaStorage()
@@ -4502,7 +4502,7 @@ The storage requires an `async_sessionmaker` to create short-lived sessions for 
 ```python
 import uuid
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from cqrs.saga.storage.sqlalchemy import SqlAlchemySagaStorage, Base
 
@@ -4539,7 +4539,7 @@ context = OrderContext(...)
 saga_id = uuid.uuid4()
 
 # With SqlAlchemySagaStorage, commits occur at checkpoints (after each step, etc.)
-async for step_result in mediator.stream(context, saga_id=saga_id):
+async for step_result in mediator.execute(context, saga_id=saga_id):
     print(f"Step: {step_result.step_type.__name__}")
 ```
 
@@ -4656,9 +4656,9 @@ Use Fallback pattern when:
 import dataclasses
 from cqrs.saga.fallback import Fallback
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 @dataclasses.dataclass
 class OrderContext(SagaContext):
@@ -4890,14 +4890,14 @@ import di
 from di import dependent
 
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.fallback import Fallback
 from cqrs.adapters.circuit_breaker import AioBreakerAdapter
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 @dataclasses.dataclass
 class OrderContext(SagaContext):
@@ -4978,7 +4978,7 @@ from contextlib import aclosing
 context = OrderContext(order_id="123", user_id="user_1")
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step: {step_result.step_type.__name__}")
         if hasattr(step_result.response, "source"):
@@ -5846,7 +5846,7 @@ Here's a complete example showing the outbox pattern:
 import asyncio
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 # Register events
@@ -6377,7 +6377,7 @@ Here's a simple example demonstrating the Chain of Responsibility pattern:
 ```python
 import typing
 import cqrs
-from cqrs.requests.cor_request_handler import CORRequestHandler
+from cqrs.handlers.cor import CORRequestHandler
 
 class ProcessPaymentCommand(cqrs.Request):
     amount: float
@@ -6480,7 +6480,7 @@ ______________________________________________________________________
 You can also build chains manually using the `build_chain()` function:
 
 ```python
-from cqrs.requests.cor_request_handler import build_chain
+from cqrs.handlers.cor import build_chain
 
 # Create handler instances
 handler1 = CreditCardHandler()
@@ -6584,7 +6584,7 @@ To register a chain of handlers, bind the request type to a list of handler clas
 
 ```python
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def payment_mapper(mapper: cqrs.RequestMap) -> None:
     """Register the chain of payment handlers."""
@@ -6627,8 +6627,8 @@ import asyncio
 import typing
 import di
 import cqrs
-from cqrs.requests import bootstrap
-from cqrs.requests.cor_request_handler import CORRequestHandler
+from cqrs.bootstrap import requests as bootstrap
+from cqrs.handlers.cor import CORRequestHandler
 
 # Domain models
 class ProcessPaymentCommand(cqrs.Request):
@@ -6823,7 +6823,7 @@ Bind the request type to `RequestHandlerFallback` with a **wrapper** handler as 
 
 ```python
 import cqrs
-from cqrs.requests.cor_request_handler import CORRequestHandler, build_chain
+from cqrs.handlers.cor import CORRequestHandler, build_chain
 
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
     mapper.bind(
@@ -6988,8 +6988,8 @@ Here's a simple example of a streaming handler:
 import typing
 from datetime import datetime
 import cqrs
-from cqrs.requests.request_handler import StreamingRequestHandler
-from cqrs.events.event import Event
+from cqrs.handlers.request import StreamingRequestHandler
+from cqrs.models.event import Event
 
 class ProcessFilesCommand(cqrs.Request):
     file_ids: list[str]
@@ -7052,7 +7052,7 @@ To use streaming handlers, you need to bootstrap a `StreamingRequestMediator`:
 
 ```python
 import functools
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
     mapper.bind(ProcessFilesCommand, ProcessFilesCommandHandler)
@@ -7218,7 +7218,7 @@ Use `bootstrap_streaming` to obtain a `StreamingRequestMediator`; when you call 
 ```python
 from typing import AsyncIterator
 import cqrs
-from cqrs.requests.request_handler import StreamingRequestHandler
+from cqrs.handlers.request import StreamingRequestHandler
 
 class StreamItemsCommand(cqrs.Request):
     item_ids: list[str]
@@ -7337,7 +7337,7 @@ ______________________________________________________________________
 ```python
 import fastapi
 import json
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def streaming_mediator_factory() -> cqrs.StreamingRequestMediator:
     return bootstrap.bootstrap_streaming(
@@ -7385,7 +7385,7 @@ import typing
 from datetime import datetime
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 
 # Domain models
@@ -7622,8 +7622,8 @@ You can find a complete working example in the repository:
 ### Basic Usage
 
 ```python
-from cqrs.requests.mermaid import CoRMermaid
-from cqrs.requests.cor_request_handler import CORRequestHandler
+from cqrs.mermaid.cor import CoRMermaid
+from cqrs.handlers.cor import CORRequestHandler
 
 # Create your handler chain (see Chain of Responsibility documentation for details)
 handlers = [
@@ -7658,8 +7658,8 @@ The Sequence diagram visualizes the complete execution flow of a handler chain u
 ### Example Handler Chain Code
 
 ```python
-from cqrs.requests.cor_request_handler import CORRequestHandler
-from cqrs.response import Response
+from cqrs.handlers.cor import CORRequestHandler
+from cqrs.models.response import Response
 
 class ProcessPaymentCommand(cqrs.Request):
     amount: float
@@ -7994,7 +7994,7 @@ You can find a complete working example in the repository:
 ### Basic Usage
 
 ```python
-from cqrs.saga.mermaid import SagaMermaid
+from cqrs.mermaid.saga import SagaMermaid
 from cqrs.saga.saga import Saga
 from cqrs.saga.storage.memory import MemorySagaStorage
 
@@ -8030,9 +8030,9 @@ The Sequence diagram visualizes the complete execution flow of a saga, including
 
 ```python
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 import dataclasses
 
 @dataclasses.dataclass
@@ -8383,7 +8383,7 @@ import di
 from di import dependent
 
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class IUoW(typing.Protocol):
@@ -8670,7 +8670,7 @@ import di
 from di import dependent
 
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class IUoW(typing.Protocol):
@@ -8754,7 +8754,7 @@ from dishka import Provider, Scope, make_async_container, provide
 
 import cqrs
 from cqrs.container.dishka import DishkaCQRSContainer
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class UoW:
@@ -8830,7 +8830,7 @@ from dependency_injector import containers, providers
 
 import cqrs
 from cqrs.container.dependency_injector import DependencyInjectorCQRSContainer
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class ConnectionPool:
@@ -9055,7 +9055,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.pool import StaticPool
 
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 
 class Base(DeclarativeBase):
@@ -9322,7 +9322,7 @@ The recommended way to inject mediators into FastAPI endpoints is using `Depends
 import di
 import fastapi
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def mediator_factory() -> cqrs.RequestMediator:
     """Factory function for RequestMediator dependency injection."""
@@ -9401,7 +9401,7 @@ def streaming_mediator_factory() -> cqrs.StreamingRequestMediator:
 For background task processing:
 
 ```python
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.events import EventEmitter
 
 @functools.lru_cache(maxsize=1)
@@ -9848,7 +9848,7 @@ from fastapi import BackgroundTasks
 import di
 import fastapi
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.events import EventEmitter
 from cqrs.message_brokers import devnull
 
@@ -10203,7 +10203,7 @@ import di
 import faststream
 import cqrs
 from faststream import kafka
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 from cqrs import deserializers
 
 # Create Kafka broker
@@ -10374,7 +10374,7 @@ import di
 import faststream
 import cqrs
 from faststream import rabbitmq
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 from cqrs import deserializers
 
 # Create RabbitMQ broker
@@ -10497,7 +10497,7 @@ The event mediator factory is crucial for dependency injection in FastStream sub
 import functools
 import di
 import cqrs
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 @functools.lru_cache(maxsize=1)
 def mediator_factory() -> cqrs.EventMediator:
@@ -10653,7 +10653,7 @@ from faststream import kafka, types
 
 import cqrs
 from cqrs import deserializers
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("aiokafka").setLevel(logging.ERROR)
@@ -10748,7 +10748,7 @@ from faststream import rabbitmq
 
 import cqrs
 from cqrs import deserializers
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 logging.basicConfig(level=logging.INFO)
 
@@ -10932,7 +10932,7 @@ Events are produced through the `EventEmitter` which is configured in the bootst
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
@@ -10958,7 +10958,7 @@ When a command handler emits events, they are automatically published to the con
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import kafka
 from cqrs.adapters.kafka import KafkaProducerAdapter
 
@@ -11030,7 +11030,7 @@ kafka_broker = kafka.KafkaMessageBroker(
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import amqp
 from cqrs.adapters.amqp import AMQPPublisherAdapter
 
@@ -11087,7 +11087,7 @@ For opt-in Protobuf producing (per-event codec, `payload_bytes`, bootstrap `seri
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import kafka
 from cqrs.adapters.kafka import KafkaProducerAdapter
 
@@ -11119,7 +11119,7 @@ mediator = bootstrap.bootstrap(
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import amqp
 from cqrs.adapters.amqp import AMQPPublisherAdapter
 
@@ -11370,7 +11370,7 @@ emitter = cqrs.EventEmitter(
 Bootstrap accepts the same codec:
 
 ```python
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 mediator = bootstrap.bootstrap(
     di_container=container,
@@ -11416,7 +11416,7 @@ from faststream import kafka
 
 import cqrs
 from cqrs.deserializers import DeserializeProtobufError, ProtobufDeserializer
-from cqrs.events import bootstrap
+from cqrs.bootstrap import events as bootstrap
 
 broker = kafka.KafkaBroker(bootstrap_servers=["localhost:9092"])
 app = faststream.FastStream(broker)

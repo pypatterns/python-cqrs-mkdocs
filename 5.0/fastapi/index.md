@@ -37,7 +37,7 @@ The recommended way to inject mediators into FastAPI endpoints is using `Depends
 import di
 import fastapi
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def mediator_factory() -> cqrs.RequestMediator:
     """Factory function for RequestMediator dependency injection."""
@@ -116,7 +116,7 @@ def streaming_mediator_factory() -> cqrs.StreamingRequestMediator:
 For background task processing:
 
 ```python
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.events import EventEmitter
 
 @functools.lru_cache(maxsize=1)
@@ -563,7 +563,7 @@ from fastapi import BackgroundTasks
 import di
 import fastapi
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.events import EventEmitter
 from cqrs.message_brokers import devnull
 

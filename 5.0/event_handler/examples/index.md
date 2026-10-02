@@ -16,7 +16,7 @@ Here's a complete example demonstrating event handling:
 import asyncio
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 # Domain event
 class UserJoined(cqrs.DomainEvent, frozen=True):
@@ -87,7 +87,7 @@ Event handlers can produce **follow-up events** via the `events` property. These
 ```python
 import typing
 import cqrs
-from cqrs.events.event import IEvent
+from cqrs.models.event import IEvent
 
 # Level 1: emitted by command handler
 class EventL1(cqrs.DomainEvent, frozen=True):

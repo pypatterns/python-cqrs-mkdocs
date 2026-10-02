@@ -15,14 +15,14 @@ import di
 from di import dependent
 
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.fallback import Fallback
 from cqrs.adapters.circuit_breaker import AioBreakerAdapter
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 @dataclasses.dataclass
 class OrderContext(SagaContext):
@@ -103,7 +103,7 @@ from contextlib import aclosing
 context = OrderContext(order_id="123", user_id="user_1")
 saga_id = uuid.uuid4()
 
-async with aclosing(mediator.stream(context, saga_id=saga_id)) as stream:
+async with aclosing(mediator.execute(context, saga_id=saga_id)) as stream:
     async for step_result in stream:
         print(f"Step: {step_result.step_type.__name__}")
         if hasattr(step_result.response, "source"):

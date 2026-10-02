@@ -99,12 +99,12 @@ import uuid
 import di
 
 import cqrs
-from cqrs.saga import bootstrap
+from cqrs.bootstrap import saga as bootstrap
 from cqrs.saga.saga import Saga
-from cqrs.saga.step import SagaStepHandler, SagaStepResult
+from cqrs.handlers.saga import SagaStepHandler, SagaStepResult
 from cqrs.saga.storage.memory import MemorySagaStorage
 from cqrs.saga.models import SagaContext
-from cqrs.response import Response
+from cqrs.models.response import Response
 
 # Context
 @dataclasses.dataclass
@@ -159,13 +159,13 @@ mediator = bootstrap.bootstrap(
 context = OrderContext(order_id="123", items=["item_1"], total_amount=100.0)
 saga_id = uuid.uuid4()
 
-async for step_result in mediator.stream(context, saga_id=saga_id):
+async for step_result in mediator.execute(context, saga_id=saga_id):
     print(f"Step completed: {step_result.step_type.__name__}")
 ```
 
 Stream API
 
-`mediator.stream(context, saga_id=...)` is called **without** `await` and returns an `AsyncIterator[SagaStepResult]`. Consume it with `async for` as shown above.
+`mediator.execute(context, saga_id=...)` is called **without** `await` and returns an `AsyncIterator[SagaStepResult]`. Consume it with `async for` as shown above.
 
 ## Key Features
 

@@ -28,7 +28,7 @@ Events are produced through the `EventEmitter` which is configured in the bootst
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
@@ -54,7 +54,7 @@ When a command handler emits events, they are automatically published to the con
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import kafka
 from cqrs.adapters.kafka import KafkaProducerAdapter
 
@@ -126,7 +126,7 @@ kafka_broker = kafka.KafkaMessageBroker(
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import amqp
 from cqrs.adapters.amqp import AMQPPublisherAdapter
 
@@ -183,7 +183,7 @@ For opt-in Protobuf producing (per-event codec, `payload_bytes`, bootstrap `seri
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import kafka
 from cqrs.adapters.kafka import KafkaProducerAdapter
 
@@ -215,7 +215,7 @@ mediator = bootstrap.bootstrap(
 ```python
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import amqp
 from cqrs.adapters.amqp import AMQPPublisherAdapter
 

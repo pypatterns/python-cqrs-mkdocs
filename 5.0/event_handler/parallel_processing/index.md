@@ -103,7 +103,7 @@ The `EventEmitter.emit()` returns follow-up events from domain event handlers; t
 
 ```python
 from cqrs import ScopeStrategy
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 # Enable parallel processing with max 3 concurrent handlers (HANDLER / NONE only)
 mediator = bootstrap.bootstrap(

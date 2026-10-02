@@ -15,7 +15,7 @@ ______________________________________________________________________
 ```python
 import fastapi
 import json
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 
 def streaming_mediator_factory() -> cqrs.StreamingRequestMediator:
     return bootstrap.bootstrap_streaming(
@@ -63,7 +63,7 @@ import typing
 from datetime import datetime
 import di
 import cqrs
-from cqrs.requests import bootstrap
+from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 
 # Domain models

@@ -51,8 +51,8 @@ Here's a simple example of a streaming handler:
 import typing
 from datetime import datetime
 import cqrs
-from cqrs.requests.request_handler import StreamingRequestHandler
-from cqrs.events.event import Event
+from cqrs.handlers.request import StreamingRequestHandler
+from cqrs.models.event import Event
 
 class ProcessFilesCommand(cqrs.Request):
     file_ids: list[str]

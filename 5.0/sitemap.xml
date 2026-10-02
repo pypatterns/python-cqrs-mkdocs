@@ -21,6 +21,10 @@
          <lastmod>2026-10-02</lastmod>
     </url>
     <url>
+         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/installation/</loc>
+         <lastmod>2026-10-02</lastmod>
+    </url>
+    <url>
          <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/</loc>
          <lastmod>2026-10-02</lastmod>
     </url>
@@ -118,6 +122,10 @@
     </url>
     <url>
          <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/saga/</loc>
+         <lastmod>2026-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/migration/4-to-5/</loc>
          <lastmod>2026-10-02</lastmod>
     </url>
     <url>

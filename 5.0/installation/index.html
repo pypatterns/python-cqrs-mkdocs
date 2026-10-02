@@ -12,31 +12,31 @@
         <meta name="author" content="Vadim Kozyrevskii">
       
       
-        <link rel="canonical" href="https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/message_brokers/">
+        <link rel="canonical" href="https://vadikko2.github.io/python-cqrs-mkdocs/latest/installation/">
       
       
-        <link rel="prev" href="../saga_mediator/">
+        <link rel="prev" href="..">
       
       
-        <link rel="next" href="../middlewares/">
+        <link rel="next" href="../migration/4-to-5/">
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Message Brokers - python-cqrs</title>
+        <title>Installation - python-cqrs</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -61,9 +61,9 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -93,7 +93,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#message-brokers" class="md-skip">
+        <a href="#installation" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="python-cqrs" class="md-header__button md-logo" aria-label="python-cqrs" data-md-component="logo">
+    <a href=".." title="python-cqrs" class="md-header__button md-logo" aria-label="python-cqrs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Message Brokers
+              Installation
             
           </span>
         </div>
@@ -235,7 +235,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="python-cqrs" class="md-nav__button md-logo" aria-label="python-cqrs" data-md-component="logo">
+    <a href=".." title="python-cqrs" class="md-nav__button md-logo" aria-label="python-cqrs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -265,7 +265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -289,10 +289,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../installation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -308,6 +335,37 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#extras-50" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extras (5.0+)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -319,7 +377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../migration/4-to-5/" class="md-nav__link">
+      <a href="../migration/4-to-5/" class="md-nav__link">
         
   
   
@@ -343,20 +401,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -377,7 +433,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -392,20 +448,18 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
         
           
           <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
@@ -426,7 +480,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             
@@ -444,7 +498,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../bootstrap/" class="md-nav__link">
         
   
   
@@ -472,7 +526,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../request_mediator/" class="md-nav__link">
+      <a href="../bootstrap/request_mediator/" class="md-nav__link">
         
   
   
@@ -500,7 +554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../streaming_mediator/" class="md-nav__link">
+      <a href="../bootstrap/streaming_mediator/" class="md-nav__link">
         
   
   
@@ -528,7 +582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../event_mediator/" class="md-nav__link">
+      <a href="../bootstrap/event_mediator/" class="md-nav__link">
         
   
   
@@ -556,7 +610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../saga_mediator/" class="md-nav__link">
+      <a href="../bootstrap/saga_mediator/" class="md-nav__link">
         
   
   
@@ -581,37 +635,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Message Brokers
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../bootstrap/message_brokers/" class="md-nav__link">
         
   
   
@@ -627,98 +654,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Overview
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Overview">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#devnullmessagebroker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DevnullMessageBroker
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kafkamessagebroker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        KafkaMessageBroker
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#amqpmessagebroker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AMQPMessageBroker
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#custom-message-broker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Custom Message Broker
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#event-serializer-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Event serializer (optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -731,7 +666,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../middlewares/" class="md-nav__link">
+      <a href="../bootstrap/middlewares/" class="md-nav__link">
         
   
   
@@ -759,7 +694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../di_containers/" class="md-nav__link">
+      <a href="../bootstrap/di_containers/" class="md-nav__link">
         
   
   
@@ -787,7 +722,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../advanced/" class="md-nav__link">
+      <a href="../bootstrap/advanced/" class="md-nav__link">
         
   
   
@@ -823,7 +758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../di/" class="md-nav__link">
+      <a href="../di/" class="md-nav__link">
         
   
   
@@ -898,7 +833,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scoped_dependencies/" class="md-nav__link">
+      <a href="../scoped_dependencies/" class="md-nav__link">
         
   
   
@@ -926,7 +861,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scoped_dependencies/tutorial/" class="md-nav__link">
+      <a href="../scoped_dependencies/tutorial/" class="md-nav__link">
         
   
   
@@ -954,7 +889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scoped_dependencies/strategies/" class="md-nav__link">
+      <a href="../scoped_dependencies/strategies/" class="md-nav__link">
         
   
   
@@ -982,7 +917,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scoped_dependencies/containers/" class="md-nav__link">
+      <a href="../scoped_dependencies/containers/" class="md-nav__link">
         
   
   
@@ -1010,7 +945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scoped_dependencies/advanced/" class="md-nav__link">
+      <a href="../scoped_dependencies/advanced/" class="md-nav__link">
         
   
   
@@ -1038,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scoped_dependencies/custom_container/" class="md-nav__link">
+      <a href="../scoped_dependencies/custom_container/" class="md-nav__link">
         
   
   
@@ -1066,7 +1001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scoped_dependencies/troubleshooting/" class="md-nav__link">
+      <a href="../scoped_dependencies/troubleshooting/" class="md-nav__link">
         
   
   
@@ -1094,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scoped_dependencies/why/" class="md-nav__link">
+      <a href="../scoped_dependencies/why/" class="md-nav__link">
         
   
   
@@ -1177,7 +1112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_handler/" class="md-nav__link">
+      <a href="../request_handler/" class="md-nav__link">
         
   
   
@@ -1205,7 +1140,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_handler/fallback/" class="md-nav__link">
+      <a href="../request_handler/fallback/" class="md-nav__link">
         
   
   
@@ -1288,7 +1223,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/" class="md-nav__link">
+      <a href="../request_response_types/" class="md-nav__link">
         
   
   
@@ -1316,7 +1251,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/pydantic/" class="md-nav__link">
+      <a href="../request_response_types/pydantic/" class="md-nav__link">
         
   
   
@@ -1344,7 +1279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/dataclasses/" class="md-nav__link">
+      <a href="../request_response_types/dataclasses/" class="md-nav__link">
         
   
   
@@ -1372,7 +1307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/standard_classes/" class="md-nav__link">
+      <a href="../request_response_types/standard_classes/" class="md-nav__link">
         
   
   
@@ -1400,7 +1335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/namedtuple/" class="md-nav__link">
+      <a href="../request_response_types/namedtuple/" class="md-nav__link">
         
   
   
@@ -1428,7 +1363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/attrs/" class="md-nav__link">
+      <a href="../request_response_types/attrs/" class="md-nav__link">
         
   
   
@@ -1456,7 +1391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/msgspec/" class="md-nav__link">
+      <a href="../request_response_types/msgspec/" class="md-nav__link">
         
   
   
@@ -1484,7 +1419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/typeddict/" class="md-nav__link">
+      <a href="../request_response_types/typeddict/" class="md-nav__link">
         
   
   
@@ -1512,7 +1447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/mixed_usage/" class="md-nav__link">
+      <a href="../request_response_types/mixed_usage/" class="md-nav__link">
         
   
   
@@ -1540,7 +1475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../request_response_types/best_practices/" class="md-nav__link">
+      <a href="../request_response_types/best_practices/" class="md-nav__link">
         
   
   
@@ -1623,7 +1558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../stream_handling/" class="md-nav__link">
+      <a href="../stream_handling/" class="md-nav__link">
         
   
   
@@ -1651,7 +1586,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../stream_handling/configuration/" class="md-nav__link">
+      <a href="../stream_handling/configuration/" class="md-nav__link">
         
   
   
@@ -1679,7 +1614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../stream_handling/fastapi_integration/" class="md-nav__link">
+      <a href="../stream_handling/fastapi_integration/" class="md-nav__link">
         
   
   
@@ -1707,7 +1642,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../stream_handling/reference/" class="md-nav__link">
+      <a href="../stream_handling/reference/" class="md-nav__link">
         
   
   
@@ -1735,7 +1670,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../stream_handling/fallback/" class="md-nav__link">
+      <a href="../stream_handling/fallback/" class="md-nav__link">
         
   
   
@@ -1818,7 +1753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../chain_of_responsibility/" class="md-nav__link">
+      <a href="../chain_of_responsibility/" class="md-nav__link">
         
   
   
@@ -1846,7 +1781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../chain_of_responsibility/examples/" class="md-nav__link">
+      <a href="../chain_of_responsibility/examples/" class="md-nav__link">
         
   
   
@@ -1874,7 +1809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../chain_of_responsibility/advanced/" class="md-nav__link">
+      <a href="../chain_of_responsibility/advanced/" class="md-nav__link">
         
   
   
@@ -1902,7 +1837,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../chain_of_responsibility/fallback/" class="md-nav__link">
+      <a href="../chain_of_responsibility/fallback/" class="md-nav__link">
         
   
   
@@ -1985,7 +1920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/" class="md-nav__link">
+      <a href="../saga/" class="md-nav__link">
         
   
   
@@ -2013,7 +1948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/flow/" class="md-nav__link">
+      <a href="../saga/flow/" class="md-nav__link">
         
   
   
@@ -2041,7 +1976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/storage/" class="md-nav__link">
+      <a href="../saga/storage/" class="md-nav__link">
         
   
   
@@ -2069,7 +2004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/recovery/" class="md-nav__link">
+      <a href="../saga/recovery/" class="md-nav__link">
         
   
   
@@ -2097,7 +2032,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/compensation/" class="md-nav__link">
+      <a href="../saga/compensation/" class="md-nav__link">
         
   
   
@@ -2172,7 +2107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/fallback/" class="md-nav__link">
+      <a href="../saga/fallback/" class="md-nav__link">
         
   
   
@@ -2200,7 +2135,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/fallback/mechanics/" class="md-nav__link">
+      <a href="../saga/fallback/mechanics/" class="md-nav__link">
         
   
   
@@ -2228,7 +2163,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/fallback/circuit_breaker/" class="md-nav__link">
+      <a href="../saga/fallback/circuit_breaker/" class="md-nav__link">
         
   
   
@@ -2256,7 +2191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/fallback/examples/" class="md-nav__link">
+      <a href="../saga/fallback/examples/" class="md-nav__link">
         
   
   
@@ -2292,7 +2227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../saga/examples/" class="md-nav__link">
+      <a href="../saga/examples/" class="md-nav__link">
         
   
   
@@ -2375,7 +2310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mermaid/" class="md-nav__link">
+      <a href="../mermaid/" class="md-nav__link">
         
   
   
@@ -2403,7 +2338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mermaid/chain_of_responsibility/" class="md-nav__link">
+      <a href="../mermaid/chain_of_responsibility/" class="md-nav__link">
         
   
   
@@ -2431,7 +2366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mermaid/saga/" class="md-nav__link">
+      <a href="../mermaid/saga/" class="md-nav__link">
         
   
   
@@ -2514,7 +2449,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_handler/" class="md-nav__link">
+      <a href="../event_handler/" class="md-nav__link">
         
   
   
@@ -2542,7 +2477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_handler/event_flow/" class="md-nav__link">
+      <a href="../event_handler/event_flow/" class="md-nav__link">
         
   
   
@@ -2570,7 +2505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_handler/runtime_processing/" class="md-nav__link">
+      <a href="../event_handler/runtime_processing/" class="md-nav__link">
         
   
   
@@ -2598,7 +2533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_handler/parallel_processing/" class="md-nav__link">
+      <a href="../event_handler/parallel_processing/" class="md-nav__link">
         
   
   
@@ -2626,7 +2561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_handler/event_types/" class="md-nav__link">
+      <a href="../event_handler/event_types/" class="md-nav__link">
         
   
   
@@ -2654,7 +2589,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_handler/examples/" class="md-nav__link">
+      <a href="../event_handler/examples/" class="md-nav__link">
         
   
   
@@ -2682,7 +2617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_handler/best_practices/" class="md-nav__link">
+      <a href="../event_handler/best_practices/" class="md-nav__link">
         
   
   
@@ -2710,7 +2645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_handler/fallback/" class="md-nav__link">
+      <a href="../event_handler/fallback/" class="md-nav__link">
         
   
   
@@ -2793,7 +2728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../outbox/" class="md-nav__link">
+      <a href="../outbox/" class="md-nav__link">
         
   
   
@@ -2821,7 +2756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../outbox/implementation/" class="md-nav__link">
+      <a href="../outbox/implementation/" class="md-nav__link">
         
   
   
@@ -2849,7 +2784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../outbox/databases/" class="md-nav__link">
+      <a href="../outbox/databases/" class="md-nav__link">
         
   
   
@@ -2877,7 +2812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../outbox/usage/" class="md-nav__link">
+      <a href="../outbox/usage/" class="md-nav__link">
         
   
   
@@ -2905,7 +2840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../outbox/examples/" class="md-nav__link">
+      <a href="../outbox/examples/" class="md-nav__link">
         
   
   
@@ -2933,7 +2868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../outbox/best_practices/" class="md-nav__link">
+      <a href="../outbox/best_practices/" class="md-nav__link">
         
   
   
@@ -3023,7 +2958,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../fastapi/" class="md-nav__link">
+      <a href="../fastapi/" class="md-nav__link">
         
   
   
@@ -3051,7 +2986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../faststream/" class="md-nav__link">
+      <a href="../faststream/" class="md-nav__link">
         
   
   
@@ -3079,7 +3014,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../event_producing/" class="md-nav__link">
+      <a href="../event_producing/" class="md-nav__link">
         
   
   
@@ -3107,7 +3042,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../protobuf/" class="md-nav__link">
+      <a href="../protobuf/" class="md-nav__link">
         
   
   
@@ -3162,74 +3097,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#extras-50" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        Extras (5.0+)
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Overview">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#devnullmessagebroker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DevnullMessageBroker
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kafkamessagebroker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        KafkaMessageBroker
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#amqpmessagebroker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AMQPMessageBroker
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#custom-message-broker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Custom Message Broker
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#event-serializer-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Event serializer (optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3253,144 +3127,53 @@
   
 
 
-<h1 id="message-brokers">Message Brokers<a class="headerlink" href="#message-brokers" title="Permanent link">&para;</a></h1>
-<div class="grid cards">
-<ul>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span> <strong>Back to Bootstrap Overview</strong></p>
-<p>Return to the Bootstrap overview page with all configuration options.</p>
-<p><a href="../"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.78 19.03a.75.75 0 0 1-1.06 0l-6.25-6.25a.75.75 0 0 1 0-1.06l6.25-6.25a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L5.81 11.5h14.44a.75.75 0 0 1 0 1.5H5.81l4.97 4.97a.75.75 0 0 1 0 1.06"/></svg></span> Back to Overview</a></p>
-</li>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 11h-2V9h2m-4 2h-2V9h2m-4 2H7V9h2m11-7H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2"/></svg></span> <strong>Event Producing</strong></p>
-<p>Publishing events to Kafka, RabbitMQ, and custom brokers.</p>
-<p><a href="../../event_producing/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read More</a></p>
-</li>
-</ul>
-</div>
-<hr />
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Message brokers are used to publish <code>NotificationEvent</code> and <code>ECSTEvent</code> events to external systems. The <code>python-cqrs</code> package supports multiple message broker implementations.</p>
+<h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h1>
+<p><strong>Python 3.10+</strong> is required.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>python-cqrs
+</span></code></pre></div>
+<h2 id="extras-50">Extras (5.0+)<a class="headerlink" href="#extras-50" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Broker Type</th>
-<th>Use Case</th>
-<th>Production Ready</th>
+<th>Extra</th>
+<th>Provides</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>DevnullMessageBroker</strong></td>
-<td>Testing, development</td>
-<td>❌ No</td>
+<td><code>pydantic</code></td>
+<td><code>PydanticRequest</code>, <code>PydanticResponse</code>, <code>Pydantic*Event</code></td>
 </tr>
 <tr>
-<td><strong>KafkaMessageBroker</strong></td>
-<td>High-throughput, distributed systems</td>
-<td>✅ Yes</td>
+<td><code>sqlalchemy</code></td>
+<td>SQLAlchemy outbox + saga storage</td>
 </tr>
 <tr>
-<td><strong>AMQPMessageBroker</strong></td>
-<td>RabbitMQ, traditional message queues</td>
-<td>✅ Yes</td>
+<td><code>kafka</code></td>
+<td>Kafka broker (<code>aiokafka</code>)</td>
+</tr>
+<tr>
+<td><code>rabbit</code></td>
+<td>AMQP broker</td>
+</tr>
+<tr>
+<td><code>protobuf</code></td>
+<td>Protobuf serializers</td>
+</tr>
+<tr>
+<td><code>aiobreaker</code></td>
+<td>Circuit breaker helpers</td>
+</tr>
+<tr>
+<td><code>examples</code></td>
+<td>FastAPI / FastStream sample stack</td>
 </tr>
 </tbody>
 </table>
-<details>
-<summary><strong>Choosing a Message Broker</strong></summary>
-
-<ul>
-<li><strong>DevnullMessageBroker</strong>: Use for testing and development when you don't need actual message publishing</li>
-<li><strong>KafkaMessageBroker</strong>: Use for high-throughput, distributed systems with strong ordering guarantees</li>
-<li><strong>AMQPMessageBroker</strong>: Use for traditional message queue patterns, RabbitMQ integration</li>
-</ul>
-
-</details>
-
-<h3 id="devnullmessagebroker">DevnullMessageBroker<a class="headerlink" href="#devnullmessagebroker" title="Permanent link">&para;</a></h3>
-<p>The <code>DevnullMessageBroker</code> is a no-op broker used for testing. It doesn't actually send messages anywhere but logs warnings.</p>
-<div class="admonition warning">
-<p class="admonition-title">Development Only</p>
-<p>Never use <code>DevnullMessageBroker</code> in production. It's designed for testing and development only.</p>
-</div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.message_brokers</span><span class="w"> </span><span class="kn">import</span> <span class="n">devnull</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">mediator</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">di_container</span><span class="o">=</span><span class="n">di</span><span class="o">.</span><span class="n">Container</span><span class="p">(),</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">commands_mapper</span><span class="o">=</span><span class="n">commands_mapper</span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">message_broker</span><span class="o">=</span><span class="n">devnull</span><span class="o">.</span><span class="n">DevnullMessageBroker</span><span class="p">(),</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"python-cqrs[pydantic,sqlalchemy]"</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"python-cqrs[kafka]"</span>
 </span></code></pre></div>
-<h3 id="kafkamessagebroker">KafkaMessageBroker<a class="headerlink" href="#kafkamessagebroker" title="Permanent link">&para;</a></h3>
-<p>The <code>KafkaMessageBroker</code> publishes events to Apache Kafka topics.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.message_brokers</span><span class="w"> </span><span class="kn">import</span> <span class="n">kafka</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.adapters.kafka</span><span class="w"> </span><span class="kn">import</span> <span class="n">KafkaProducerAdapter</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Create Kafka producer adapter</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">kafka_producer</span> <span class="o">=</span> <span class="n">KafkaProducerAdapter</span><span class="p">(</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s2">"localhost:9092"</span><span class="p">],</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">client_id</span><span class="o">=</span><span class="s2">"my-app"</span><span class="p">,</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">acks</span><span class="o">=</span><span class="s2">"all"</span><span class="p">,</span>  <span class="c1"># Wait for all replicas</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">enable_idempotence</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">)</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># Create message broker</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">kafka_broker</span> <span class="o">=</span> <span class="n">kafka</span><span class="o">.</span><span class="n">KafkaMessageBroker</span><span class="p">(</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">producer</span><span class="o">=</span><span class="n">kafka_producer</span><span class="p">,</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">aiokafka_log_level</span><span class="o">=</span><span class="s2">"ERROR"</span><span class="p">,</span>  <span class="c1"># Suppress verbose logging</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">)</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="n">mediator</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="n">di_container</span><span class="o">=</span><span class="n">di</span><span class="o">.</span><span class="n">Container</span><span class="p">(),</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="n">commands_mapper</span><span class="o">=</span><span class="n">commands_mapper</span><span class="p">,</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="n">domain_events_mapper</span><span class="o">=</span><span class="n">events_mapper</span><span class="p">,</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="n">message_broker</span><span class="o">=</span><span class="n">kafka_broker</span><span class="p">,</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="amqpmessagebroker">AMQPMessageBroker<a class="headerlink" href="#amqpmessagebroker" title="Permanent link">&para;</a></h3>
-<p>The <code>AMQPMessageBroker</code> publishes events to RabbitMQ or other AMQP-compatible brokers.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.message_brokers</span><span class="w"> </span><span class="kn">import</span> <span class="n">amqp</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.adapters.amqp</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMQPPublisherAdapter</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">aio_pika</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Create AMQP publisher</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">amqp_publisher</span> <span class="o">=</span> <span class="n">AMQPPublisherAdapter</span><span class="p">(</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">dsn</span><span class="o">=</span><span class="s2">"amqp://user:password@localhost/"</span><span class="p">,</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># Create message broker</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">amqp_broker</span> <span class="o">=</span> <span class="n">amqp</span><span class="o">.</span><span class="n">AMQPMessageBroker</span><span class="p">(</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">publisher</span><span class="o">=</span><span class="n">amqp_publisher</span><span class="p">,</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">exchange_name</span><span class="o">=</span><span class="s2">"events"</span><span class="p">,</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">pika_log_level</span><span class="o">=</span><span class="s2">"ERROR"</span><span class="p">,</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="p">)</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="n">mediator</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="n">di_container</span><span class="o">=</span><span class="n">di</span><span class="o">.</span><span class="n">Container</span><span class="p">(),</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="n">commands_mapper</span><span class="o">=</span><span class="n">commands_mapper</span><span class="p">,</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    <span class="n">domain_events_mapper</span><span class="o">=</span><span class="n">events_mapper</span><span class="p">,</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="n">message_broker</span><span class="o">=</span><span class="n">amqp_broker</span><span class="p">,</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="custom-message-broker">Custom Message Broker<a class="headerlink" href="#custom-message-broker" title="Permanent link">&para;</a></h3>
-<p>You can create custom message brokers by implementing the <code>MessageBroker</code> protocol:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.message_brokers</span><span class="w"> </span><span class="kn">import</span> <span class="n">protocol</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">CustomMessageBroker</span><span class="p">(</span><span class="n">protocol</span><span class="o">.</span><span class="n">MessageBroker</span><span class="p">):</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">protocol</span><span class="o">.</span><span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="c1"># Custom implementation</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sending </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">message_name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">topic</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="c1"># Send to your custom broker</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">mediator</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">di_container</span><span class="o">=</span><span class="n">di</span><span class="o">.</span><span class="n">Container</span><span class="p">(),</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">commands_mapper</span><span class="o">=</span><span class="n">commands_mapper</span><span class="p">,</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">message_broker</span><span class="o">=</span><span class="n">CustomMessageBroker</span><span class="p">(),</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="event-serializer-optional">Event serializer (optional)<a class="headerlink" href="#event-serializer-optional" title="Permanent link">&para;</a></h3>
-<p><code>bootstrap(..., serializer=...)</code> forwards a codec into <code>EventEmitter</code>. The default is JSON. Pass <code>OutboxedEventMap.as_serializer()</code> when some notification events use Protobuf — see <a href="../../protobuf/">Protobuf Integration</a>.</p>
+<p>Dataclass-based <code>Request</code> / <code>Response</code> / <code>Event</code> types are the defaults. See <a href="../migration/4-to-5/">Migration 4→5</a> for the full breaking-change list.</p>
 
 
 
@@ -3420,7 +3203,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../saga_mediator/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Saga Mediator">
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3430,20 +3213,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Saga Mediator
+                Home
               </div>
             </div>
           </a>
         
         
           
-          <a href="../middlewares/" class="md-footer__link md-footer__link--next" aria-label="Next: Middlewares">
+          <a href="../migration/4-to-5/" class="md-footer__link md-footer__link--next" aria-label="Next: Migration 4→5">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Middlewares
+                Migration 4→5
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -3507,14 +3290,14 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "content.code.annotate", "content.code.select", "navigation.footer"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate", "content.code.select", "navigation.footer"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../javascripts/navigation.js"></script>
+        <script src="../javascripts/navigation.js"></script>
       
-        <script src="../../javascripts/star-link.js"></script>
+        <script src="../javascripts/star-link.js"></script>
       
     
   </body>

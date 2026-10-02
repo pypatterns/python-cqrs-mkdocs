@@ -18,8 +18,8 @@ You can find a complete working example in the repository:
 ### Basic Usage
 
 ```python
-from cqrs.requests.mermaid import CoRMermaid
-from cqrs.requests.cor_request_handler import CORRequestHandler
+from cqrs.mermaid.cor import CoRMermaid
+from cqrs.handlers.cor import CORRequestHandler
 
 # Create your handler chain (see Chain of Responsibility documentation for details)
 handlers = [
@@ -54,8 +54,8 @@ The Sequence diagram visualizes the complete execution flow of a handler chain u
 ### Example Handler Chain Code
 
 ```python
-from cqrs.requests.cor_request_handler import CORRequestHandler
-from cqrs.response import Response
+from cqrs.handlers.cor import CORRequestHandler
+from cqrs.models.response import Response
 
 class ProcessPaymentCommand(cqrs.Request):
     amount: float
