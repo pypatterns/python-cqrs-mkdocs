@@ -134,6 +134,8 @@ markdown_extensions:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 extra:
+  version:
+    provider: mike
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/vadikko2/python-cqrs
@@ -143,6 +145,9 @@ plugins:
   - search
   - awesome-pages
   - autorefs
+  - mike:
+      canonical_version: latest
+      version_selector: true
   - llmstxt:
       full_output: llms-full.txt
       markdown_description: |
