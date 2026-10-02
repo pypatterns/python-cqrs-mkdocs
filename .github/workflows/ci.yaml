@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - main
+      - docs/4.x
 permissions:
   contents: write
 jobs:
@@ -11,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
@@ -35,5 +38,12 @@ jobs:
           ls -la site/
           test -f site/stylesheets/extra.css || (echo "ERROR: extra.css not in build" && exit 1)
           test -f site/javascripts/star-link.js || (echo "ERROR: star-link.js not in build" && exit 1)
-      - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
+      - name: Deploy versioned docs with mike
+        run: |
+          git fetch origin gh-pages || true
+          if [ "${{ github.ref_name }}" = "docs/4.x" ]; then
+            mike deploy --push 4.0
+          else
+            mike deploy --push --update-aliases 5.0 latest
+            mike set-default --push latest
+          fi
