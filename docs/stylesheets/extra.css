@@ -36,7 +36,9 @@
 }
 
 /* mike version dropdown sits in the header but uses a white panel —
-   do not inherit the forced white header link color (white-on-white). */
+   do not inherit the forced white header link color (white-on-white).
+   Cache-bust note: bump this comment when changing selector colors so
+   unhashed extra.css gets a new etag on deploy. (2026-10-05b) */
 .md-header a.md-version__link {
   color: var(--md-default-fg-color) !important;
 }
@@ -44,6 +46,11 @@
 .md-header a.md-version__link:focus,
 .md-header a.md-version__link:hover {
   color: var(--md-accent-fg-color) !important;
+}
+
+/* Keep the closed selector label readable on the blue header. */
+.md-header .md-version__current {
+  color: rgba(255, 255, 255, 0.9) !important;
 }
 
 /* Импорт шрифтов IBM Plex из Google Fonts */
