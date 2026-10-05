@@ -1,25 +1,43 @@
-# Этап сборки (Builder)
-FROM python:3.13-slim as builder
+# Build a mike-versioned static tree (4.0 + 5.0/latest), then serve with nginx.
+# Plain `mkdocs build` is NOT enough — Material’s selector needs /versions.json
+# and version directories at the site root (same layout as the gh-pages branch).
+
+FROM python:3.13-slim AS builder
 
 WORKDIR /app
 
-# Копируем и устанавливаем зависимости
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем код
-COPY . .
-# При сборке можно передать SITE_URL: docker build --build-arg SITE_URL=https://mkdocs.python-cqrs.dev/ .
+# Clone so both doc branches are available even when the build context
+# has no .git (common on hosted Docker builders / Timeweb).
 ARG SITE_URL=https://mkdocs.python-cqrs.dev/
-RUN sed -i "s|^site_url:.*|site_url: ${SITE_URL}|" mkdocs.yml && mkdocs build
+ARG REPO_URL=https://github.com/pypatterns/python-cqrs-mkdocs.git
+ARG DOCS_5_REF=master
+ARG DOCS_4_REF=docs/4.x
 
-# Этап запуска (Nginx)
+RUN git clone --filter=blob:none "$REPO_URL" repo \
+    && cd repo \
+    && git config user.name "docs-builder" \
+    && git config user.email "docs-builder@local" \
+    && git checkout "$DOCS_5_REF" \
+    && sed -i "s|^site_url:.*|site_url: ${SITE_URL}|" mkdocs.yml \
+    && mike deploy --update-aliases 5.0 latest \
+    && mike set-default latest \
+    && git checkout "$DOCS_4_REF" \
+    && sed -i "s|^site_url:.*|site_url: ${SITE_URL}|" mkdocs.yml \
+    && mike deploy 4.0 \
+    && mkdir -p /out \
+    && git archive gh-pages | tar -x -C /out
+
 FROM nginx:alpine
 
-# Копируем собранный сайт в папку nginx
-COPY --from=builder /app/site /usr/share/nginx/html
+COPY --from=builder /out /usr/share/nginx/html
 
-# Порт 80 стандартный для веб-сервера
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]

@@ -29,9 +29,9 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install -r requirements.txt
-      - name: Patch site_url for GitHub Pages
-        run: |
-          sed -i 's|https://mkdocs.python-cqrs.dev/|https://vadikko2.github.io/python-cqrs-mkdocs/|g' mkdocs.yml
+      # Keep canonical site_url from mkdocs.yml (https://mkdocs.python-cqrs.dev/).
+      # Do not rewrite to the old vadikko2.github.io path — production is Timeweb,
+      # and Material version switching needs a correct site_url.
       - name: Build and verify assets
         run: |
           mkdocs build --strict
