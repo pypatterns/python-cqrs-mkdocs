@@ -15,13 +15,13 @@ FastStream is a powerful framework for building event-driven applications with m
 
 Prerequisites
 
-Understanding of [Event Handling](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/index.md) and [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md) is required. This integration shows how to consume events from message brokers.
+Understanding of [Event Handling](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md) and [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) is required. This integration shows how to consume events from message brokers.
 
 Related Topics
 
-- [Event Producing](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_producing/index.md) — For publishing events to message brokers
-- [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md) — Opt-in Protobuf produce / consume codecs
-- [Transaction Outbox](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/index.md) — For reliable event delivery
+- [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md) — For publishing events to message brokers
+- [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md) — Opt-in Protobuf produce / consume codecs
+- [Transaction Outbox](https://mkdocs.python-cqrs.dev/latest/outbox/index.md) — For reliable event delivery
 
 ## Setup
 
@@ -331,7 +331,7 @@ async def handle_order_event(
     await mediator.send(body)
 ```
 
-For opt-in Protobuf consumers (`ProtobufDeserializer`), see [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md).
+For opt-in Protobuf consumers (`ProtobufDeserializer`), see [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md).
 
 ## Event Mediator Factory
 

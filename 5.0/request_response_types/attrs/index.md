@@ -151,5 +151,5 @@ class ImmutableRequest(cqrs.IRequest):
 
 ## See Also
 
-- [Dataclasses](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/dataclasses/index.md) - Standard library alternative
-- [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) - Learn about handler implementation
+- [Dataclasses](https://mkdocs.python-cqrs.dev/latest/request_response_types/dataclasses/index.md) - Standard library alternative
+- [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) - Learn about handler implementation

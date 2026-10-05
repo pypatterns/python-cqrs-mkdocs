@@ -6,63 +6,63 @@
 
   Standard mediator for commands and queries with automatic handler resolution.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/request_mediator/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/bootstrap/request_mediator/index.md)
 
 - **Streaming Request Mediator**
 
   For incremental processing and Server-Sent Events (SSE) support.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/streaming_mediator/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/bootstrap/streaming_mediator/index.md)
 
 - **Event Mediator**
 
   For processing events from message brokers like Kafka and RabbitMQ.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/event_mediator/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/bootstrap/event_mediator/index.md)
 
 - **Saga Mediator**
 
   Orchestrated sagas with step streaming, storage, and recovery.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/saga_mediator/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/bootstrap/saga_mediator/index.md)
 
 - **Message Brokers**
 
   Configure Kafka, RabbitMQ, and custom brokers for event publishing.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/message_brokers/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/bootstrap/message_brokers/index.md)
 
 - **Middlewares**
 
   Request interception and modification with custom middleware support.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/middlewares/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/bootstrap/middlewares/index.md)
 
 - **DI Containers**
 
   Dependency injection configuration and container setup.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/di_containers/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/bootstrap/di_containers/index.md)
 
 - **Advanced Configuration**
 
   Combining all options and manual setup for complex scenarios.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/advanced/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/bootstrap/advanced/index.md)
 
 The `bootstrap` utilities simplify the initial configuration of your CQRS application. They automatically set up:
 
-- **Dependency Injection Container** — Resolves handlers and their dependencies (see [Dependency Injection](https://vadikko2.github.io/python-cqrs-mkdocs/latest/di/index.md))
-- **Request Mapping** — Maps commands and queries to their handlers (see [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md))
-- **Event Mapping** — Maps domain events to their handlers (see [Event Handling](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/index.md))
-- **Saga Mapping** — Maps saga context types to saga classes (see [Saga Pattern](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/index.md))
-- **Message Broker** — Configures event publishing (see [Event Producing](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_producing/index.md))
+- **Dependency Injection Container** — Resolves handlers and their dependencies (see [Dependency Injection](https://mkdocs.python-cqrs.dev/latest/di/index.md))
+- **Request Mapping** — Maps commands and queries to their handlers (see [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md))
+- **Event Mapping** — Maps domain events to their handlers (see [Event Handling](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md))
+- **Saga Mapping** — Maps saga context types to saga classes (see [Saga Pattern](https://mkdocs.python-cqrs.dev/latest/saga/index.md))
+- **Message Broker** — Configures event publishing (see [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md))
 - **Middlewares** — Adds logging and custom middlewares
 - **Event Processing** — Configures parallel event processing
 
 Getting Started
 
-If you're new to `python-cqrs`, start here! Bootstrap is the foundation for all other features. After configuring bootstrap, proceed to [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) to learn how to create command and query handlers.
+If you're new to `python-cqrs`, start here! Bootstrap is the foundation for all other features. After configuring bootstrap, proceed to [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) to learn how to create command and query handlers.
 
 Navigation
 
@@ -97,11 +97,11 @@ Each mediator type has its own bootstrap function and configuration options. Cho
 
 ## Quick Navigation
 
-- **[Request Mediator](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/request_mediator/index.md)** — Standard mediator for commands and queries
-- **[Streaming Request Mediator](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/streaming_mediator/index.md)** — For incremental processing and SSE
-- **[Event Mediator](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/event_mediator/index.md)** — For processing events from message brokers
-- **[Saga Mediator](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/saga_mediator/index.md)** — Orchestrated sagas with storage and recovery
-- **[Message Brokers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/message_brokers/index.md)** — Kafka, RabbitMQ, and custom brokers
-- **[Middlewares](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/middlewares/index.md)** — Request interception and modification
-- **[DI Containers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/di_containers/index.md)** — Dependency injection configuration
-- **[Advanced Configuration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/advanced/index.md)** — Combining all options and manual setup
+- **[Request Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/request_mediator/index.md)** — Standard mediator for commands and queries
+- **[Streaming Request Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/streaming_mediator/index.md)** — For incremental processing and SSE
+- **[Event Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/event_mediator/index.md)** — For processing events from message brokers
+- **[Saga Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/saga_mediator/index.md)** — Orchestrated sagas with storage and recovery
+- **[Message Brokers](https://mkdocs.python-cqrs.dev/latest/bootstrap/message_brokers/index.md)** — Kafka, RabbitMQ, and custom brokers
+- **[Middlewares](https://mkdocs.python-cqrs.dev/latest/bootstrap/middlewares/index.md)** — Request interception and modification
+- **[DI Containers](https://mkdocs.python-cqrs.dev/latest/bootstrap/di_containers/index.md)** — Dependency injection configuration
+- **[Advanced Configuration](https://mkdocs.python-cqrs.dev/latest/bootstrap/advanced/index.md)** — Combining all options and manual setup

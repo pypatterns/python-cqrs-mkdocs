@@ -4,7 +4,7 @@
 
   Return to the Saga Pattern overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/saga/index.md)
 
 Compensation undoes the effects of completed steps when a saga fails, ensuring resources are properly released and the system returns to a consistent state.
 
@@ -198,7 +198,7 @@ async def compensate(self, context: OrderContext) -> None:
 - **HANDLER** — each step (and compensation) is re-resolved in a **fresh** scope, so `self` state from `act` is gone. Persist what `compensate` needs in `SagaContext` and keep compensation idempotent.
 - **NONE** — no framework scopes.
 
-Do not wrap the container with `ScopeAwareContainer` yourself; `saga.transaction` wraps a plain container internally. See [Scope Strategies](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/strategies/index.md).
+Do not wrap the container with `ScopeAwareContainer` yourself; `saga.transaction` wraps a plain container internally. See [Scope Strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md).
 
 ## Best Practices
 

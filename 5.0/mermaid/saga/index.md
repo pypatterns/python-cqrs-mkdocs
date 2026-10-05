@@ -376,11 +376,11 @@ Generate a Mermaid Class diagram showing saga structure, types, and relationship
 
 ## See Also
 
-- [Mermaid Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/index.md) - Overview of Mermaid diagram generation
-- [Saga Pattern Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/index.md) - Learn about the Saga pattern implementation
-- [Saga Flow Diagrams](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/flow/index.md) - Understanding saga execution flow
-- [Saga Recovery](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/recovery/index.md) - Understanding saga recovery mechanisms
-- [Saga Compensation](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/compensation/index.md) - Compensation strategies
-- [Saga Examples](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/examples/index.md) - Complete examples
+- [Mermaid Overview](https://mkdocs.python-cqrs.dev/latest/mermaid/index.md) - Overview of Mermaid diagram generation
+- [Saga Pattern Overview](https://mkdocs.python-cqrs.dev/latest/saga/index.md) - Learn about the Saga pattern implementation
+- [Saga Flow Diagrams](https://mkdocs.python-cqrs.dev/latest/saga/flow/index.md) - Understanding saga execution flow
+- [Saga Recovery](https://mkdocs.python-cqrs.dev/latest/saga/recovery/index.md) - Understanding saga recovery mechanisms
+- [Saga Compensation](https://mkdocs.python-cqrs.dev/latest/saga/compensation/index.md) - Compensation strategies
+- [Saga Examples](https://mkdocs.python-cqrs.dev/latest/saga/examples/index.md) - Complete examples
 - [Example: Basic Saga](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga.py)
 - [Example: Saga Mermaid Diagrams](https://github.com/vadikko2/python-cqrs/blob/master/examples/saga/saga_mermaid.py)

@@ -103,37 +103,37 @@ di scope=request is not a CQRS scope
 
   Command + domain event + outbox on one `AsyncSession` under SEND. The page to copy.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/tutorial/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/index.md)
 
 - **Strategies**
 
   SEND vs HANDLER vs NONE, a decision table, and fallback in one screen.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/strategies/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md)
 
 - **Containers**
 
   Full `di`, dishka, and dependency-injector snippets (not fragments).
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/containers/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/containers/index.md)
 
 - **Advanced**
 
   `enter_scope`, `bind_scope`, several `send()` calls, FastAPI middleware.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/advanced/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/advanced/index.md)
 
 - **Custom Container**
 
   When you need `SupportsScope.open_scope` for a DI library we do not ship.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/custom_container/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/custom_container/index.md)
 
 - **Troubleshooting**
 
   Generator finished too early, dirty sessions, streams, sagas.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/troubleshooting/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/troubleshooting/index.md)
 
 ## Before / after
 

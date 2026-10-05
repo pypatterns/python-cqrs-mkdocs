@@ -4,7 +4,7 @@
 
   Return to the Scoped Dependencies overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md)
 
 ______________________________________________________________________
 
@@ -22,7 +22,7 @@ Do not call `session_factory()` in the outbox bind
 
 di scope=request is not enough
 
-That flag is provider lifetime inside `di`. python-cqrs only keeps the generator open when you pass `scope_strategy=ScopeStrategy.SEND` (or wrap several `send()` calls in `enter_scope` — [Advanced](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/advanced/index.md)).
+That flag is provider lifetime inside `di`. python-cqrs only keeps the generator open when you pass `scope_strategy=ScopeStrategy.SEND` (or wrap several `send()` calls in `enter_scope` — [Advanced](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/advanced/index.md)).
 
 Runnable file: [`examples/di/scoped_dependencies_sqlalchemy.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/di/scoped_dependencies_sqlalchemy.py) (`pip install -e ".[examples]"` for `aiosqlite`).
 
@@ -223,4 +223,4 @@ if __name__ == "__main__":
 - **Commit in the generator.** `yield` then `commit()`, `except` then `rollback()`. If the command handler called `outbox.commit()` (`session.commit()`), the domain-event writes would start a new transaction on the same session object.
 - **SQLite outbox DDL.** `OutboxModel.id` uses `Identity()`, which SQLite does not autoincrement. The `CREATE TABLE` above matches [`examples/outbox/fastapi_outbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/outbox/fastapi_outbox.py). MySQL/Postgres can use `OutboxModel.metadata.create_all`.
 
-Next: [which strategy to pick](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/strategies/index.md), or [di vs dishka vs dependency-injector](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/containers/index.md).
+Next: [which strategy to pick](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md), or [di vs dishka vs dependency-injector](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/containers/index.md).

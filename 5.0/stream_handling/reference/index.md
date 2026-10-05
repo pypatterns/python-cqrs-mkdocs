@@ -4,7 +4,7 @@
 
   Return to the Stream Handling overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md)
 
 ______________________________________________________________________
 

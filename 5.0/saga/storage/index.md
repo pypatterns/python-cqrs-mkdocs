@@ -4,7 +4,7 @@
 
   Return to the Saga Pattern overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/saga/index.md)
 
 Storage persists saga state and execution history, enabling recovery of interrupted sagas and ensuring eventual consistency.
 
@@ -112,7 +112,7 @@ Database-backed implementation for production. It uses a session factory. When t
 
 ### Database Support
 
-The saga storage schema is verified against **MySQL** and **PostgreSQL** — both are covered by integration tests — and works on either without any configuration. See [Outbox Database Support](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/databases/index.md) for the full database matrix and the Alembic setup shared by all SQLAlchemy models in the package.
+The saga storage schema is verified against **MySQL** and **PostgreSQL** — both are covered by integration tests — and works on either without any configuration. See [Outbox Database Support](https://mkdocs.python-cqrs.dev/latest/outbox/databases/index.md) for the full database matrix and the Alembic setup shared by all SQLAlchemy models in the package.
 
 The `context` column is declared with `cqrs.sqlalchemy_types.JSONType`, a dialect-aware type that resolves to a plain `sqlalchemy.JSON()` on **every** dialect, PostgreSQL and MySQL included. The rendered DDL is therefore identical to a bare `sqlalchemy.JSON` column:
 
@@ -168,7 +168,7 @@ On a large table this rewrites every row while holding an `ACCESS EXCLUSIVE` loc
 
 No `bind`/`result` converters for JSON
 
-Serialization stays the responsibility of the dialect's JSON type, so the handler needs only `type_factory`. You still have to register **before the first use** — bind/result processors are memoized per dialect instance — and in both the application entry point and `alembic/env.py`; the reasoning is spelled out in [Register before the first use](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/databases/#step-4-register-before-the-first-use-not-later).
+Serialization stays the responsibility of the dialect's JSON type, so the handler needs only `type_factory`. You still have to register **before the first use** — bind/result processors are memoized per dialect instance — and in both the application entry point and `alembic/env.py`; the reasoning is spelled out in [Register before the first use](https://mkdocs.python-cqrs.dev/latest/outbox/databases/#step-4-register-before-the-first-use-not-later).
 
 ### Usage
 

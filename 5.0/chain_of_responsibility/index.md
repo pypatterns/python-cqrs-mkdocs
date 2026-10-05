@@ -8,25 +8,25 @@ The Chain of Responsibility pattern allows multiple handlers to process a reques
 
   Registering handlers and complete examples of Chain of Responsibility pattern.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/examples/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/examples/index.md)
 
 - **Advanced Topics**
 
   Manual chain building, handler methods, and integration patterns.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/advanced/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/advanced/index.md)
 
 - **Mermaid Diagrams**
 
   Generate Sequence and Class diagrams for documentation.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/chain_of_responsibility/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/mermaid/chain_of_responsibility/index.md)
 
 - **Fallback**
 
   Combine CoR with Request Handler Fallback when the chain raises.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/fallback/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/fallback/index.md)
 
 `CORRequestHandler` implements the Chain of Responsibility pattern, allowing multiple handlers to process a request sequentially. Each handler decides whether to process the request or pass it to the next handler in the chain. The chain stops when a handler successfully processes the request or when all handlers have been exhausted.
 
@@ -39,11 +39,11 @@ The Chain of Responsibility pattern allows multiple handlers to process a reques
 
 Prerequisites
 
-Understanding of [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) and [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md) is recommended.
+Understanding of [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) and [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) is recommended.
 
 When to Use
 
-Use Chain of Responsibility when you have multiple processing strategies or need fallback mechanisms. For standard request handling, use regular [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md).
+Use Chain of Responsibility when you have multiple processing strategies or need fallback mechanisms. For standard request handling, use regular [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md).
 
 ## Pattern Description
 

@@ -111,5 +111,5 @@ restored = CreateUserCommand.from_dict(**data)
 
 ## See Also
 
-- [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) - Learn about handler implementation
-- [Mixed Usage](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/mixed_usage/index.md) - Combining Pydantic with other types
+- [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) - Learn about handler implementation
+- [Mixed Usage](https://mkdocs.python-cqrs.dev/latest/request_response_types/mixed_usage/index.md) - Combining Pydantic with other types

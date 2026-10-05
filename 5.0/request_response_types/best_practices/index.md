@@ -312,6 +312,6 @@ Create team guidelines for type selection:
 
 ## See Also
 
-- [Comparison Table](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/#comparison-table) - Detailed comparison
-- [Mixed Usage](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/mixed_usage/index.md) - Combining different types
-- [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) - Handler implementation
+- [Comparison Table](https://mkdocs.python-cqrs.dev/latest/request_response_types/#comparison-table) - Detailed comparison
+- [Mixed Usage](https://mkdocs.python-cqrs.dev/latest/request_response_types/mixed_usage/index.md) - Combining different types
+- [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) - Handler implementation

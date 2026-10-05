@@ -4,7 +4,7 @@
 
   Return to the Saga Fallback overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/saga/fallback/index.md)
 
 ## How It Works
 
@@ -39,7 +39,7 @@ sequenceDiagram
 
 HANDLER rolls the primary back
 
-Under `HANDLER` the framework does **not** swallow the primary error inside the step scope. The exception is re-raised through `handler_scope` so a generator UoW (`yield session; commit()`) sees `except` and rolls back. Then fallback opens a **new** scope. Under `SEND` / `NONE` the error is caught inside the outer scope so fallback shares the same UoW. See [Scope Strategies](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/strategies/index.md).
+Under `HANDLER` the framework does **not** swallow the primary error inside the step scope. The exception is re-raised through `handler_scope` so a generator UoW (`yield session; commit()`) sees `except` and rolls back. Then fallback opens a **new** scope. Under `SEND` / `NONE` the error is caught inside the outer scope so fallback shares the same UoW. See [Scope Strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md).
 
 ### Context Management
 

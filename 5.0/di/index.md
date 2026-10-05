@@ -10,15 +10,15 @@ The `python-cqrs` package supports multiple DI container libraries:
 - **`dependency-injector`** — Feature-rich DI library with configuration management and FastAPI integration
 - **dishka** — Optional (`pip install python-cqrs[dishka]`) with first-class request scopes
 
-Both `di` and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See [Scoped Dependencies](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md).
+Both `di` and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See [Scoped Dependencies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md).
 
 Prerequisites
 
-This section assumes you've already configured [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md). The DI container is passed to bootstrap functions to resolve handlers and their dependencies.
+This section assumes you've already configured [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md). The DI container is passed to bootstrap functions to resolve handlers and their dependencies.
 
 Next Steps
 
-After understanding DI, proceed to [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) to learn how handlers use dependency injection. For request-scoped UoW / sessions, read [Scoped Dependencies](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md).
+After understanding DI, proceed to [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) to learn how handlers use dependency injection. For request-scoped UoW / sessions, read [Scoped Dependencies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md).
 
 ## Supported Libraries
 
@@ -92,7 +92,7 @@ The `di` library supports different scopes:
 
 CQRS request scope
 
-`di`'s `scope="request"` is **not** a CQRS scope by itself. Without `scope_strategy=`, a generator provider still finishes before `handle`. Pass `scope_strategy=ScopeStrategy.SEND` so `"request"` dependencies live for the whole `mediator.send()` (including domain events). Details: [Scoped Dependencies](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md).
+`di`'s `scope="request"` is **not** a CQRS scope by itself. Without `scope_strategy=`, a generator provider still finishes before `handle`. Pass `scope_strategy=ScopeStrategy.SEND` so `"request"` dependencies live for the whole `mediator.send()` (including domain events). Details: [Scoped Dependencies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md).
 
 **Scope Examples**
 
@@ -155,14 +155,14 @@ Using dependency injection with `python-cqrs` provides:
 
 ## Best Practices
 
-| Practice                             | Description                                                                                                                                       | Example                                                                                                      |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| **Use interfaces**                   | Always bind implementations to interfaces, not concrete classes                                                                                   | `ServiceProtocol` → `ServiceImplementation`                                                                  |
-| **Choose scopes wisely**             | Use singleton for stateless services, request for stateful ones                                                                                   | Config: singleton, DB: request                                                                               |
-| **Keep constructors simple**         | Avoid complex logic in constructors                                                                                                               | Move logic to methods                                                                                        |
-| **UoW / sessions: generator + SEND** | Do not inject a UoW factory as best practice. Bind an async generator and pass `scope_strategy=ScopeStrategy.SEND` so cleanup runs after `handle` | See [Scoped Dependencies](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md) |
-| **Factories for construction only**  | Use a factory when the object does not need a request-scoped lifetime                                                                             | `create_database_connection()` for a pool, not for the per-send session                                      |
-| **Test with mocks**                  | Always test handlers with mocked dependencies                                                                                                     | Mock `ServiceProtocol` in tests                                                                              |
+| Practice                             | Description                                                                                                                                       | Example                                                                                       |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **Use interfaces**                   | Always bind implementations to interfaces, not concrete classes                                                                                   | `ServiceProtocol` → `ServiceImplementation`                                                   |
+| **Choose scopes wisely**             | Use singleton for stateless services, request for stateful ones                                                                                   | Config: singleton, DB: request                                                                |
+| **Keep constructors simple**         | Avoid complex logic in constructors                                                                                                               | Move logic to methods                                                                         |
+| **UoW / sessions: generator + SEND** | Do not inject a UoW factory as best practice. Bind an async generator and pass `scope_strategy=ScopeStrategy.SEND` so cleanup runs after `handle` | See [Scoped Dependencies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md) |
+| **Factories for construction only**  | Use a factory when the object does not need a request-scoped lifetime                                                                             | `create_database_connection()` for a pool, not for the per-send session                       |
+| **Test with mocks**                  | Always test handlers with mocked dependencies                                                                                                     | Mock `ServiceProtocol` in tests                                                               |
 
 Common Mistakes
 

@@ -4,7 +4,7 @@
 
   Return to the Event Handling overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md)
 
 ______________________________________________________________________
 
@@ -17,7 +17,7 @@ ______________________________________________________________________
 
 ### DomainEvent
 
-Domain events represent something that happened in the domain. They are processed by event handlers. Handlers can return **follow-up events** via the `events` property; these are processed in the same pipeline (see [Event Flow](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/event_flow/index.md)).
+Domain events represent something that happened in the domain. They are processed by event handlers. Handlers can return **follow-up events** via the `events` property; these are processed in the same pipeline (see [Event Flow](https://mkdocs.python-cqrs.dev/latest/event_handler/event_flow/index.md)).
 
 ```python
 class UserJoined(cqrs.DomainEvent, frozen=True):

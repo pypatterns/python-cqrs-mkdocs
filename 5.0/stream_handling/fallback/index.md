@@ -4,7 +4,7 @@
 
   Return to the Stream Handling overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md)
 
 ______________________________________________________________________
 
@@ -122,11 +122,11 @@ async with aclosing(
             print(response.item_id, response.source)  # primary, primary, fallback, fallback...
 ```
 
-The client receives items from the primary stream until it raises, then items from the fallback stream. Items already yielded are **not** cancelled. Optional `failure_exceptions` and `circuit_breaker` behave as for non-streaming [Request Handler Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/index.md).
+The client receives items from the primary stream until it raises, then items from the fallback stream. Items already yielded are **not** cancelled. Optional `failure_exceptions` and `circuit_breaker` behave as for non-streaming [Request Handler Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/index.md).
 
 ## Circuit Breaker configuration
 
-Streaming fallback uses the same `RequestHandlerFallback` wrapper, so Circuit Breaker is configured the same way as for [Request Handler Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/#circuit-breaker-optional).
+Streaming fallback uses the same `RequestHandlerFallback` wrapper, so Circuit Breaker is configured the same way as for [Request Handler Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/#circuit-breaker-optional).
 
 - **Adapter:** `AioBreakerAdapter` from `cqrs.adapters.circuit_breaker`.
 - **Parameters:** `fail_max` (default `5`), `timeout_duration` (seconds, default `60`), `exclude` (exceptions that do not count as failures), optional `storage_factory` for Redis/distributed state.
@@ -149,10 +149,10 @@ mapper.bind(
 )
 ```
 
-Full configuration options (exclude, storage_factory, failure_exceptions) are described in [Request Handler Fallback — Circuit Breaker configuration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/#circuit-breaker-configuration) and [Saga Fallback — Circuit Breaker](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/circuit_breaker/index.md).
+Full configuration options (exclude, storage_factory, failure_exceptions) are described in [Request Handler Fallback — Circuit Breaker configuration](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/#circuit-breaker-configuration) and [Saga Fallback — Circuit Breaker](https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/index.md).
 
 ## Related
 
-- [Request Handler Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/index.md) — Same wrapper for non-streaming handlers
-- [Stream Handling Configuration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/configuration/index.md) — Bootstrap and mediator setup
-- [Saga Fallback Pattern](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/index.md) — Fallback for saga steps
+- [Request Handler Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/index.md) — Same wrapper for non-streaming handlers
+- [Stream Handling Configuration](https://mkdocs.python-cqrs.dev/latest/stream_handling/configuration/index.md) — Bootstrap and mediator setup
+- [Saga Fallback Pattern](https://mkdocs.python-cqrs.dev/latest/saga/fallback/index.md) — Fallback for saga steps

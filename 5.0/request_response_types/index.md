@@ -17,55 +17,55 @@ Both `IRequest` and `IResponse` interfaces require:
 
   Default implementation with validation and serialization features.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/pydantic/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/pydantic/index.md)
 
 - **Dataclasses**
 
   Lightweight implementation using Python's standard library.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/dataclasses/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/dataclasses/index.md)
 
 - **Standard Classes**
 
   Full control with custom Python classes.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/standard_classes/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/standard_classes/index.md)
 
 - **NamedTuple**
 
   Immutable data structures with memory efficiency.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/namedtuple/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/namedtuple/index.md)
 
 - **Attrs**
 
   Advanced features beyond standard dataclasses.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/attrs/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/attrs/index.md)
 
 - **Msgspec**
 
   High-performance serialization for microservices.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/msgspec/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/msgspec/index.md)
 
 - **TypedDict**
 
   Type hints with zero runtime overhead.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/typeddict/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/typeddict/index.md)
 
 - **Mixed Usage**
 
   Combining different types for requests and responses.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/mixed_usage/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/mixed_usage/index.md)
 
 - **Best Practices**
 
   Recommendations for choosing and using types.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/best_practices/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/request_response_types/best_practices/index.md)
 
 ## Comparison Table
 
@@ -154,10 +154,10 @@ The library provides two built-in implementations that you can use directly:
 
 Prerequisites
 
-Understanding of [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) is recommended. Request and response types are used in handler definitions.
+Understanding of [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) is recommended. Request and response types are used in handler definitions.
 
 Related Topics
 
-- [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) — Learn how to use types in handlers
-- [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md) — Setup and configuration
-- [Dependency Injection](https://vadikko2.github.io/python-cqrs-mkdocs/latest/di/index.md) — DI container usage
+- [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) — Learn how to use types in handlers
+- [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) — Setup and configuration
+- [Dependency Injection](https://mkdocs.python-cqrs.dev/latest/di/index.md) — DI container usage

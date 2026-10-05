@@ -4,7 +4,7 @@
 
   Return to the Transactional Outbox overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/outbox/index.md)
 
 ______________________________________________________________________
 
@@ -191,7 +191,7 @@ CREATE TABLE outbox (
 
 Other databases and Alembic
 
-See [Database Support](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/databases/index.md) for the full support matrix, the type mapping per dialect, the Alembic recipe and how to register a native type for a database the library does not know about.
+See [Database Support](https://mkdocs.python-cqrs.dev/latest/outbox/databases/index.md) for the full support matrix, the type mapping per dialect, the Alembic recipe and how to register a native type for a database the library does not know about.
 
 ### Features
 

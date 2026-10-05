@@ -4,7 +4,7 @@
 
   Return to the Saga Fallback overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/saga/fallback/index.md)
 
 Here is a complete example demonstrating the Fallback pattern with Circuit Breaker and Saga execution.
 

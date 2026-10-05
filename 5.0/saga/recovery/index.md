@@ -4,7 +4,7 @@
 
   Return to the Saga Pattern overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/saga/index.md)
 
 Recovery ensures eventual consistency by resuming interrupted sagas from persistent storage, guaranteeing all sagas eventually reach a terminal state (COMPLETED or FAILED). Recovery **attempts** are tracked per saga so you can limit retries and exclude persistently failing sagas.
 

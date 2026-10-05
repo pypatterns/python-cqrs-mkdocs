@@ -2,7 +2,7 @@
 
 ## Overview
 
-Event producing allows you to publish events to message brokers (Kafka, RabbitMQ) for asynchronous processing. The `python-cqrs` package provides message broker abstractions with **JSON as the default** codec. Protobuf is available as an opt-in per-event serializer — see [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md).
+Event producing allows you to publish events to message brokers (Kafka, RabbitMQ) for asynchronous processing. The `python-cqrs` package provides message broker abstractions with **JSON as the default** codec. Protobuf is available as an opt-in per-event serializer — see [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md).
 
 **Key Features:**
 
@@ -13,13 +13,13 @@ Event producing allows you to publish events to message brokers (Kafka, RabbitMQ
 
 Prerequisites
 
-Understanding of [Event Handling](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/index.md) and [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md) is required. Events are automatically published when command handlers emit them.
+Understanding of [Event Handling](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md) and [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) is required. Events are automatically published when command handlers emit them.
 
 Related Topics
 
-- [FastStream Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/faststream/index.md) — For consuming events from message brokers
-- [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md) — For Protobuf serialization
-- [Transaction Outbox](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/index.md) — For reliable event delivery
+- [FastStream Integration](https://mkdocs.python-cqrs.dev/latest/faststream/index.md) — For consuming events from message brokers
+- [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md) — For Protobuf serialization
+- [Transaction Outbox](https://mkdocs.python-cqrs.dev/latest/outbox/index.md) — For reliable event delivery
 
 ## Basic Event Producing
 
@@ -174,7 +174,7 @@ amqp_broker = amqp.AMQPMessageBroker(
 )
 ```
 
-For opt-in Protobuf producing (per-event codec, `payload_bytes`, bootstrap `serializer=`), see [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md).
+For opt-in Protobuf producing (per-event codec, `payload_bytes`, bootstrap `serializer=`), see [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md).
 
 ## Complete Examples
 
@@ -247,7 +247,7 @@ mediator = bootstrap.bootstrap(
 Choose serialization format based on your needs:
 
 - **JSON** — Default. Human-readable, easy to debug
-- **Protobuf** — Opt-in per event — see [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md)
+- **Protobuf** — Opt-in per event — see [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md)
 
 ### 2. Configure Producer Settings
 
@@ -288,7 +288,7 @@ except Exception as e:
 
 ### 5. Protobuf Serialization
 
-JSON stays the default. Register `ProtobufEventSerializer` only for events that need binary payloads — see [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md).
+JSON stays the default. Register `ProtobufEventSerializer` only for events that need binary payloads — see [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md).
 
 ### 6. Logging
 

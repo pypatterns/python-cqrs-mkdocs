@@ -14,7 +14,7 @@ JSON is the default wire format for notification events. Protobuf is an **opt-in
 
 Prerequisites
 
-Familiarity with [Transactional Outbox](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/index.md) and [Event Producing](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_producing/index.md) helps. Install the extra with `pip install "python-cqrs[protobuf]"`.
+Familiarity with [Transactional Outbox](https://mkdocs.python-cqrs.dev/latest/outbox/index.md) and [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md) helps. Install the extra with `pip install "python-cqrs[protobuf]"`.
 
 When to use
 
@@ -231,7 +231,7 @@ async def handle_user_joined(
     await msg.ack()
 ```
 
-For JSON consumers see [FastStream Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/faststream/index.md).
+For JSON consumers see [FastStream Integration](https://mkdocs.python-cqrs.dev/latest/faststream/index.md).
 
 ## Complete local example
 
@@ -255,6 +255,6 @@ Source: [examples/outbox/protobuf_outbox.py](https://github.com/vadikko2/python-
 
 ## Related
 
-- [Transactional Outbox](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/index.md) — reliable publish path that stores codec bytes
-- [Event Producing](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_producing/index.md) — brokers and `EventEmitter`
-- [FastStream Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/faststream/index.md) — Kafka / RabbitMQ consumers
+- [Transactional Outbox](https://mkdocs.python-cqrs.dev/latest/outbox/index.md) — reliable publish path that stores codec bytes
+- [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md) — brokers and `EventEmitter`
+- [FastStream Integration](https://mkdocs.python-cqrs.dev/latest/faststream/index.md) — Kafka / RabbitMQ consumers

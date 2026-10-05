@@ -13,11 +13,11 @@ FastAPI integration with `python-cqrs` allows you to build RESTful APIs where Fa
 
 Prerequisites
 
-Understanding of [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md), [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md), and [Stream Handling](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/index.md) is recommended.
+Understanding of [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md), [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md), and [Stream Handling](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md) is recommended.
 
 Quick Start
 
-This integration shows how to use mediators created via [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md) in FastAPI endpoints. See [Stream Handling](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/index.md) for SSE examples.
+This integration shows how to use mediators created via [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) in FastAPI endpoints. See [Stream Handling](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md) for SSE examples.
 
 ## Setup
 

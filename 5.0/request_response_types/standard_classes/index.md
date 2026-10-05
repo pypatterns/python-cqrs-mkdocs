@@ -127,5 +127,5 @@ class TimestampedRequest(cqrs.IRequest):
 
 ## See Also
 
-- [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) - Learn about handler implementation
-- [Best Practices](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/best_practices/index.md) - Recommendations for custom implementations
+- [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) - Learn about handler implementation
+- [Best Practices](https://mkdocs.python-cqrs.dev/latest/request_response_types/best_practices/index.md) - Recommendations for custom implementations

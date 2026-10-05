@@ -4,7 +4,7 @@
 
   Return to the Transactional Outbox overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/outbox/index.md)
 
 ______________________________________________________________________
 
@@ -102,4 +102,4 @@ pip install -e ".[examples]"
 python examples/outbox/protobuf_outbox.py
 ```
 
-Full walkthrough: [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md). Source: [protobuf_outbox.py](https://github.com/vadikko2/python-cqrs/blob/master/examples/outbox/protobuf_outbox.py).
+Full walkthrough: [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md). Source: [protobuf_outbox.py](https://github.com/vadikko2/python-cqrs/blob/master/examples/outbox/protobuf_outbox.py).

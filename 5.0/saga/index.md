@@ -8,37 +8,37 @@ The Saga pattern enables distributed transactions across multiple services by ex
 
   Visual representation of execution and compensation flows.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/flow/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/flow/index.md)
 
 - **Storage**
 
   Memory and SQLAlchemy storage implementations for saga state persistence.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/storage/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/storage/index.md)
 
 - **Recovery**
 
   How recovery ensures eventual consistency for interrupted sagas.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/recovery/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/recovery/index.md)
 
 - **Compensation**
 
   Compensation mechanism and best practices for rollback operations.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/compensation/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/compensation/index.md)
 
 - **Fallback Pattern**
 
   Fallback steps with Circuit Breaker protection for resilient sagas.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/fallback/index.md)
 
 - **Examples**
 
   Complete examples including FastAPI SSE integration.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/examples/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/examples/index.md)
 
 The `python-cqrs` package implements the **Orchestrated Saga** pattern. `SagaTransaction` manages step execution sequentially and handles automatic compensation on failure.
 
@@ -60,7 +60,7 @@ Orchestrated Saga
 
 Prerequisites
 
-Understanding of [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) and [Dependency Injection](https://vadikko2.github.io/python-cqrs-mkdocs/latest/di/index.md) is recommended.
+Understanding of [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) and [Dependency Injection](https://mkdocs.python-cqrs.dev/latest/di/index.md) is recommended.
 
 When to Use
 

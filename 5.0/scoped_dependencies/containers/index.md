@@ -4,7 +4,7 @@
 
   Return to the Scoped Dependencies overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md)
 
 ______________________________________________________________________
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-See [`examples/di/scoped_dependencies_di.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/di/scoped_dependencies_di.py). SQLAlchemy + outbox: [Tutorial](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/tutorial/index.md).
+See [`examples/di/scoped_dependencies_di.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/di/scoped_dependencies_di.py). SQLAlchemy + outbox: [Tutorial](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/index.md).
 
 ## dishka
 

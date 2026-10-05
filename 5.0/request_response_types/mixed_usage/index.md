@@ -116,5 +116,5 @@ class ProcessDataResponse(cqrs.DCResponse):
 
 ## See Also
 
-- [Best Practices](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/best_practices/index.md) - Recommendations for choosing types
-- [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) - Learn about handler implementation
+- [Best Practices](https://mkdocs.python-cqrs.dev/latest/request_response_types/best_practices/index.md) - Recommendations for choosing types
+- [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) - Learn about handler implementation

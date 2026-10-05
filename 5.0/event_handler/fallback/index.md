@@ -4,7 +4,7 @@
 
   Return to the Event Handling overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md)
 
 ______________________________________________________________________
 
@@ -82,7 +82,7 @@ When a command handler emits `NotificationSent`, the event emitter runs the prim
 | **HANDLER** | New scope after the primary event handler is rolled back. Primary writes are not visible.                                         |
 | **NONE**    | No framework scopes.                                                                                                              |
 
-This applies both to the event dispatcher and to domain events emitted after `send()` (the event emitter). See [Scope Strategies](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/strategies/index.md).
+This applies both to the event dispatcher and to domain events emitted after `send()` (the event emitter). See [Scope Strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md).
 
 ## Circuit Breaker (optional)
 
@@ -107,7 +107,7 @@ mapper.bind(
 )
 ```
 
-After `fail_max` failures, the circuit opens and the fallback runs without calling the primary handler. See [Saga Fallback — Circuit Breaker](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/circuit_breaker/index.md) for the three-state pattern (CLOSED / OPEN / HALF_OPEN).
+After `fail_max` failures, the circuit opens and the fallback runs without calling the primary handler. See [Saga Fallback — Circuit Breaker](https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/index.md) for the three-state pattern (CLOSED / OPEN / HALF_OPEN).
 
 ### Circuit Breaker configuration
 
@@ -140,12 +140,12 @@ mapper.bind(
 
 **One instance per domain** — use one `AioBreakerAdapter` for all event handler fallbacks that share the same policy. The adapter creates an isolated circuit per handler type.
 
-**Storage:** Default is in-memory. For multiple instances (e.g. several workers), pass a `storage_factory` that returns Redis storage so the circuit state is shared. See [Saga Fallback — Circuit Breaker: Storage Configuration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/circuit_breaker/#storage-configuration-memory-vs-redis).
+**Storage:** Default is in-memory. For multiple instances (e.g. several workers), pass a `storage_factory` that returns Redis storage so the circuit state is shared. See [Saga Fallback — Circuit Breaker: Storage Configuration](https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/#storage-configuration-memory-vs-redis).
 
-**Failure filtering:** Use `failure_exceptions` on `EventHandlerFallback` to restrict which exceptions trigger fallback; use `exclude` on `AioBreakerAdapter` so certain exceptions do not open the circuit. See [Saga Fallback — Circuit Breaker](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/circuit_breaker/#failure-exception-filtering).
+**Failure filtering:** Use `failure_exceptions` on `EventHandlerFallback` to restrict which exceptions trigger fallback; use `exclude` on `AioBreakerAdapter` so certain exceptions do not open the circuit. See [Saga Fallback — Circuit Breaker](https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/#failure-exception-filtering).
 
 ## Related
 
-- [Request Handler Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/index.md) — Fallback for command/query handlers
-- [Stream Handling Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/fallback/index.md) — Fallback for streaming handlers
-- [Saga Fallback Pattern](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/index.md) — Fallback for saga steps
+- [Request Handler Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/index.md) — Fallback for command/query handlers
+- [Stream Handling Fallback](https://mkdocs.python-cqrs.dev/latest/stream_handling/fallback/index.md) — Fallback for streaming handlers
+- [Saga Fallback Pattern](https://mkdocs.python-cqrs.dev/latest/saga/fallback/index.md) — Fallback for saga steps

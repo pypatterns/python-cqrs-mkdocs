@@ -4,19 +4,19 @@
 
   Return to the Transactional Outbox overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/outbox/index.md)
 
 - **Implementation**
 
   Repository interface, SQLAlchemy model and outbox table structure.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/implementation/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md)
 
 - **Usage**
 
   Event registration and publishing with at-least-once delivery guarantees.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/usage/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/outbox/usage/index.md)
 
 ______________________________________________________________________
 
@@ -44,7 +44,7 @@ The SQLAlchemy outbox implementation renders its DDL through *dialect-aware* col
 
 Prerequisites
 
-See [Implementation](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/implementation/index.md) for the repository interface and the outbox table structure, and [Usage](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/usage/index.md) for event registration and publishing.
+See [Implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md) for the repository interface and the outbox table structure, and [Usage](https://mkdocs.python-cqrs.dev/latest/outbox/usage/index.md) for event registration and publishing.
 
 ## Support Matrix
 
@@ -261,7 +261,7 @@ Reasons to register a handler anyway:
 
 `JSONType` belongs to the saga storage
 
-The type layer is shared by the whole library, not just the outbox. `JSONType` renders as plain `JSON` on every dialect and exists so that a project can opt into PostgreSQL `JSONB` with one registration — see [Saga Storage](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/storage/#optional-jsonb-on-postgresql). Everything below about handlers, placement and registration order applies to it unchanged.
+The type layer is shared by the whole library, not just the outbox. `JSONType` renders as plain `JSON` on every dialect and exists so that a project can opt into PostgreSQL `JSONB` with one registration — see [Saga Storage](https://mkdocs.python-cqrs.dev/latest/saga/storage/#optional-jsonb-on-postgresql). Everything below about handlers, placement and registration order applies to it unchanged.
 
 Registrations are per type
 
@@ -503,6 +503,6 @@ With that module imported, the model compiles to `event_id RAW(16)` and `event_i
 
 Related Topics
 
-- [Implementation](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/implementation/index.md) — Repository interface and table structure
-- [Best Practices](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/best_practices/index.md) — Recommendations for reliable event delivery
-- [Saga Storage](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/storage/index.md) — Persistence for the Saga pattern
+- [Implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md) — Repository interface and table structure
+- [Best Practices](https://mkdocs.python-cqrs.dev/latest/outbox/best_practices/index.md) — Recommendations for reliable event delivery
+- [Saga Storage](https://mkdocs.python-cqrs.dev/latest/saga/storage/index.md) — Persistence for the Saga pattern

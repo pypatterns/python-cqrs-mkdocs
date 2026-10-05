@@ -113,5 +113,5 @@ Msgspec is significantly faster than Pydantic for serialization:
 
 ## See Also
 
-- [Pydantic](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/pydantic/index.md) - Alternative with more features
-- [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) - Learn about handler implementation
+- [Pydantic](https://mkdocs.python-cqrs.dev/latest/request_response_types/pydantic/index.md) - Alternative with more features
+- [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) - Learn about handler implementation

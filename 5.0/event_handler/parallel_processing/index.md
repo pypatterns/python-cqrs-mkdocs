@@ -4,7 +4,7 @@
 
   Return to the Event Handling overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md)
 
 ______________________________________________________________________
 

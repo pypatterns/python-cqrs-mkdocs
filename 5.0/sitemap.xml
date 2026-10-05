@@ -1,295 +1,295 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/di/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/di/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_producing/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_producing/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/fastapi/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/fastapi/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/faststream/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/faststream/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/installation/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/installation/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/protobuf/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/advanced/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/advanced/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/di_containers/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/di_containers/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/event_mediator/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/event_mediator/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/message_brokers/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/message_brokers/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/middlewares/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/middlewares/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/request_mediator/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/request_mediator/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/saga_mediator/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/saga_mediator/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/streaming_mediator/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/streaming_mediator/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/advanced/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/advanced/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/examples/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/examples/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/fallback/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/fallback/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/best_practices/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/best_practices/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/event_flow/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/event_flow/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/event_types/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/event_types/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/examples/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/examples/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/fallback/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/fallback/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/parallel_processing/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/parallel_processing/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/runtime_processing/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/runtime_processing/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/mermaid/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/chain_of_responsibility/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/mermaid/chain_of_responsibility/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/saga/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/mermaid/saga/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/migration/4-to-5/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/migration/4-to-5/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/outbox/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/best_practices/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/outbox/best_practices/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/databases/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/outbox/databases/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/examples/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/outbox/examples/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/implementation/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/outbox/implementation/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/usage/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/outbox/usage/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_handler/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/attrs/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/attrs/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/best_practices/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/best_practices/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/dataclasses/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/dataclasses/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/mixed_usage/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/mixed_usage/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/msgspec/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/msgspec/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/namedtuple/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/namedtuple/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/pydantic/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/pydantic/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/standard_classes/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/standard_classes/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/typeddict/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/typeddict/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/compensation/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/compensation/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/examples/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/examples/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/flow/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/flow/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/recovery/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/recovery/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/storage/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/storage/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/fallback/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/circuit_breaker/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/examples/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/fallback/examples/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/mechanics/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/saga/fallback/mechanics/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/advanced/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/advanced/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/containers/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/containers/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/custom_container/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/custom_container/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/strategies/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/troubleshooting/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/troubleshooting/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/tutorial/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/why/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/why/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/configuration/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/configuration/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/fallback/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/fallback/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/fastapi_integration/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/fastapi_integration/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
     <url>
-         <loc>https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/reference/</loc>
-         <lastmod>2026-10-02</lastmod>
+         <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/reference/</loc>
+         <lastmod>2026-10-05</lastmod>
     </url>
 </urlset>

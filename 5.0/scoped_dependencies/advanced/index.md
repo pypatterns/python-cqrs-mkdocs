@@ -4,17 +4,17 @@
 
   Return to the Scoped Dependencies overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md)
 
 - **Custom Container**
 
   Implement `SupportsScope` when you are not using `di` or dishka.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/custom_container/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/custom_container/index.md)
 
 ______________________________________________________________________
 
-Stay on the [Tutorial](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/tutorial/index.md) unless you need one of these:
+Stay on the [Tutorial](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/index.md) unless you need one of these:
 
 - several `mediator.send()` calls in **one** UoW
 - a scope already opened by FastAPI / dishka middleware (`bind_scope`)
@@ -89,7 +89,7 @@ async with aclosing(mediator.stream(command)) as stream:
         ...
 ```
 
-An abandoned SEND stream holds the UoW until garbage collection. Prefer short-lived streams. Details: [Stream configuration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/configuration/index.md).
+An abandoned SEND stream holds the UoW until garbage collection. Prefer short-lived streams. Details: [Stream configuration](https://mkdocs.python-cqrs.dev/latest/stream_handling/configuration/index.md).
 
 ## Sagas and recovery
 
@@ -100,4 +100,4 @@ Pass the **same** `scope_strategy` to `saga.transaction(...)` and `recover_saga(
 
 Do not call `recover_saga` from a `send()` that already opened SEND: recovery would join that request UoW.
 
-See [Saga Recovery](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/recovery/index.md) and [Compensation](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/compensation/index.md).
+See [Saga Recovery](https://mkdocs.python-cqrs.dev/latest/saga/recovery/index.md) and [Compensation](https://mkdocs.python-cqrs.dev/latest/saga/compensation/index.md).

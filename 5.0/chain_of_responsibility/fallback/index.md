@@ -4,7 +4,7 @@
 
   Return to the Chain of Responsibility overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/index.md)
 
 ______________________________________________________________________
 
@@ -109,7 +109,7 @@ class FallbackFetchDataHandler(
 
 ## Circuit Breaker configuration
 
-CoR + Fallback uses `RequestHandlerFallback`, so Circuit Breaker is configured the same way as for [Request Handler Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/#circuit-breaker-optional).
+CoR + Fallback uses `RequestHandlerFallback`, so Circuit Breaker is configured the same way as for [Request Handler Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/#circuit-breaker-optional).
 
 - **Adapter:** `AioBreakerAdapter` from `cqrs.adapters.circuit_breaker`.
 - **Parameters:** `fail_max` (default `5`), `timeout_duration` (seconds, default `60`), `exclude` (exceptions that do not open the circuit), optional `storage_factory` for distributed state.
@@ -132,10 +132,10 @@ mapper.bind(
 )
 ```
 
-Full configuration (exclude, storage_factory, failure_exceptions) is described in [Request Handler Fallback — Circuit Breaker configuration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/#circuit-breaker-configuration) and [Saga Fallback — Circuit Breaker](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/circuit_breaker/index.md).
+Full configuration (exclude, storage_factory, failure_exceptions) is described in [Request Handler Fallback — Circuit Breaker configuration](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/#circuit-breaker-configuration) and [Saga Fallback — Circuit Breaker](https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/index.md).
 
 ## Related
 
-- [Request Handler Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/index.md) — Fallback for command/query handlers
-- [Chain of Responsibility Examples](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/examples/index.md) — Registering and building COR chains
-- [Saga Fallback Pattern](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/index.md) — Fallback for saga steps
+- [Request Handler Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/index.md) — Fallback for command/query handlers
+- [Chain of Responsibility Examples](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/examples/index.md) — Registering and building COR chains
+- [Saga Fallback Pattern](https://mkdocs.python-cqrs.dev/latest/saga/fallback/index.md) — Fallback for saga steps

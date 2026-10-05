@@ -18,7 +18,7 @@ The `CoRMermaid` class generates diagrams for Chain of Responsibility handler ch
 - **Sequence Diagram** - Shows the execution flow through the chain, successful handling, and pass-through scenarios
 - **Class Diagram** - Shows the type structure, relationships between handlers, request types, response types, and chain links
 
-[**Learn more about Chain of Responsibility Mermaid →**](https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/chain_of_responsibility/index.md)
+[**Learn more about Chain of Responsibility Mermaid →**](https://mkdocs.python-cqrs.dev/latest/mermaid/chain_of_responsibility/index.md)
 
 ### Saga Pattern
 
@@ -27,7 +27,7 @@ The `SagaMermaid` class generates diagrams for Saga instances:
 - **Sequence Diagram** - Shows the execution flow, success/failure scenarios, and compensation logic
 - **Class Diagram** - Shows the type structure, relationships between Saga, steps, contexts, responses, and events
 
-[**Learn more about Saga Mermaid →**](https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/saga/index.md)
+[**Learn more about Saga Mermaid →**](https://mkdocs.python-cqrs.dev/latest/mermaid/saga/index.md)
 
 ## Usage in Documentation
 
@@ -40,7 +40,7 @@ Generated diagrams can be:
 
 ## See Also
 
-- [Chain of Responsibility Mermaid Diagrams](https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/chain_of_responsibility/index.md) - Detailed guide for CoR diagrams
-- [Saga Mermaid Diagrams](https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/saga/index.md) - Detailed guide for Saga diagrams
-- [Chain of Responsibility Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/index.md) - Learn about the Chain of Responsibility pattern
-- [Saga Pattern Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/index.md) - Learn about the Saga pattern
+- [Chain of Responsibility Mermaid Diagrams](https://mkdocs.python-cqrs.dev/latest/mermaid/chain_of_responsibility/index.md) - Detailed guide for CoR diagrams
+- [Saga Mermaid Diagrams](https://mkdocs.python-cqrs.dev/latest/mermaid/saga/index.md) - Detailed guide for Saga diagrams
+- [Chain of Responsibility Overview](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/index.md) - Learn about the Chain of Responsibility pattern
+- [Saga Pattern Overview](https://mkdocs.python-cqrs.dev/latest/saga/index.md) - Learn about the Saga pattern

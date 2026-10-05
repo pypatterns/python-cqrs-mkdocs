@@ -363,9 +363,9 @@ Generate a Mermaid Class diagram showing handler chain structure, types, and rel
 
 ## See Also
 
-- [Mermaid Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/mermaid/index.md) - Overview of Mermaid diagram generation
-- [Chain of Responsibility Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/index.md) - Learn about the Chain of Responsibility pattern implementation
-- [Chain of Responsibility Examples](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/examples/index.md) - Complete examples
-- [Chain of Responsibility Advanced Topics](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/advanced/index.md) - Advanced usage patterns
+- [Mermaid Overview](https://mkdocs.python-cqrs.dev/latest/mermaid/index.md) - Overview of Mermaid diagram generation
+- [Chain of Responsibility Overview](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/index.md) - Learn about the Chain of Responsibility pattern implementation
+- [Chain of Responsibility Examples](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/examples/index.md) - Complete examples
+- [Chain of Responsibility Advanced Topics](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/advanced/index.md) - Advanced usage patterns
 - [Example: Basic CoR](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/cor_request_handler.py)
 - [Example: CoR Mermaid Diagrams](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/cor_mermaid.py)

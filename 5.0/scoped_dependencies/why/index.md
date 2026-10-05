@@ -4,17 +4,17 @@
 
   Start with the problem, a full example, and when to use SEND.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md)
 
 - **Tutorial**
 
   Command + domain event + outbox on one `AsyncSession`.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/tutorial/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/index.md)
 
 ______________________________________________________________________
 
-The onboarding story now lives on [Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md) (three sentences, a copy-paste example, then when to pick SEND / HANDLER / NONE). This page keeps the before/after handler shape for old links.
+The onboarding story now lives on [Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md) (three sentences, a copy-paste example, then when to pick SEND / HANDLER / NONE). This page keeps the before/after handler shape for old links.
 
 ```python
 # Before — factory boilerplate

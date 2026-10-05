@@ -4,7 +4,7 @@
 
   Return to the Scoped Dependencies overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md)
 
 ______________________________________________________________________
 
@@ -26,12 +26,12 @@ mediator = bootstrap.bootstrap(
 
 ## Decision
 
-| I need…                                              | Use                                                                                                               |
-| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Command, domain events, and outbox on one session    | **SEND** ([Tutorial](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/tutorial/index.md)) |
-| Fallback to start clean after the primary rolls back | **HANDLER**                                                                                                       |
-| Parallel event handlers                              | **HANDLER** or **NONE** — not SEND                                                                                |
-| No generator providers                               | **NONE** (omit `scope_strategy=`)                                                                                 |
+| I need…                                              | Use                                                                                                |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Command, domain events, and outbox on one session    | **SEND** ([Tutorial](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/index.md)) |
+| Fallback to start clean after the primary rolls back | **HANDLER**                                                                                        |
+| Parallel event handlers                              | **HANDLER** or **NONE** — not SEND                                                                 |
+| No generator providers                               | **NONE** (omit `scope_strategy=`)                                                                  |
 
 ## Fallback
 
@@ -45,6 +45,6 @@ On a stream, items already yielded to the client are not cancelled; only the uni
 
 ## Where the edge cases live
 
-- Streams (`aclose` / `aclosing`), several `send()` calls, FastAPI `bind_scope`: [Advanced](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/advanced/index.md)
-- Sagas, compensation, `recover_saga`: [Saga Recovery](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/recovery/index.md) and [Compensation](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/compensation/index.md)
-- `ValueError` when SEND is combined with `concurrent_event_handle_enable=True`: [Troubleshooting](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/troubleshooting/index.md)
+- Streams (`aclose` / `aclosing`), several `send()` calls, FastAPI `bind_scope`: [Advanced](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/advanced/index.md)
+- Sagas, compensation, `recover_saga`: [Saga Recovery](https://mkdocs.python-cqrs.dev/latest/saga/recovery/index.md) and [Compensation](https://mkdocs.python-cqrs.dev/latest/saga/compensation/index.md)
+- `ValueError` when SEND is combined with `concurrent_event_handle_enable=True`: [Troubleshooting](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/troubleshooting/index.md)

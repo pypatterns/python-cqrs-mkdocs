@@ -4,17 +4,17 @@
 
   Return to the Scoped Dependencies overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md)
 
 - **Advanced**
 
   `enter_scope`, `bind_scope`, and FastAPI middleware.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/advanced/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/advanced/index.md)
 
 ______________________________________________________________________
 
-You need this page only if you are **not** using `di` or dishka (or you must wrap a library python-cqrs does not ship). For a SQLAlchemy session that lasts for `send()`, copy the [Tutorial](https://vadikko2.github.io/python-cqrs-mkdocs/latest/scoped_dependencies/tutorial/index.md) instead.
+You need this page only if you are **not** using `di` or dishka (or you must wrap a library python-cqrs does not ship). For a SQLAlchemy session that lasts for `send()`, copy the [Tutorial](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/index.md) instead.
 
 `Container.resolve` is enough for unscoped DI. To enable CQRS scopes, add `open_scope`:
 

@@ -4,7 +4,7 @@
 
   Return to the Transactional Outbox overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/outbox/index.md)
 
 ______________________________________________________________________
 
@@ -40,7 +40,7 @@ This registration is required for:
 - Deserialization when reading events
 - Validation of event structure
 
-Optional `serializer=` on `register` (or the repository `serializer=` fallback) controls how payload bytes are stored. JSON is the default; Protobuf is opt-in — see [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md).
+Optional `serializer=` on `register` (or the repository `serializer=` fallback) controls how payload bytes are stored. JSON is the default; Protobuf is opt-in — see [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md).
 
 Events are published by a separate process using `EventProducer`:
 

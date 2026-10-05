@@ -4,7 +4,7 @@
 
   Return to the Saga Pattern overview page with all topics.
 
-  [Back to Overview](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/index.md)
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/saga/index.md)
 
 The Fallback pattern allows you to define alternative steps that execute automatically when primary steps fail. This provides resilience and graceful degradation for distributed transactions.
 
@@ -14,19 +14,19 @@ The Fallback pattern allows you to define alternative steps that execute automat
 
   Learn about execution flow, context snapshots, and compensation logic.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/mechanics/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/fallback/mechanics/index.md)
 
 - **Circuit Breaker**
 
   Understand how circuit breaker integration prevents cascading failures.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/circuit_breaker/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/index.md)
 
 - **Examples**
 
   See complete working examples of the Fallback pattern in action.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/fallback/examples/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/saga/fallback/examples/index.md)
 
 The `Fallback` wrapper enables saga steps to have backup execution paths. When a primary step fails, the fallback step executes automatically with the context restored to its state before the primary step attempted execution.
 

@@ -8,31 +8,31 @@ The Transactional Outbox pattern ensures reliable event publishing by storing ev
 
   Interface and SQLAlchemy implementation for transactional outbox.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/implementation/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md)
 
 - **Database Support**
 
   Supported databases, dialect-specific DDL, Alembic setup and custom dialects.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/databases/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/outbox/databases/index.md)
 
 - **Usage**
 
   Event registration and publishing with at-least-once delivery guarantees.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/usage/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/outbox/usage/index.md)
 
 - **Examples**
 
   Complete examples of transactional outbox pattern.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/examples/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/outbox/examples/index.md)
 
 - **Best Practices**
 
   Best practices and recommendations for reliable event delivery.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/outbox/best_practices/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/outbox/best_practices/index.md)
 
 The Transactional Outbox pattern solves the problem of ensuring event delivery in distributed systems. When a command handler processes a request and generates events, those events need to be published to a message broker. However, if the system crashes between processing the command and publishing the event, the event can be lost.
 
@@ -46,14 +46,14 @@ The Outbox pattern solves this by:
 
 Prerequisites
 
-Understanding of [Event Handling](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/index.md) is required. The Outbox pattern ensures reliable delivery of events that are emitted by command handlers.
+Understanding of [Event Handling](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md) is required. The Outbox pattern ensures reliable delivery of events that are emitted by command handlers.
 
 Related Topics
 
-- [Event Producing](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_producing/index.md) — For configuring message brokers
-- [FastStream Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/faststream/index.md) — For consuming events from message brokers
-- [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md) — For configuring outbox in bootstrap process
-- [Protobuf Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/protobuf/index.md) — Opt-in Protobuf codecs for outbox storage and publish
+- [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md) — For configuring message brokers
+- [FastStream Integration](https://mkdocs.python-cqrs.dev/latest/faststream/index.md) — For consuming events from message brokers
+- [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) — For configuring outbox in bootstrap process
+- [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md) — Opt-in Protobuf codecs for outbox storage and publish
 
 ## Why Use Transactional Outbox?
 

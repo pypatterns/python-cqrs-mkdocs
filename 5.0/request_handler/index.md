@@ -2,7 +2,7 @@
 
 ## Overview
 
-Request handlers process commands (write operations) and queries (read operations) in your CQRS application. They are the core of your business logic and are automatically resolved through the [Dependency Injection](https://vadikko2.github.io/python-cqrs-mkdocs/latest/di/index.md) container configured in [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md).
+Request handlers process commands (write operations) and queries (read operations) in your CQRS application. They are the core of your business logic and are automatically resolved through the [Dependency Injection](https://mkdocs.python-cqrs.dev/latest/di/index.md) container configured in [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md).
 
 | Concept      | Description                               | Can Emit Events   |
 | ------------ | ----------------------------------------- | ----------------- |
@@ -12,16 +12,16 @@ Request handlers process commands (write operations) and queries (read operation
 
 Prerequisites
 
-Before creating handlers, ensure you've configured [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md) and understand [Dependency Injection](https://vadikko2.github.io/python-cqrs-mkdocs/latest/di/index.md).
+Before creating handlers, ensure you've configured [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) and understand [Dependency Injection](https://mkdocs.python-cqrs.dev/latest/di/index.md).
 
 Related Topics
 
-- [Request / Response Types](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_response_types/index.md) — Different types for requests and responses (Pydantic, Dataclasses, attrs, etc.)
-- [Stream Handling](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/index.md) — For incremental processing
-- [Chain of Responsibility](https://vadikko2.github.io/python-cqrs-mkdocs/latest/chain_of_responsibility/index.md) — For sequential handler chains
-- [Saga Pattern](https://vadikko2.github.io/python-cqrs-mkdocs/latest/saga/index.md) — For distributed transactions with compensation
-- [Event Handling](https://vadikko2.github.io/python-cqrs-mkdocs/latest/event_handler/index.md) — For processing events emitted by command handlers
-- [Request Handler Fallback](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/fallback/index.md) — Fallback mechanism for resilient command/query handling
+- [Request / Response Types](https://mkdocs.python-cqrs.dev/latest/request_response_types/index.md) — Different types for requests and responses (Pydantic, Dataclasses, attrs, etc.)
+- [Stream Handling](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md) — For incremental processing
+- [Chain of Responsibility](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/index.md) — For sequential handler chains
+- [Saga Pattern](https://mkdocs.python-cqrs.dev/latest/saga/index.md) — For distributed transactions with compensation
+- [Event Handling](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md) — For processing events emitted by command handlers
+- [Request Handler Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/index.md) — Fallback mechanism for resilient command/query handling
 
 Request handlers can be divided into two main types:
 

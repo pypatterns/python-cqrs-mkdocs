@@ -8,25 +8,25 @@ Stream handling allows you to process requests incrementally and yield results a
 
   Bootstrap setup and mediator usage for streaming requests.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/configuration/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/stream_handling/configuration/index.md)
 
 - **FastAPI Integration**
 
   SSE integration examples for real-time progress updates.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/fastapi_integration/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/stream_handling/fastapi_integration/index.md)
 
 - **Reference**
 
   Key features, use cases, and best practices for stream handling.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/reference/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/stream_handling/reference/index.md)
 
 - **Fallback**
 
   Fallback streaming handler when primary stream fails.
 
-  [Read More](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/fallback/index.md)
+  [Read More](https://mkdocs.python-cqrs.dev/latest/stream_handling/fallback/index.md)
 
 `StreamingRequestHandler` works with `StreamingRequestMediator` to process requests incrementally. The handler yields results as they become available, and events are processed after each yield. This enables:
 
@@ -37,11 +37,11 @@ Stream handling allows you to process requests incrementally and yield results a
 
 Prerequisites
 
-Understanding of [Request Handlers](https://vadikko2.github.io/python-cqrs-mkdocs/latest/request_handler/index.md) and [Bootstrap](https://vadikko2.github.io/python-cqrs-mkdocs/latest/bootstrap/index.md) is recommended.
+Understanding of [Request Handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md) and [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) is recommended.
 
 Use Cases
 
-Streaming is ideal for large batch operations, file processing, or any scenario where you want to provide real-time feedback. See [FastAPI Integration](https://vadikko2.github.io/python-cqrs-mkdocs/latest/stream_handling/fastapi_integration/index.md) for SSE examples.
+Streaming is ideal for large batch operations, file processing, or any scenario where you want to provide real-time feedback. See [FastAPI Integration](https://mkdocs.python-cqrs.dev/latest/stream_handling/fastapi_integration/index.md) for SSE examples.
 
 ## Basic Example
 
