@@ -27,5 +27,7 @@ The previous Timeweb image ran plain `mkdocs build` (flat site root). GitHub Pag
    - `master` → `mike deploy --push --update-aliases 5.0 latest` then `mike set-default --push latest`
    - `docs/4.x` → `mike deploy --push 4.0`
 3. Optionally remove orphan **root-level** flat paths on `gh-pages` (everything except `.nojekyll`, `404.html`, `index.html`, `versions.json`, `4.0/`, `5.0/`, `latest`). Prefer a careful manual cleanup over `mike delete --all`.
-4. Rebuild the Timeweb Docker image from this repo so nginx serves the versioned tree (`/versions.json`, `/4.0/`, `/5.0/`, `/latest/`).
-5. Confirm `https://mkdocs.python-cqrs.dev/versions.json` returns 4.0 + 5.0 and the header version dropdown appears.
+4. Rebuild/redeploy the Timeweb App from `master` (Dockerfile builds the mike tree). Autodeploy should pick up the push; otherwise trigger Deploy in the Timeweb panel.
+5. Confirm `https://mkdocs.python-cqrs.dev/versions.json` returns 4.0 + 5.0 and the header **Select version** dropdown shows both releases.
+
+As of 2026-10-05 this cutover is done on production: root redirects to `/latest/`, and `/versions.json` lists `5.0` (alias `latest`) and `4.0`.
