@@ -36,7 +36,16 @@ RUN git clone --filter=blob:none "$REPO_URL" repo \
 
 FROM nginx:alpine
 
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /out /usr/share/nginx/html
+
+# mike aliases `latest` as a symlink to `5.0`. Some overlay/FS setups
+# resolve symlinks poorly; materialize a real copy for reliable serving.
+RUN if [ -L /usr/share/nginx/html/latest ]; then \
+      target="$(readlink /usr/share/nginx/html/latest)" \
+      && rm /usr/share/nginx/html/latest \
+      && cp -a "/usr/share/nginx/html/${target}" /usr/share/nginx/html/latest; \
+    fi
 
 EXPOSE 80
 
