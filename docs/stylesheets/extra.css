@@ -24,15 +24,26 @@
 
 .md-header .md-header__title,
 .md-header .md-header__button,
-.md-header a,
+.md-header a:not(.md-version__link),
 .md-tabs .md-tabs__link {
   color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .md-header .md-header__button:hover,
-.md-header a:hover,
+.md-header a:not(.md-version__link):hover,
 .md-tabs .md-tabs__link:hover {
   color: #fff !important;
+}
+
+/* mike version dropdown sits in the header but uses a white panel —
+   do not inherit the forced white header link color (white-on-white). */
+.md-header a.md-version__link {
+  color: var(--md-default-fg-color) !important;
+}
+
+.md-header a.md-version__link:focus,
+.md-header a.md-version__link:hover {
+  color: var(--md-accent-fg-color) !important;
 }
 
 /* Импорт шрифтов IBM Plex из Google Fonts */
