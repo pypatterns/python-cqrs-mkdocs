@@ -8,4 +8,5 @@
   {% endif %}
   {% set site_root = config.site_url if config.site_url.endswith('/') else config.site_url ~ '/' %}
   <link rel="alternate" type="text/plain" title="LLM index" href="{{ site_root }}llms.txt" />
+  <link rel="alternate" type="text/plain" title="Full documentation" href="{{ site_root }}llms-full.txt" />
 {% endblock %}

@@ -157,28 +157,41 @@ plugins:
         python-cqrs is a Python framework for CQRS, Saga, Mediator, and event-driven
         architectures. Use these docs for bootstrap, request/event handlers, transaction
         outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
+        The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-full.txt
       sections:
         Getting started:
-          - index.md: Overview of python-cqrs and core features
-          - bootstrap/index.md: Bootstrap mediators, brokers, middlewares, and DI
-          - di.md: Dependency injection with di and dependency-injector
-        Core patterns:
-          - request_handler/*.md: Commands, queries, and request handlers
-          - request_response_types/*.md: Request/response type implementations
-          - event_handler/*.md: Domain and notification event handling
-          - saga/*.md: Orchestrated Saga, storage, recovery, and compensation
-          - saga/fallback/*.md: Saga fallback and circuit breaker
-          - outbox/*.md: Transactional outbox for reliable event publishing
-          - orm.md: SQLAlchemy and SQLModel outbox and saga storage
-          - chain_of_responsibility/*.md: Sequential handler chains
-          - stream_handling/*.md: Streaming requests and SSE
-          - mermaid/*.md: Mermaid diagram generation
-          - scoped_dependencies/*.md: Request-scoped DI, ScopeStrategy, enter_scope
+          - index.md
+          - installation.md
+          - migration/4-to-5.md
+        Bootstrap:
+          - bootstrap/*.md
+        Dependency injection:
+          - di.md
+          - scoped_dependencies/*.md
+        Commands and queries:
+          - request_handler/*.md
+          - request_response_types/*.md
+        Streaming and chains:
+          - stream_handling/*.md
+          - chain_of_responsibility/*.md
+        Saga:
+          - saga/index.md
+          - saga/flow.md
+          - saga/storage.md
+          - saga/recovery.md
+          - saga/compensation.md
+          - saga/examples.md
+          - saga/fallback/*.md
+        Events and outbox:
+          - event_handler/*.md
+          - outbox/*.md
+          - orm.md
+          - mermaid/*.md
         Integrations:
-          - fastapi.md: FastAPI HTTP integration
-          - faststream.md: Kafka and RabbitMQ with FastStream
-          - event_producing.md: Publishing events to message brokers
-          - protobuf.md: Protobuf serialization for events
+          - fastapi.md
+          - faststream.md
+          - event_producing.md
+          - protobuf.md
 use_directory_urls: true
 strict: true
 docs_dir: docs
