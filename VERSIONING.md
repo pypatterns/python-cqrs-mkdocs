@@ -16,6 +16,12 @@ This site uses [mike](https://github.com/jimporter/mike) with MkDocs Material’
 
 `site_url` in `mkdocs.yml` stays `https://mkdocs.python-cqrs.dev/` for both builds so Material’s version switcher resolves correctly on the canonical host.
 
+## Search consoles
+
+After `master` contains the crawl file and both `master` and `docs/4.x` contain the slash-safe LLM link, rebuild the Timeweb image from a Dockerfile that copies `latest/robots.txt`, `latest/sitemap.xml`, `latest/llms.txt`, and `latest/llms-full.txt` onto the site root. The image clones those refs. A Dockerfile-only rebuild still serves whatever `latest/robots.txt` is on the cloned `master`.
+
+Verify `https://mkdocs.python-cqrs.dev/` in Google Search Console and Yandex Webmaster with a DNS TXT record. Do not add an HTML verification file to this repo or to `gh-pages`. Submit `https://mkdocs.python-cqrs.dev/sitemap.xml`. That file lists `/latest/` URLs only. `/4.0/` is not in it. Do not submit `/4.0/sitemap.xml`.
+
 CI must **not** use `mkdocs gh-deploy --force` (that wipes version directories). Do **not** put `mike delete --all` in CI.
 
 ## One-time migration from unversioned layout
