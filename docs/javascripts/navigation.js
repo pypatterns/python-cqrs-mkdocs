@@ -55,6 +55,8 @@
         const pageOrder = [
             // Home
             { title: 'Home', url: '../', path: 'index' },
+            { title: 'Installation', url: 'installation/', path: 'installation' },
+            { title: 'Migration 4→5', url: 'migration/4-to-5/', path: 'migration/4-to-5' },
             // Bootstrap
             { title: 'Bootstrap', url: 'bootstrap/', path: 'bootstrap/index' },
             { title: 'Request Mediator', url: 'bootstrap/request_mediator/', path: 'bootstrap/request_mediator' },
@@ -112,6 +114,10 @@
             { title: 'Saga Fallback Circuit Breaker', url: 'saga/fallback/circuit_breaker/', path: 'saga/fallback/circuit_breaker' },
             { title: 'Saga Fallback Examples', url: 'saga/fallback/examples/', path: 'saga/fallback/examples' },
             { title: 'Saga Examples', url: 'saga/examples/', path: 'saga/examples' },
+            // Mermaid
+            { title: 'Mermaid Diagrams', url: 'mermaid/', path: 'mermaid/index' },
+            { title: 'Mermaid Chain of Responsibility', url: 'mermaid/chain_of_responsibility/', path: 'mermaid/chain_of_responsibility' },
+            { title: 'Mermaid Saga', url: 'mermaid/saga/', path: 'mermaid/saga' },
             // Event Handler
             { title: 'Events Handling', url: 'event_handler/', path: 'event_handler/index' },
             { title: 'Event Flow', url: 'event_handler/event_flow/', path: 'event_handler/event_flow' },
@@ -131,6 +137,7 @@
             // Integrations
             { title: 'FastAPI Integration', url: 'fastapi/', path: 'fastapi' },
             { title: 'FastStream Integration', url: 'faststream/', path: 'faststream' },
+            { title: 'SQLModel', url: 'sqlmodel/', path: 'sqlmodel' },
             { title: 'Event Producing', url: 'event_producing/', path: 'event_producing' },
             { title: 'Protobuf Integration', url: 'protobuf/', path: 'protobuf' }
         ];
@@ -182,10 +189,18 @@
                 if (matches) return true;
             }
             
-            // Проверяем совпадение в конце URL (для случаев с завершающими слешами)
-            if (urlToCheck.endsWith('/' + normalizedPath) || urlToCheck.endsWith('/' + normalizedPath + '/') ||
-                urlToCheck.endsWith('/' + pathWithoutIndex) || urlToCheck.endsWith('/' + pathWithoutIndex + '/')) {
-                return true;
+            // Совпадение в конце URL только для префикса версии mike (latest, 5.0),
+            // иначе mermaid/saga ложно совпадает со страницей saga.
+            const versionPrefix = /^(?:latest|\d+\.\d+)$/;
+            for (const candidate of [normalizedPath, pathWithoutIndex]) {
+                const marker = '/' + candidate;
+                if (!urlToCheck.endsWith(marker)) {
+                    continue;
+                }
+                const prefix = urlToCheck.slice(0, urlToCheck.length - marker.length);
+                if (prefix === '' || versionPrefix.test(prefix)) {
+                    return true;
+                }
             }
             
             // Сравниваем последние части пути

@@ -12,6 +12,7 @@ pip install python-cqrs
 |-------|----------|
 | `pydantic` | `PydanticRequest`, `PydanticResponse`, `Pydantic*Event` |
 | `sqlalchemy` | SQLAlchemy outbox + saga storage |
+| `sqlmodel` | SQLModel outbox + saga storage (same behavior as SQLAlchemy; 5.1+) |
 | `kafka` | Kafka broker (`aiokafka`) |
 | `rabbit` | AMQP broker |
 | `protobuf` | Protobuf serializers |
@@ -20,6 +21,7 @@ pip install python-cqrs
 
 ```bash
 pip install "python-cqrs[pydantic,sqlalchemy]"
+pip install "python-cqrs[sqlmodel]"
 pip install "python-cqrs[kafka]"
 ```
 

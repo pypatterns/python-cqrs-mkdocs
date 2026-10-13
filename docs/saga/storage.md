@@ -20,6 +20,7 @@ Two storage implementations:
 |--------------|----------|------------|
 | **MemorySagaStorage** | Testing, development | In-memory (not persistent) |
 | **SqlAlchemySagaStorage** | Production | Database (persistent) |
+| **SqlModelSagaStorage** | Production, SQLModel apps | Database (persistent, same behavior as SQLAlchemy) |
 
 ## Storage Interface
 
@@ -278,6 +279,10 @@ When recovering or exclusively updating a saga (e.g., after a crash), it is crit
 - ✅ Recovery after restarts
 - ✅ Audit trail
 - ✅ Robust transaction management
+
+**SQLModel Storage:**
+
+Same production behavior as SQLAlchemy storage, including `create_run()`, optimistic locking, and recovery queries. The tables use the same DDL. See [SQLModel](../sqlmodel.md).
 
 ## Best Practices
 
