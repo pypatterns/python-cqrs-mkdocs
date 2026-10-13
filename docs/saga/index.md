@@ -19,7 +19,7 @@ The Saga pattern enables distributed transactions across multiple services by ex
 
 -   :material-database: **Storage**
 
-    Memory and SQLAlchemy storage implementations for saga state persistence.
+    Memory, SQLAlchemy, and SQLModel storage for saga state persistence.
 
     [:octicons-arrow-right-24: Read More](storage.md)
 

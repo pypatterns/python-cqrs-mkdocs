@@ -31,7 +31,7 @@ description: Python CQRS framework for event-driven architecture — Saga, Media
 </div>
 
 !!! success "Documentation for python-cqrs 5.x"
-    You are viewing **5.0** docs (dataclass defaults, optional Pydantic/SQLAlchemy, new package layout, `SagaMediator.execute`).
+    You are viewing **5.x** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, new package layout, `SagaMediator.execute`).
 
     Migrating from 4.x? Follow the [4→5 migration guide](migration/4-to-5.md). Use the version selector for frozen **4.0** docs.
 
