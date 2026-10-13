@@ -88,10 +88,10 @@ nav:
       - Usage: outbox/usage.md
       - Examples: outbox/examples.md
       - Best Practices: outbox/best_practices.md
+  - ORM: orm.md
   - Integrations:
     - FastAPI Integration: fastapi.md
     - FastStream Integration: faststream.md
-    - SQLModel: sqlmodel.md
     - Event Producing: event_producing.md
     - Protobuf Integration: protobuf.md
 theme:
@@ -169,6 +169,7 @@ plugins:
           - saga/*.md: Orchestrated Saga, storage, recovery, and compensation
           - saga/fallback/*.md: Saga fallback and circuit breaker
           - outbox/*.md: Transactional outbox for reliable event publishing
+          - orm.md: SQLAlchemy and SQLModel outbox and saga storage
           - chain_of_responsibility/*.md: Sequential handler chains
           - stream_handling/*.md: Streaming requests and SSE
           - mermaid/*.md: Mermaid diagram generation
@@ -176,7 +177,6 @@ plugins:
         Integrations:
           - fastapi.md: FastAPI HTTP integration
           - faststream.md: Kafka and RabbitMQ with FastStream
-          - sqlmodel.md: Optional SQLModel outbox and saga storage
           - event_producing.md: Publishing events to message brokers
           - protobuf.md: Protobuf serialization for events
 use_directory_urls: true

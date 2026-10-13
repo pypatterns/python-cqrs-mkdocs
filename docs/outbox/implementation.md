@@ -144,7 +144,7 @@ class EventStatus(StrEnum):
     matters when you query the table with raw SQL or write migrations by hand.
 
 
-The `python-cqrs` package includes a SQLAlchemy implementation of the outbox pattern. From **5.1** the same repository behavior is also available with SQLModel: [`SqlModelOutboxedEventRepository`](../sqlmodel.md). The table, dialect-aware column types, batch query, flush budget, and status ordering are the same; pick one ORM per process.
+The `python-cqrs` package includes a SQLAlchemy implementation of the outbox pattern. From **5.1** the same repository behavior is also available with SQLModel. The table, dialect-aware column types, batch query, flush budget, and status ordering are the same; pick one ORM per process. See [ORM](../orm.md).
 
 ### Database Schema
 

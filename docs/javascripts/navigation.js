@@ -134,10 +134,10 @@
             { title: 'Outbox Usage', url: 'outbox/usage/', path: 'outbox/usage' },
             { title: 'Outbox Examples', url: 'outbox/examples/', path: 'outbox/examples' },
             { title: 'Outbox Best Practices', url: 'outbox/best_practices/', path: 'outbox/best_practices' },
+            { title: 'ORM', url: 'orm/', path: 'orm' },
             // Integrations
             { title: 'FastAPI Integration', url: 'fastapi/', path: 'fastapi' },
             { title: 'FastStream Integration', url: 'faststream/', path: 'faststream' },
-            { title: 'SQLModel', url: 'sqlmodel/', path: 'sqlmodel' },
             { title: 'Event Producing', url: 'event_producing/', path: 'event_producing' },
             { title: 'Protobuf Integration', url: 'protobuf/', path: 'protobuf' }
         ];

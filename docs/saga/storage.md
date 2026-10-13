@@ -282,7 +282,7 @@ When recovering or exclusively updating a saga (e.g., after a crash), it is crit
 
 **SQLModel Storage:**
 
-Same production behavior as SQLAlchemy storage, including `create_run()`, optimistic locking, and recovery queries. The tables use the same DDL. See [SQLModel](../sqlmodel.md).
+Same production behavior as SQLAlchemy storage, including `create_run()`, optimistic locking, and recovery queries. The tables use the same DDL. See [ORM](../orm.md).
 
 ## Best Practices
 

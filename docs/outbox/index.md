@@ -5,7 +5,7 @@ description: Reliable event publishing with the transactional outbox pattern in 
 
 # Transactional Outbox
 
-The Transactional Outbox pattern ensures reliable event publishing by storing events in a database table within the same transaction as business logic. This guarantees that events are persisted even if the system crashes before they can be published to a message broker. SQLAlchemy and SQLModel are both supported; see [SQLModel](../sqlmodel.md).
+The Transactional Outbox pattern ensures reliable event publishing by storing events in a database table within the same transaction as business logic. This guarantees that events are persisted even if the system crashes before they can be published to a message broker. SQLAlchemy and SQLModel are both supported; see [ORM](../orm.md).
 
 ## Overview
 
@@ -13,7 +13,7 @@ The Transactional Outbox pattern ensures reliable event publishing by storing ev
 
 -   :material-code-tags: **Implementation**
 
-    Interface and SQLAlchemy implementation for transactional outbox.
+    Interface and SQLAlchemy or SQLModel implementation for transactional outbox.
 
     [:octicons-arrow-right-24: Read More](implementation.md)
 

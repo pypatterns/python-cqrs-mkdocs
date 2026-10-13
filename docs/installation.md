@@ -25,4 +25,4 @@ pip install "python-cqrs[sqlmodel]"
 pip install "python-cqrs[kafka]"
 ```
 
-Dataclass-based `Request` / `Response` / `Event` types are the defaults. See [Migration 4→5](migration/4-to-5.md) for the full breaking-change list.
+Dataclass-based `Request` / `Response` / `Event` types are the defaults. See [Migration 4→5](migration/4-to-5.md) for the full breaking-change list. Outbox and saga storage with SQLAlchemy or SQLModel is described in [ORM](orm.md).
