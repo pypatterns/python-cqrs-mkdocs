@@ -182,6 +182,8 @@ plugins:
 use_directory_urls: true
 strict: true
 docs_dir: docs
+exclude_docs: |
+  /plans/
 extra_css:
   - stylesheets/extra.css
 extra_javascript:
