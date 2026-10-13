@@ -47,6 +47,17 @@ RUN if [ -L /usr/share/nginx/html/latest ]; then \
       && cp -a "/usr/share/nginx/html/${target}" /usr/share/nginx/html/latest; \
     fi
 
+# Crawlers read these at the host root. mike only emits them inside /latest/.
+RUN html=/usr/share/nginx/html \
+    && for name in robots.txt sitemap.xml llms.txt llms-full.txt; do \
+         test -f "$html/latest/$name" \
+         && cp "$html/latest/$name" "$html/$name"; \
+       done \
+    && if grep -R -l --include='*.html' 'latestllms.txt' "$html/4.0" "$html/5.0"; then \
+         echo "alternate link is missing a slash" >&2; \
+         exit 1; \
+       fi
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
