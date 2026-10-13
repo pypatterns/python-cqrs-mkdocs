@@ -6,5 +6,6 @@
   {% else %}
     <meta name="robots" content="index, follow" />
   {% endif %}
-  <link rel="alternate" type="text/plain" title="LLM index" href="{{ config.site_url }}llms.txt" />
+  {% set site_root = config.site_url if config.site_url.endswith('/') else config.site_url ~ '/' %}
+  <link rel="alternate" type="text/plain" title="LLM index" href="{{ site_root }}llms.txt" />
 {% endblock %}
