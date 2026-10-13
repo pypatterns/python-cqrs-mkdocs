@@ -12,10 +12,11 @@ Storage persists saga state and execution history, enabling recovery of interrup
 
 Two storage implementations:
 
-| Storage Type              | Use Case             | Persistence                |
-| ------------------------- | -------------------- | -------------------------- |
-| **MemorySagaStorage**     | Testing, development | In-memory (not persistent) |
-| **SqlAlchemySagaStorage** | Production           | Database (persistent)      |
+| Storage Type              | Use Case                  | Persistence                                        |
+| ------------------------- | ------------------------- | -------------------------------------------------- |
+| **MemorySagaStorage**     | Testing, development      | In-memory (not persistent)                         |
+| **SqlAlchemySagaStorage** | Production                | Database (persistent)                              |
+| **SqlModelSagaStorage**   | Production, SQLModel apps | Database (persistent, same behavior as SQLAlchemy) |
 
 ## Storage Interface
 
@@ -263,6 +264,10 @@ When recovering or exclusively updating a saga (e.g., after a crash), it is crit
 - ✅ Recovery after restarts
 - ✅ Audit trail
 - ✅ Robust transaction management
+
+**SQLModel Storage:**
+
+Same production behavior as SQLAlchemy storage, including `create_run()`, optimistic locking, and recovery queries. The tables use the same DDL. See [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md).
 
 ## Best Practices
 

@@ -51,6 +51,7 @@ outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
 - [Examples](https://mkdocs.python-cqrs.dev/latest/outbox/examples/index.md): Transactional outbox for reliable event publishing
 - [Implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md): Transactional outbox for reliable event publishing
 - [Usage](https://mkdocs.python-cqrs.dev/latest/outbox/usage/index.md): Transactional outbox for reliable event publishing
+- [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md): SQLAlchemy and SQLModel outbox and saga storage
 - [Overview](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/index.md): Sequential handler chains
 - [Advanced](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/advanced/index.md): Sequential handler chains
 - [Examples](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/examples/index.md): Sequential handler chains

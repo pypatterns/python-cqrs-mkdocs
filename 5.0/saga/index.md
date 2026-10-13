@@ -12,7 +12,7 @@ The Saga pattern enables distributed transactions across multiple services by ex
 
 - **Storage**
 
-  Memory and SQLAlchemy storage implementations for saga state persistence.
+  Memory, SQLAlchemy, and SQLModel storage for saga state persistence.
 
   [Read More](https://mkdocs.python-cqrs.dev/latest/saga/storage/index.md)
 

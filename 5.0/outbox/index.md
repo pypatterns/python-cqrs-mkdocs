@@ -1,12 +1,12 @@
 # Transactional Outbox
 
-The Transactional Outbox pattern ensures reliable event publishing by storing events in a database table within the same transaction as business logic. This guarantees that events are persisted even if the system crashes before they can be published to a message broker.
+The Transactional Outbox pattern ensures reliable event publishing by storing events in a database table within the same transaction as business logic. This guarantees that events are persisted even if the system crashes before they can be published to a message broker. SQLAlchemy and SQLModel are both supported; see [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md).
 
 ## Overview
 
 - **Implementation**
 
-  Interface and SQLAlchemy implementation for transactional outbox.
+  Interface and SQLAlchemy or SQLModel implementation for transactional outbox.
 
   [Read More](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md)
 

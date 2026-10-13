@@ -3064,6 +3064,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../orm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -3073,10 +3100,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -3094,8 +3121,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3540,7 +3567,7 @@
 In the database you will see <code>NEW</code>, <code>PRODUCED</code> and <code>NOT_PRODUCED</code> — not the lowercase Python values. This
 matters when you query the table with raw SQL or write migrations by hand.</p>
 </div>
-<p>The <code>python-cqrs</code> package includes a SQLAlchemy implementation of the outbox pattern.</p>
+<p>The <code>python-cqrs</code> package includes a SQLAlchemy implementation of the outbox pattern. From <strong>5.1</strong> the same repository behavior is also available with SQLModel. The table, dialect-aware column types, batch query, flush budget, and status ordering are the same; pick one ORM per process. See <a href="../../orm/">ORM</a>.</p>
 <h3 id="database-schema">Database Schema<a class="headerlink" href="#database-schema" title="Permanent link">&para;</a></h3>
 <p>The outbox model is built from dialect-aware column types, so the rendered DDL differs between databases. The
 two supported variants are:</p>

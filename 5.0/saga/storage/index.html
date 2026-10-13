@@ -3092,6 +3092,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../orm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -3101,10 +3128,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -3122,8 +3149,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3519,6 +3546,11 @@
 <td>Production</td>
 <td>Database (persistent)</td>
 </tr>
+<tr>
+<td><strong>SqlModelSagaStorage</strong></td>
+<td>Production, SQLModel apps</td>
+<td>Database (persistent, same behavior as SQLAlchemy)</td>
+</tr>
 </tbody>
 </table>
 <h2 id="storage-interface">Storage Interface<a class="headerlink" href="#storage-interface" title="Permanent link">&para;</a></h2>
@@ -3769,6 +3801,8 @@ spelled out in
 <li>✅ Audit trail</li>
 <li>✅ Robust transaction management</li>
 </ul>
+<p><strong>SQLModel Storage:</strong></p>
+<p>Same production behavior as SQLAlchemy storage, including <code>create_run()</code>, optimistic locking, and recovery queries. The tables use the same DDL. See <a href="../../orm/">ORM</a>.</p>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Use persistent storage in production</strong> — Memory storage loses data on restart</li>

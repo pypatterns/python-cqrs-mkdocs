@@ -145,7 +145,7 @@ Stored values are the member names
 
 The column is mapped with `sqlalchemy.Enum(EventStatus)`, which persists the **names** of the enum members. In the database you will see `NEW`, `PRODUCED` and `NOT_PRODUCED` — not the lowercase Python values. This matters when you query the table with raw SQL or write migrations by hand.
 
-The `python-cqrs` package includes a SQLAlchemy implementation of the outbox pattern.
+The `python-cqrs` package includes a SQLAlchemy implementation of the outbox pattern. From **5.1** the same repository behavior is also available with SQLModel. The table, dialect-aware column types, batch query, flush budget, and status ordering are the same; pick one ORM per process. See [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md).
 
 ### Database Schema
 

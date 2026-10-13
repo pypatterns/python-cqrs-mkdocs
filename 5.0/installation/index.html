@@ -2910,6 +2910,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../orm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ORM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -2919,10 +2946,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -2940,8 +2967,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3149,6 +3176,10 @@
 <td>SQLAlchemy outbox + saga storage</td>
 </tr>
 <tr>
+<td><code>sqlmodel</code></td>
+<td>SQLModel outbox + saga storage (same behavior as SQLAlchemy; 5.1+)</td>
+</tr>
+<tr>
 <td><code>kafka</code></td>
 <td>Kafka broker (<code>aiokafka</code>)</td>
 </tr>
@@ -3171,9 +3202,10 @@
 </tbody>
 </table>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"python-cqrs[pydantic,sqlalchemy]"</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"python-cqrs[kafka]"</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"python-cqrs[sqlmodel]"</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"python-cqrs[kafka]"</span>
 </span></code></pre></div>
-<p>Dataclass-based <code>Request</code> / <code>Response</code> / <code>Event</code> types are the defaults. See <a href="../migration/4-to-5/">Migration 4→5</a> for the full breaking-change list.</p>
+<p>Dataclass-based <code>Request</code> / <code>Response</code> / <code>Event</code> types are the defaults. See <a href="../migration/4-to-5/">Migration 4→5</a> for the full breaking-change list. Outbox and saga storage with SQLAlchemy or SQLModel is described in <a href="../orm/">ORM</a>.</p>
 
 
 

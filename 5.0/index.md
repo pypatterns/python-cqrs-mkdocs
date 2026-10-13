@@ -8,7 +8,7 @@ Event-Driven Architecture Framework for Distributed Systems
 
 Documentation for python-cqrs 5.x
 
-You are viewing **5.0** docs (dataclass defaults, optional Pydantic/SQLAlchemy, new package layout, `SagaMediator.execute`).
+You are viewing **5.x** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, new package layout, `SagaMediator.execute`).
 
 Migrating from 4.x? Follow the [4→5 migration guide](https://mkdocs.python-cqrs.dev/latest/migration/4-to-5/index.md). Use the version selector for frozen **4.0** docs.
 
