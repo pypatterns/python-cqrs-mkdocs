@@ -5,78 +5,104 @@
 python-cqrs is a Python framework for CQRS, Saga, Mediator, and event-driven
 architectures. Use these docs for bootstrap, request/event handlers, transaction
 outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
+The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-full.txt
 
 
 ## Getting started
 
-- [Home](https://mkdocs.python-cqrs.dev/latest/index.md): Overview of python-cqrs and core features
-- [Overview](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md): Bootstrap mediators, brokers, middlewares, and DI
-- [Dependency Injection](https://mkdocs.python-cqrs.dev/latest/di/index.md): Dependency injection with di and dependency-injector
+- [Home](https://mkdocs.python-cqrs.dev/latest/index.md)
+- [Installation](https://mkdocs.python-cqrs.dev/latest/installation/index.md)
+- [Migration 4→5](https://mkdocs.python-cqrs.dev/latest/migration/4-to-5/index.md)
 
-## Core patterns
+## Bootstrap
 
-- [Overview](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md): Commands, queries, and request handlers
-- [Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/index.md): Commands, queries, and request handlers
-- [Overview](https://mkdocs.python-cqrs.dev/latest/request_response_types/index.md): Request/response type implementations
-- [Attrs](https://mkdocs.python-cqrs.dev/latest/request_response_types/attrs/index.md): Request/response type implementations
-- [Best Practices](https://mkdocs.python-cqrs.dev/latest/request_response_types/best_practices/index.md): Request/response type implementations
-- [Dataclasses](https://mkdocs.python-cqrs.dev/latest/request_response_types/dataclasses/index.md): Request/response type implementations
-- [Mixed Usage](https://mkdocs.python-cqrs.dev/latest/request_response_types/mixed_usage/index.md): Request/response type implementations
-- [Msgspec](https://mkdocs.python-cqrs.dev/latest/request_response_types/msgspec/index.md): Request/response type implementations
-- [NamedTuple](https://mkdocs.python-cqrs.dev/latest/request_response_types/namedtuple/index.md): Request/response type implementations
-- [Pydantic](https://mkdocs.python-cqrs.dev/latest/request_response_types/pydantic/index.md): Request/response type implementations
-- [Standard Classes](https://mkdocs.python-cqrs.dev/latest/request_response_types/standard_classes/index.md): Request/response type implementations
-- [TypedDict](https://mkdocs.python-cqrs.dev/latest/request_response_types/typeddict/index.md): Request/response type implementations
-- [Overview](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md): Domain and notification event handling
-- [Best Practices](https://mkdocs.python-cqrs.dev/latest/event_handler/best_practices/index.md): Domain and notification event handling
-- [Event Flow](https://mkdocs.python-cqrs.dev/latest/event_handler/event_flow/index.md): Domain and notification event handling
-- [Event Types](https://mkdocs.python-cqrs.dev/latest/event_handler/event_types/index.md): Domain and notification event handling
-- [Examples](https://mkdocs.python-cqrs.dev/latest/event_handler/examples/index.md): Domain and notification event handling
-- [Fallback](https://mkdocs.python-cqrs.dev/latest/event_handler/fallback/index.md): Domain and notification event handling
-- [Parallel Processing](https://mkdocs.python-cqrs.dev/latest/event_handler/parallel_processing/index.md): Domain and notification event handling
-- [Runtime Processing](https://mkdocs.python-cqrs.dev/latest/event_handler/runtime_processing/index.md): Domain and notification event handling
-- [Overview](https://mkdocs.python-cqrs.dev/latest/saga/index.md): Orchestrated Saga, storage, recovery, and compensation
-- [Compensation Strategy](https://mkdocs.python-cqrs.dev/latest/saga/compensation/index.md): Orchestrated Saga, storage, recovery, and compensation
-- [Examples](https://mkdocs.python-cqrs.dev/latest/saga/examples/index.md): Orchestrated Saga, storage, recovery, and compensation
-- [Flow Diagrams](https://mkdocs.python-cqrs.dev/latest/saga/flow/index.md): Orchestrated Saga, storage, recovery, and compensation
-- [Recovery & Eventual Consistency](https://mkdocs.python-cqrs.dev/latest/saga/recovery/index.md): Orchestrated Saga, storage, recovery, and compensation
-- [Storage](https://mkdocs.python-cqrs.dev/latest/saga/storage/index.md): Orchestrated Saga, storage, recovery, and compensation
-- [Overview](https://mkdocs.python-cqrs.dev/latest/saga/fallback/index.md): Saga fallback and circuit breaker
-- [Circuit Breaker](https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/index.md): Saga fallback and circuit breaker
-- [Examples](https://mkdocs.python-cqrs.dev/latest/saga/fallback/examples/index.md): Saga fallback and circuit breaker
-- [Mechanics](https://mkdocs.python-cqrs.dev/latest/saga/fallback/mechanics/index.md): Saga fallback and circuit breaker
-- [Overview](https://mkdocs.python-cqrs.dev/latest/outbox/index.md): Transactional outbox for reliable event publishing
-- [Best Practices](https://mkdocs.python-cqrs.dev/latest/outbox/best_practices/index.md): Transactional outbox for reliable event publishing
-- [Database Support](https://mkdocs.python-cqrs.dev/latest/outbox/databases/index.md): Transactional outbox for reliable event publishing
-- [Examples](https://mkdocs.python-cqrs.dev/latest/outbox/examples/index.md): Transactional outbox for reliable event publishing
-- [Implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md): Transactional outbox for reliable event publishing
-- [Usage](https://mkdocs.python-cqrs.dev/latest/outbox/usage/index.md): Transactional outbox for reliable event publishing
-- [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md): SQLAlchemy and SQLModel outbox and saga storage
-- [Overview](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/index.md): Sequential handler chains
-- [Advanced](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/advanced/index.md): Sequential handler chains
-- [Examples](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/examples/index.md): Sequential handler chains
-- [Fallback](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/fallback/index.md): Sequential handler chains
-- [Overview](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md): Streaming requests and SSE
-- [Configuration](https://mkdocs.python-cqrs.dev/latest/stream_handling/configuration/index.md): Streaming requests and SSE
-- [Fallback](https://mkdocs.python-cqrs.dev/latest/stream_handling/fallback/index.md): Streaming requests and SSE
-- [FastAPI Integration](https://mkdocs.python-cqrs.dev/latest/stream_handling/fastapi_integration/index.md): Streaming requests and SSE
-- [Reference](https://mkdocs.python-cqrs.dev/latest/stream_handling/reference/index.md): Streaming requests and SSE
-- [Overview](https://mkdocs.python-cqrs.dev/latest/mermaid/index.md): Mermaid diagram generation
-- [Chain of Responsibility](https://mkdocs.python-cqrs.dev/latest/mermaid/chain_of_responsibility/index.md): Mermaid diagram generation
-- [Saga Pattern](https://mkdocs.python-cqrs.dev/latest/mermaid/saga/index.md): Mermaid diagram generation
-- [Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md): Request-scoped DI, ScopeStrategy, enter_scope
-- [Advanced](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/advanced/index.md): Request-scoped DI, ScopeStrategy, enter_scope
-- [Containers](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/containers/index.md): Request-scoped DI, ScopeStrategy, enter_scope
-- [Custom Container](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/custom_container/index.md): Request-scoped DI, ScopeStrategy, enter_scope
-- [Strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md): Request-scoped DI, ScopeStrategy, enter_scope
-- [Troubleshooting](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/troubleshooting/index.md): Request-scoped DI, ScopeStrategy, enter_scope
-- [Tutorial](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/index.md): Request-scoped DI, ScopeStrategy, enter_scope
-- [Why](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/why/index.md): Request-scoped DI, ScopeStrategy, enter_scope
+- [Overview](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md)
+- [Advanced](https://mkdocs.python-cqrs.dev/latest/bootstrap/advanced/index.md)
+- [DI Containers](https://mkdocs.python-cqrs.dev/latest/bootstrap/di_containers/index.md)
+- [Event Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/event_mediator/index.md)
+- [Message Brokers](https://mkdocs.python-cqrs.dev/latest/bootstrap/message_brokers/index.md)
+- [Middlewares](https://mkdocs.python-cqrs.dev/latest/bootstrap/middlewares/index.md)
+- [Request Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/request_mediator/index.md)
+- [Saga Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/saga_mediator/index.md)
+- [Streaming Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/streaming_mediator/index.md)
+
+## Dependency injection
+
+- [Dependency Injection](https://mkdocs.python-cqrs.dev/latest/di/index.md)
+- [Overview](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md)
+- [Advanced](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/advanced/index.md)
+- [Containers](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/containers/index.md)
+- [Custom Container](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/custom_container/index.md)
+- [Strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md)
+- [Troubleshooting](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/troubleshooting/index.md)
+- [Tutorial](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/index.md)
+- [Why](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/why/index.md)
+
+## Commands and queries
+
+- [Overview](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md)
+- [Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/index.md)
+- [Overview](https://mkdocs.python-cqrs.dev/latest/request_response_types/index.md)
+- [Attrs](https://mkdocs.python-cqrs.dev/latest/request_response_types/attrs/index.md)
+- [Best Practices](https://mkdocs.python-cqrs.dev/latest/request_response_types/best_practices/index.md)
+- [Dataclasses](https://mkdocs.python-cqrs.dev/latest/request_response_types/dataclasses/index.md)
+- [Mixed Usage](https://mkdocs.python-cqrs.dev/latest/request_response_types/mixed_usage/index.md)
+- [Msgspec](https://mkdocs.python-cqrs.dev/latest/request_response_types/msgspec/index.md)
+- [NamedTuple](https://mkdocs.python-cqrs.dev/latest/request_response_types/namedtuple/index.md)
+- [Pydantic](https://mkdocs.python-cqrs.dev/latest/request_response_types/pydantic/index.md)
+- [Standard Classes](https://mkdocs.python-cqrs.dev/latest/request_response_types/standard_classes/index.md)
+- [TypedDict](https://mkdocs.python-cqrs.dev/latest/request_response_types/typeddict/index.md)
+
+## Streaming and chains
+
+- [Overview](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md)
+- [Configuration](https://mkdocs.python-cqrs.dev/latest/stream_handling/configuration/index.md)
+- [Fallback](https://mkdocs.python-cqrs.dev/latest/stream_handling/fallback/index.md)
+- [FastAPI Integration](https://mkdocs.python-cqrs.dev/latest/stream_handling/fastapi_integration/index.md)
+- [Reference](https://mkdocs.python-cqrs.dev/latest/stream_handling/reference/index.md)
+- [Overview](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/index.md)
+- [Advanced](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/advanced/index.md)
+- [Examples](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/examples/index.md)
+- [Fallback](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/fallback/index.md)
+
+## Saga
+
+- [Overview](https://mkdocs.python-cqrs.dev/latest/saga/index.md)
+- [Flow Diagrams](https://mkdocs.python-cqrs.dev/latest/saga/flow/index.md)
+- [Storage](https://mkdocs.python-cqrs.dev/latest/saga/storage/index.md)
+- [Recovery & Eventual Consistency](https://mkdocs.python-cqrs.dev/latest/saga/recovery/index.md)
+- [Compensation Strategy](https://mkdocs.python-cqrs.dev/latest/saga/compensation/index.md)
+- [Examples](https://mkdocs.python-cqrs.dev/latest/saga/examples/index.md)
+- [Overview](https://mkdocs.python-cqrs.dev/latest/saga/fallback/index.md)
+- [Circuit Breaker](https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/index.md)
+- [Examples](https://mkdocs.python-cqrs.dev/latest/saga/fallback/examples/index.md)
+- [Mechanics](https://mkdocs.python-cqrs.dev/latest/saga/fallback/mechanics/index.md)
+
+## Events and outbox
+
+- [Overview](https://mkdocs.python-cqrs.dev/latest/event_handler/index.md)
+- [Best Practices](https://mkdocs.python-cqrs.dev/latest/event_handler/best_practices/index.md)
+- [Event Flow](https://mkdocs.python-cqrs.dev/latest/event_handler/event_flow/index.md)
+- [Event Types](https://mkdocs.python-cqrs.dev/latest/event_handler/event_types/index.md)
+- [Examples](https://mkdocs.python-cqrs.dev/latest/event_handler/examples/index.md)
+- [Fallback](https://mkdocs.python-cqrs.dev/latest/event_handler/fallback/index.md)
+- [Parallel Processing](https://mkdocs.python-cqrs.dev/latest/event_handler/parallel_processing/index.md)
+- [Runtime Processing](https://mkdocs.python-cqrs.dev/latest/event_handler/runtime_processing/index.md)
+- [Overview](https://mkdocs.python-cqrs.dev/latest/outbox/index.md)
+- [Best Practices](https://mkdocs.python-cqrs.dev/latest/outbox/best_practices/index.md)
+- [Database Support](https://mkdocs.python-cqrs.dev/latest/outbox/databases/index.md)
+- [Examples](https://mkdocs.python-cqrs.dev/latest/outbox/examples/index.md)
+- [Implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md)
+- [Usage](https://mkdocs.python-cqrs.dev/latest/outbox/usage/index.md)
+- [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md)
+- [Overview](https://mkdocs.python-cqrs.dev/latest/mermaid/index.md)
+- [Chain of Responsibility](https://mkdocs.python-cqrs.dev/latest/mermaid/chain_of_responsibility/index.md)
+- [Saga Pattern](https://mkdocs.python-cqrs.dev/latest/mermaid/saga/index.md)
 
 ## Integrations
 
-- [FastAPI Integration](https://mkdocs.python-cqrs.dev/latest/fastapi/index.md): FastAPI HTTP integration
-- [FastStream Integration](https://mkdocs.python-cqrs.dev/latest/faststream/index.md): Kafka and RabbitMQ with FastStream
-- [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md): Publishing events to message brokers
-- [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md): Protobuf serialization for events
+- [FastAPI Integration](https://mkdocs.python-cqrs.dev/latest/fastapi/index.md)
+- [FastStream Integration](https://mkdocs.python-cqrs.dev/latest/faststream/index.md)
+- [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md)
+- [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md)
 
