@@ -8,6 +8,7 @@ repo_name: vadikko2/python-cqrs
 dev_addr: 127.0.0.1:8000
 nav:
   - Home: index.md
+  - For agents: agents.md
   - Installation: installation.md
   - Migration 4→5: migration/4-to-5.md
   - Core Concepts:
@@ -159,6 +160,8 @@ plugins:
         outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
         The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-full.txt
       sections:
+        Agents:
+          - agents.md
         Getting started:
           - index.md
           - installation.md

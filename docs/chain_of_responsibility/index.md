@@ -85,26 +85,25 @@ Each handler in the chain:
 Here's a simple example demonstrating the Chain of Responsibility pattern:
 
 ```python
-import typing
 import cqrs
 from cqrs.handlers.cor import CORRequestHandler
-
-class ProcessPaymentCommand(cqrs.Request):
-    amount: float
-    payment_method: str
-    user_id: str
 
 class PaymentResult(cqrs.Response):
     success: bool
     transaction_id: str | None = None
     message: str = ""
 
+class ProcessPaymentCommand(cqrs.Request[PaymentResult]):
+    amount: float
+    payment_method: str
+    user_id: str
+
 class PaymentProcessedEvent(cqrs.Event):
     transaction_id: str
     amount: float
     user_id: str
 
-class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -112,7 +111,7 @@ class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult])
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "credit_card":
             transaction_id = f"cc_{request.user_id}_{int(request.amount * 100)}"
             
@@ -133,7 +132,7 @@ class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult])
         # Pass to next handler if can't handle
         return await self.next(request)
 
-class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class PayPalHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -141,7 +140,7 @@ class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "paypal":
             transaction_id = f"pp_{request.user_id}_{int(request.amount * 100)}"
             
@@ -162,15 +161,19 @@ class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
         # Pass to next handler if can't handle
         return await self.next(request)
 
-class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand]):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         # Default handler always handles the request
         return PaymentResult(
             success=False,
             message=f"Unsupported payment method: {request.payment_method}",
         )
 ```
+
+The command is `Request[PaymentResult]`, so each step is `CORRequestHandler[ProcessPaymentCommand]` and `handle` has no return annotation. `CORRequestHandler[Command, Result]` remains valid.
+
+Runnable example: [`examples/cor/typed_cor_request_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/typed_cor_request_handler.py).
