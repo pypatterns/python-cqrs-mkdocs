@@ -27,11 +27,14 @@ The onboarding story now lives on [Overview](index.md) (three sentences, a copy-
 
 ```python
 # Before — factory boilerplate
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTask(cqrs.Request[None]):
+    task_id: int
+
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow_factory: Callable[[], AbstractAsyncContextManager[IUoW]]) -> None:
         self._uow_factory = uow_factory
 
-    async def handle(self, command: CancelTask) -> None:
+    async def handle(self, command: CancelTask):
         async with self._uow_factory() as uow:
             await uow.tasks.cancel(command.task_id)
             await uow.commit()
@@ -39,11 +42,14 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
 
 ```python
 # After — live dependency; cleanup on CQRS scope exit
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTask(cqrs.Request[None]):
+    task_id: int
+
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
 
-    async def handle(self, command: CancelTask) -> None:
+    async def handle(self, command: CancelTask):
         await self._uow.tasks.cancel(command.task_id)
         await self._uow.commit()
 ```

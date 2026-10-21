@@ -71,7 +71,7 @@ class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand]):
         await self._meetings_api.join_user(request.user_id, request.meeting_id)
 ```
 
-`RequestHandler[Command, None]` remains valid. Do not add `-> None` on `handle` in new code: `Request[None]` already says the method returns `None`.
+Do not add `-> None` on `handle` in new code: `Request[None]` already says the method returns `None`.
 
 ## Query Handler
 
@@ -120,6 +120,14 @@ class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery]):
         return ReadMeetingQueryResult(link=link, meeting_id=request.meeting_id)
 ```
 
-`await mediator.send(ReadMeetingQuery(...))` has type `ReadMeetingQueryResult`. `RequestHandler[Query, QueryResult]` remains valid. Do not add `-> ReadMeetingQueryResult` on `handle`.
+`await mediator.send(ReadMeetingQuery(...))` has type `ReadMeetingQueryResult`. Do not add `-> ReadMeetingQueryResult` on `handle`.
+
+**Legacy (still supported).** The two-argument form still works. Copy the one-argument form above.
+
+```python
+class ReadMeetingQueryHandler(cqrs.RequestHandler[ReadMeetingQuery, ReadMeetingQueryResult]):
+    async def handle(self, request: ReadMeetingQuery) -> ReadMeetingQueryResult:
+        ...
+```
 
 A runnable example is [`examples/events/typed_request_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/events/typed_request_handler.py). Register with `mapper.bind(RequestType, Handler)`. One handler per request type: a second `bind` raises `KeyError`.

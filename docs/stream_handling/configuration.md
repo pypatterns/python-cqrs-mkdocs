@@ -71,8 +71,11 @@ async with aclosing(mediator.stream(command)) as stream:
 Streaming handlers support parallel event processing. After each yield, events are collected and can be processed concurrently:
 
 ```python
+class ProcessOrdersCommand(cqrs.Request[OrderProcessedResult]):
+    order_ids: list[str]
+
 class ProcessOrdersCommandHandler(
-    cqrs.StreamingRequestHandler[ProcessOrdersCommand, OrderProcessedResult]
+    cqrs.StreamingRequestHandler[ProcessOrdersCommand]
 ):
     def __init__(self):
         self._events: list[Event] = []
@@ -84,9 +87,7 @@ class ProcessOrdersCommandHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: ProcessOrdersCommand
-    ) -> typing.AsyncIterator[OrderProcessedResult]:
+    async def handle(self, request: ProcessOrdersCommand):
         for order_id in request.order_ids:
             # Process order
             result = OrderProcessedResult(order_id=order_id, ...)

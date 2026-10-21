@@ -174,6 +174,14 @@ class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand]):
         )
 ```
 
-The command is `Request[PaymentResult]`, so each step is `CORRequestHandler[ProcessPaymentCommand]` and `handle` has no return annotation. `CORRequestHandler[Command, Result]` remains valid.
+The command is `Request[PaymentResult]`, so each step is `CORRequestHandler[ProcessPaymentCommand]` and `handle` has no return annotation.
+
+**Legacy (still supported).** `CORRequestHandler[Command, Result]` with a return annotation on `handle` still works. Copy the one-argument form above.
+
+```python
+class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+        ...
+```
 
 Runnable example: [`examples/cor/typed_cor_request_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/typed_cor_request_handler.py).

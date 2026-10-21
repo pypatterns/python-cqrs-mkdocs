@@ -157,7 +157,7 @@ from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 from cqrs.middlewares import base
 
-class CreateUserCommand(cqrs.Request):
+class CreateUserCommand(cqrs.Request[None]):
     user_id: str
     email: str
 
@@ -165,7 +165,7 @@ class UserCreatedEvent(cqrs.DomainEvent):
     user_id: str
     email: str
 
-class CreateUserCommandHandler(cqrs.RequestHandler[CreateUserCommand, None]):
+class CreateUserCommandHandler(cqrs.RequestHandler[CreateUserCommand]):
     def __init__(self):
         self._events = []
 
@@ -173,7 +173,7 @@ class CreateUserCommandHandler(cqrs.RequestHandler[CreateUserCommand, None]):
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: CreateUserCommand) -> None:
+    async def handle(self, request: CreateUserCommand):
         # Business logic
         self._events.append(
             UserCreatedEvent(user_id=request.user_id, email=request.email)

@@ -53,33 +53,33 @@ def commands_mapper(mapper: cqrs.RequestMap) -> None:
 ## Basic Example
 
 ```python
-class GetUserProfileCommand(cqrs.Request):
-    user_id: str
-
 class UserProfileResult(cqrs.Response):
     user_id: str
     name: str
     source: str  # "primary" or "fallback"
 
+class GetUserProfileCommand(cqrs.Request[UserProfileResult]):
+    user_id: str
+
 class PrimaryGetUserProfileHandler(
-    cqrs.RequestHandler[GetUserProfileCommand, UserProfileResult],
+    cqrs.RequestHandler[GetUserProfileCommand],
 ):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: GetUserProfileCommand) -> UserProfileResult:
+    async def handle(self, request: GetUserProfileCommand):
         # e.g. database call that may raise
         raise ConnectionError("Database unavailable")
 
 class FallbackGetUserProfileHandler(
-    cqrs.RequestHandler[GetUserProfileCommand, UserProfileResult],
+    cqrs.RequestHandler[GetUserProfileCommand],
 ):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: GetUserProfileCommand) -> UserProfileResult:
+    async def handle(self, request: GetUserProfileCommand):
         return UserProfileResult(
             user_id=request.user_id,
             name="Unknown User",

@@ -4,6 +4,9 @@
 
 FROM python:3.13-slim AS builder
 
+# uv binary only; the image build does not need uv on the host.
+COPY --from=ghcr.io/astral-sh/uv:0.13.4 /uv /uvx /bin/
+
 WORKDIR /app
 
 RUN apt-get update \
@@ -11,7 +14,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# python:3.13-slim marks the interpreter externally managed. --system targets
+# that interpreter so `mike` stays on PATH; --break-system-packages matches
+# the image's previous pip install.
+RUN uv pip install --system --break-system-packages --no-cache -r requirements.txt
 
 # Clone so both doc branches are available even when the build context
 # has no .git (common on hosted Docker builders / Timeweb).

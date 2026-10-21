@@ -22,12 +22,6 @@
 import cqrs
 import pydantic
 
-class CreateUserCommand(cqrs.PydanticRequest):
-    """Pydantic-based command with validation."""
-    username: str
-    email: str = pydantic.Field(pattern=r'^[\w\.-]+@[\w\.-]+\.\w+$')
-    age: int = pydantic.Field(gt=0, le=120)
-
 class UserResponse(cqrs.PydanticResponse):
     """Pydantic-based response."""
     user_id: str
@@ -35,12 +29,18 @@ class UserResponse(cqrs.PydanticResponse):
     email: str
     age: int
 
-class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand, UserResponse]):
+class CreateUserCommand(cqrs.PydanticRequest[UserResponse]):
+    """Pydantic-based command with validation."""
+    username: str
+    email: str = pydantic.Field(pattern=r'^[\w\.-]+@[\w\.-]+\.\w+$')
+    age: int = pydantic.Field(gt=0, le=120)
+
+class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand]):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
     
-    async def handle(self, request: CreateUserCommand) -> UserResponse:
+    async def handle(self, request: CreateUserCommand):
         # Validation happens automatically
         user_id = f"user_{request.username}"
         return UserResponse(

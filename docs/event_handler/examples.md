@@ -29,11 +29,11 @@ class UserJoined(cqrs.DomainEvent, frozen=True):
     meeting_id: str
 
 # Command handler
-class JoinMeetingCommand(cqrs.Request):
+class JoinMeetingCommand(cqrs.Request[None]):
     user_id: str
     meeting_id: str
 
-class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand, None]):
+class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -41,7 +41,7 @@ class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand, None]):
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: JoinMeetingCommand) -> None:
+    async def handle(self, request: JoinMeetingCommand):
         # Business logic
         print(f"User {request.user_id} joined meeting {request.meeting_id}")
         

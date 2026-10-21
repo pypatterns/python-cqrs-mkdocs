@@ -91,6 +91,14 @@ class ProcessFilesCommandHandler(StreamingRequestHandler[ProcessFilesCommand]):
 ```
 
 !!! tip "Typing"
-    Declare the command as `Request[FileProcessedResult]` and the handler as `StreamingRequestHandler[ProcessFilesCommand]`. Do not annotate the element type on `handle`; `async for` yields `FileProcessedResult`. `StreamingRequestHandler[Command, Result]` remains valid. Call `mediator.stream(request)` **without** `await`.
+    Declare the command as `Request[FileProcessedResult]` and the handler as `StreamingRequestHandler[ProcessFilesCommand]`. Do not annotate the element type on `handle`; `async for` yields `FileProcessedResult`. Call `mediator.stream(request)` **without** `await`.
+
+**Legacy (still supported).** `StreamingRequestHandler[Command, Result]` with an element annotation on `handle` still works. Copy the one-argument form above.
+
+```python
+class ProcessFilesCommandHandler(StreamingRequestHandler[ProcessFilesCommand, FileProcessedResult]):
+    async def handle(self, request: ProcessFilesCommand) -> typing.AsyncIterator[FileProcessedResult]:
+        ...
+```
 
 Runnable example: [`examples/streaming/typed_streaming_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/streaming/typed_streaming_handler.py).

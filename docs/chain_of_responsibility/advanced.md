@@ -52,7 +52,7 @@ handler1.set_next(handler2).set_next(handler3)
 Passes the request to the next handler in the chain:
 
 ```python
-async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+async def handle(self, request: ProcessPaymentCommand):
     if can_handle(request):
         return process(request)
     

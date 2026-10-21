@@ -130,7 +130,7 @@ cqrs.OutboxedEventMap.register(
 )
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
@@ -138,7 +138,7 @@ class TaskCancelled(cqrs.DomainEvent, frozen=True):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(
         self,
         session: AsyncSession,
@@ -152,7 +152,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         self._session.add(TaskRow(id=request.task_id, cancelled=True))
         self._outbox.add(
             cqrs.NotificationEvent[TaskCancelledPayload](

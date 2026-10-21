@@ -48,11 +48,11 @@ async def uow_provider() -> typing.AsyncIterator[UoW]:
         await uow.close()  # after handle, not before
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
 
@@ -60,7 +60,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return []
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         await self._uow.commit()
 
 
@@ -148,11 +148,11 @@ if __name__ == "__main__":
 Without a CQRS scope you inject a factory and open the UoW yourself:
 
 ```python
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow_factory: Callable[[], AbstractAsyncContextManager[IUoW]]) -> None:
         self._uow_factory = uow_factory
 
-    async def handle(self, command: CancelTask) -> None:
+    async def handle(self, command: CancelTask):
         async with self._uow_factory() as uow:
             await uow.tasks.cancel(command.task_id)
             await uow.commit()
@@ -161,11 +161,11 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
 With `scope_strategy=ScopeStrategy.SEND`, inject the live object:
 
 ```python
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
 
-    async def handle(self, command: CancelTask) -> None:
+    async def handle(self, command: CancelTask):
         await self._uow.tasks.cancel(command.task_id)
         await self._uow.commit()
 ```

@@ -57,30 +57,30 @@ The Sequence diagram visualizes the complete execution flow of a handler chain u
 from cqrs.handlers.cor import CORRequestHandler
 from cqrs.models.response import Response
 
-class ProcessPaymentCommand(cqrs.Request):
-    amount: float
-    payment_method: str
-    user_id: str
-
 class PaymentResult(Response):
     success: bool
     transaction_id: str | None = None
     message: str = ""
 
-class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+class ProcessPaymentCommand(cqrs.Request[PaymentResult]):
+    amount: float
+    payment_method: str
+    user_id: str
+
+class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand]):
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "credit_card":
             return PaymentResult(success=True, transaction_id="cc_123")
         return await self.next(request)
     
-class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+class PayPalHandler(CORRequestHandler[ProcessPaymentCommand]):
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "paypal":
             return PaymentResult(success=True, transaction_id="pp_123")
         return await self.next(request)
     
-class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand]):
+    async def handle(self, request: ProcessPaymentCommand):
         return PaymentResult(success=False, message="Unsupported method")
 
 handlers = [CreditCardHandler, PayPalHandler, DefaultPaymentHandler]
@@ -337,7 +337,7 @@ This will output both Sequence and Class diagrams in a format ready to copy and 
 
 ### CoRMermaid Class
 
-#### `__init__(handlers: List[type[CORRequestHandler[Any, Any]]])`
+#### `__init__(handlers: Sequence[type[CORRequestHandler]])`
 
 Initialize Mermaid diagram generator.
 

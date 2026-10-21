@@ -106,7 +106,11 @@ graph TD
 Command handlers collect events in the `events` property:
 
 ```python
-class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
+class JoinMeetingCommand(cqrs.Request[None]):
+    user_id: str
+    meeting_id: str
+
+class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand]):
     def __init__(self):
         self._events: list[Event] = []
 
@@ -114,7 +118,7 @@ class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
     def events(self) -> list[Event]:
         return self._events
 
-    async def handle(self, request: JoinMeetingCommand) -> None:
+    async def handle(self, request: JoinMeetingCommand):
         # Business logic
         STORAGE[request.meeting_id].append(request.user_id)
         

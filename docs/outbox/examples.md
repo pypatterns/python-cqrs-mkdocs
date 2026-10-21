@@ -35,11 +35,11 @@ cqrs.OutboxedEventMap.register(
 )
 
 # Command handler
-class JoinMeetingCommand(cqrs.Request):
+class JoinMeetingCommand(cqrs.Request[None]):
     user_id: str
     meeting_id: str
 
-class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand, None]):
+class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand]):
     def __init__(self, outbox: cqrs.OutboxedEventRepository):
         self.outbox = outbox
     
@@ -47,7 +47,7 @@ class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand, None]):
     def events(self) -> list[cqrs.Event]:
         return []
     
-    async def handle(self, request: JoinMeetingCommand) -> None:
+    async def handle(self, request: JoinMeetingCommand):
         # Business logic
         print(f"User {request.user_id} joined meeting {request.meeting_id}")
         

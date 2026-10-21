@@ -177,6 +177,6 @@ mediator = bootstrap.bootstrap(
 result = await mediator.send(CreateUserCommand(email="user@example.com", name="John"))
 ```
 
-`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. `RequestHandler[CreateUserCommand, CreateUserResponse]` remains valid. Rules for agents: [For agents](agents.md).
+`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. Rules for agents: [For agents](agents.md).
 
 See [Bootstrap](bootstrap/index.md) for detailed setup instructions.

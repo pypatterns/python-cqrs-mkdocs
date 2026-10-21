@@ -56,20 +56,19 @@ Use `bootstrap_streaming` to obtain a `StreamingRequestMediator`; when you call 
 ## Basic Example
 
 ```python
-from typing import AsyncIterator
 import cqrs
 from cqrs.handlers.request import StreamingRequestHandler
-
-class StreamItemsCommand(cqrs.Request):
-    item_ids: list[str]
 
 class StreamItemResult(cqrs.Response):
     item_id: str
     status: str
     source: str  # "primary" or "fallback"
 
+class StreamItemsCommand(cqrs.Request[StreamItemResult]):
+    item_ids: list[str]
+
 class PrimaryStreamItemsHandler(
-    cqrs.StreamingRequestHandler[StreamItemsCommand, StreamItemResult],
+    cqrs.StreamingRequestHandler[StreamItemsCommand],
 ):
     def __init__(self) -> None:
         self._events: list[cqrs.Event] = []
@@ -81,9 +80,7 @@ class PrimaryStreamItemsHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: StreamItemsCommand
-    ) -> AsyncIterator[StreamItemResult]:
+    async def handle(self, request: StreamItemsCommand):
         for i, item_id in enumerate(request.item_ids):
             if i >= 2:
                 raise ConnectionError("Stream connection lost")
@@ -92,13 +89,11 @@ class PrimaryStreamItemsHandler(
             )
 
 class FallbackStreamItemsHandler(
-    cqrs.StreamingRequestHandler[StreamItemsCommand, StreamItemResult],
+    cqrs.StreamingRequestHandler[StreamItemsCommand],
 ):
     # ... same events protocol ...
 
-    async def handle(
-        self, request: StreamItemsCommand
-    ) -> AsyncIterator[StreamItemResult]:
+    async def handle(self, request: StreamItemsCommand):
         for item_id in request.item_ids:
             yield StreamItemResult(
                 item_id=item_id, status="from_fallback", source="fallback"

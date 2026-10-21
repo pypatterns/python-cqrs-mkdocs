@@ -46,7 +46,7 @@ class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand]):
 
 `handle` returns `None`. Do not annotate it.
 
-`RequestHandler[Request, Result]` remains valid. Do not rewrite existing handlers. `send` on an unparameterized `Request` is `Any`.
+Legacy (still supported): `RequestHandler[Request, Result]` with a return annotation on `handle` still works and is not the form to copy. Do not rewrite existing handlers. `send` on an unparameterized `Request` is `Any`.
 
 The same parameter types a stream element (`StreamingRequestHandler[Command]` with `Request[ItemResult]`) and `PydanticRequest[Result]` when the `pydantic` extra is installed.
 

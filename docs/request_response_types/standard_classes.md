@@ -15,28 +15,6 @@
 import cqrs
 from typing import Self
 
-class CustomRequest(cqrs.IRequest):
-    """Custom request using standard Python class."""
-    
-    def __init__(self, user_id: str, action: str):
-        self.user_id = user_id
-        self.action = action
-    
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        return {
-            "user_id": self.user_id,
-            "action": self.action
-        }
-    
-    @classmethod
-    def from_dict(cls, **kwargs) -> Self:
-        """Create from dictionary."""
-        return cls(
-            user_id=kwargs["user_id"],
-            action=kwargs["action"]
-        )
-
 class CustomResponse(cqrs.IResponse):
     """Custom response using standard Python class."""
     
@@ -59,12 +37,34 @@ class CustomResponse(cqrs.IResponse):
             status=kwargs["status"]
         )
 
-class CustomHandler(cqrs.RequestHandler[CustomRequest, CustomResponse]):
+class CustomRequest(cqrs.IRequest[CustomResponse]):
+    """Custom request using standard Python class."""
+    
+    def __init__(self, user_id: str, action: str):
+        self.user_id = user_id
+        self.action = action
+    
+    def to_dict(self) -> dict:
+        """Convert to dictionary."""
+        return {
+            "user_id": self.user_id,
+            "action": self.action
+        }
+    
+    @classmethod
+    def from_dict(cls, **kwargs) -> Self:
+        """Create from dictionary."""
+        return cls(
+            user_id=kwargs["user_id"],
+            action=kwargs["action"]
+        )
+
+class CustomHandler(cqrs.RequestHandler[CustomRequest]):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
     
-    async def handle(self, request: CustomRequest) -> CustomResponse:
+    async def handle(self, request: CustomRequest):
         return CustomResponse(
             result=f"Processed {request.action} for {request.user_id}",
             status="success"

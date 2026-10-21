@@ -139,7 +139,10 @@ Max handlers: **`RequestMediator` / `SagaMediator`** default `max_concurrent_eve
 
 ```python
 # Command handler emits multiple events
-class ProcessOrderCommandHandler(RequestHandler[ProcessOrderCommand, None]):
+class ProcessOrderCommand(cqrs.Request[None]):
+    ...
+
+class ProcessOrderCommandHandler(RequestHandler[ProcessOrderCommand]):
     def __init__(self):
         self._events: list[Event] = []
 
@@ -147,7 +150,7 @@ class ProcessOrderCommandHandler(RequestHandler[ProcessOrderCommand, None]):
     def events(self) -> list[Event]:
         return self._events
 
-    async def handle(self, request: ProcessOrderCommand) -> None:
+    async def handle(self, request: ProcessOrderCommand):
         # Business logic
         ...
         
