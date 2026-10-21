@@ -29,12 +29,12 @@ Request handlers can be divided into two main types:
 
 Command Handler executes the received command. The logic of the handler may include, for example, modifying the state of the domain model. As a result of executing the command, an event may be produced to the broker.
 
-| Aspect           | Description                                                            |
-| ---------------- | ---------------------------------------------------------------------- |
-| **Purpose**      | Execute write operations, modify system state                          |
-| **Return Value** | Optional (can return `None` or a response)                             |
-| **Events**       | Can emit domain events via `events` property                           |
-| **Handler Type** | `RequestHandler[Command, Response]` or `RequestHandler[Command, None]` |
+| Aspect           | Description                                                                        |
+| ---------------- | ---------------------------------------------------------------------------------- |
+| **Purpose**      | Execute write operations, modify system state                                      |
+| **Return Value** | Optional (can return `None` or a response)                                         |
+| **Events**       | Can emit domain events via `events` property                                       |
+| **Handler Type** | `RequestHandler[Command]` when the command is `Request[None]` or `Request[Result]` |
 
 Return Value
 
@@ -48,33 +48,33 @@ By default, the command handler does not return any result, but it is not mandat
 - **Transactional**: Often wrapped in database transactions
 
 ```python
+import cqrs
 from cqrs.handlers.request import RequestHandler
-from cqrs.models.event import Event
 
-class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
+class JoinMeetingCommand(cqrs.Request[None]):
+    user_id: str
+    meeting_id: str
 
-      def __init__(self, meetings_api: MeetingAPIProtocol) -> None:
-          self._meetings_api = meetings_api
-          self.events: list[Event] = []
+class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand]):
+    def __init__(self, meetings_api: MeetingAPIProtocol) -> None:
+        self._meetings_api = meetings_api
 
-      @property
-      def events(self) -> typing.List[events.Event]:
-          return self._events
-
-      async def handle(self, request: JoinMeetingCommand) -> None:
-          await self._meetings_api.join_user(request.user_id, request.meeting_id)
+    async def handle(self, request: JoinMeetingCommand):
+        await self._meetings_api.join_user(request.user_id, request.meeting_id)
 ```
+
+Do not add `-> None` on `handle` in new code: `Request[None]` already says the method returns `None`.
 
 ## Query Handler
 
 Query Handler returns a representation of the requested data, for example, from the [read model](https://radekmaziarka.pl/2018/01/08/cqrs-third-step-simple-read-model/#simple-read-model---to-the-rescue).
 
-| Aspect           | Description                              |
-| ---------------- | ---------------------------------------- |
-| **Purpose**      | Read data without modifying system state |
-| **Return Value** | Always returns a response                |
-| **Events**       | Typically does not emit events           |
-| **Handler Type** | `RequestHandler[Query, QueryResponse]`   |
+| Aspect           | Description                                                      |
+| ---------------- | ---------------------------------------------------------------- |
+| **Purpose**      | Read data without modifying system state                         |
+| **Return Value** | Always returns a response                                        |
+| **Events**       | Typically does not emit events                                   |
+| **Handler Type** | `RequestHandler[Query]` when the query is `Request[QueryResult]` |
 
 Read Model
 
@@ -88,20 +88,33 @@ The read model can be constructed based on domain events produced by the `Comman
 - **Fast**: Should be fast and efficient
 
 ```python
+import cqrs
 from cqrs.handlers.request import RequestHandler
-from cqrs.models.event import Event
 
-class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery, ReadMeetingQueryResult]):
+class ReadMeetingQueryResult(cqrs.Response):
+    link: str
+    meeting_id: str
 
-      def __init__(self, meetings_api: MeetingAPIProtocol) -> None:
-          self._meetings_api = meetings_api
-          self.events: list[Event] = []
+class ReadMeetingQuery(cqrs.Request[ReadMeetingQueryResult]):
+    meeting_id: str
 
-      @property
-      def events(self) -> typing.List[events.Event]:
-          return self._events
+class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery]):
+    def __init__(self, meetings_api: MeetingAPIProtocol) -> None:
+        self._meetings_api = meetings_api
 
-      async def handle(self, request: ReadMeetingQuery) -> ReadMeetingQueryResult:
-          link = await self._meetings_api.get_link(request.meeting_id)
-          return ReadMeetingQueryResult(link=link, meeting_id=request.meeting_id)
+    async def handle(self, request: ReadMeetingQuery):
+        link = await self._meetings_api.get_link(request.meeting_id)
+        return ReadMeetingQueryResult(link=link, meeting_id=request.meeting_id)
 ```
+
+`await mediator.send(ReadMeetingQuery(...))` has type `ReadMeetingQueryResult`. Do not add `-> ReadMeetingQueryResult` on `handle`.
+
+**Legacy (still supported).** The two-argument form still works. Copy the one-argument form above.
+
+```python
+class ReadMeetingQueryHandler(cqrs.RequestHandler[ReadMeetingQuery, ReadMeetingQueryResult]):
+    async def handle(self, request: ReadMeetingQuery) -> ReadMeetingQueryResult:
+        ...
+```
+
+A runnable example is [`examples/events/typed_request_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/events/typed_request_handler.py). Register with `mapper.bind(RequestType, Handler)`. One handler per request type: a second `bind` raises `KeyError`.

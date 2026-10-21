@@ -8,6 +8,10 @@ outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
 The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-full.txt
 
 
+## Agents
+
+- [For agents](https://mkdocs.python-cqrs.dev/latest/agents/index.md)
+
 ## Getting started
 
 - [Home](https://mkdocs.python-cqrs.dev/latest/index.md)

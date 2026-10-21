@@ -232,11 +232,14 @@ outbox = SqlAlchemyOutboxedEventRepository(
 )
 
 # Use in command handler
-class MyCommandHandler(RequestHandler[MyCommand, None]):
+class MyCommand(cqrs.Request[None]):
+    ...
+
+class MyCommandHandler(RequestHandler[MyCommand]):
     def __init__(self, outbox: OutboxedEventRepository):
         self.outbox = outbox
 
-    async def handle(self, request: MyCommand) -> None:
+    async def handle(self, request: MyCommand):
         # Business logic
         ...
 

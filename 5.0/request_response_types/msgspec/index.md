@@ -26,20 +26,6 @@ import cqrs
 import msgspec
 from typing import Self
 
-class MsgspecRequest(cqrs.IRequest, msgspec.Struct):
-    """Request using msgspec.Struct."""
-    user_id: str
-    action: str
-
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        return msgspec.to_builtins(self)
-
-    @classmethod
-    def from_dict(cls, **kwargs) -> Self:
-        """Create from dictionary."""
-        return msgspec.from_builtins(cls, kwargs)
-
 class MsgspecResponse(cqrs.IResponse, msgspec.Struct):
     """Response using msgspec.Struct."""
     result: str
@@ -54,12 +40,26 @@ class MsgspecResponse(cqrs.IResponse, msgspec.Struct):
         """Create from dictionary."""
         return msgspec.from_builtins(cls, kwargs)
 
-class MsgspecHandler(cqrs.RequestHandler[MsgspecRequest, MsgspecResponse]):
+class MsgspecRequest(cqrs.IRequest[MsgspecResponse], msgspec.Struct):
+    """Request using msgspec.Struct."""
+    user_id: str
+    action: str
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary."""
+        return msgspec.to_builtins(self)
+
+    @classmethod
+    def from_dict(cls, **kwargs) -> Self:
+        """Create from dictionary."""
+        return msgspec.from_builtins(cls, kwargs)
+
+class MsgspecHandler(cqrs.RequestHandler[MsgspecRequest]):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: MsgspecRequest) -> MsgspecResponse:
+    async def handle(self, request: MsgspecRequest):
         return MsgspecResponse(
             result=f"Processed {request.action}",
             status="success"

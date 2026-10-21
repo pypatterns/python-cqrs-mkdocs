@@ -13,26 +13,26 @@ import dataclasses
 import cqrs
 import pydantic
 
-# Pydantic request with validation
-class CreateOrderCommand(cqrs.PydanticRequest):
-    user_id: str
-    product_id: str
-    quantity: int = pydantic.Field(gt=0)
-
 # Dataclass response - lightweight
 @dataclasses.dataclass
 class OrderResponse(cqrs.DCResponse):
     order_id: str
     total_price: float
 
+# Pydantic request with validation
+class CreateOrderCommand(cqrs.PydanticRequest[OrderResponse]):
+    user_id: str
+    product_id: str
+    quantity: int = pydantic.Field(gt=0)
+
 class CreateOrderHandler(
-    cqrs.RequestHandler[CreateOrderCommand, OrderResponse]
+    cqrs.RequestHandler[CreateOrderCommand]
 ):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: CreateOrderCommand) -> OrderResponse:
+    async def handle(self, request: CreateOrderCommand):
         # Request is validated by Pydantic
         total_price = 99.99 * request.quantity
         return OrderResponse(
@@ -46,11 +46,6 @@ class CreateOrderHandler(
 Use lightweight dataclass for request, but Pydantic for response validation:
 
 ```python
-@dataclasses.dataclass
-class GetUserQuery(cqrs.DCRequest):
-    """Dataclass query - simple and lightweight."""
-    user_id: str
-
 class UserDetailsResponse(cqrs.PydanticResponse):
     """Pydantic response with validation."""
     user_id: str
@@ -58,14 +53,19 @@ class UserDetailsResponse(cqrs.PydanticResponse):
     email: str
     total_orders: int = 0
 
+@dataclasses.dataclass
+class GetUserQuery(cqrs.DCRequest[UserDetailsResponse]):
+    """Dataclass query - simple and lightweight."""
+    user_id: str
+
 class GetUserQueryHandler(
-    cqrs.RequestHandler[GetUserQuery, UserDetailsResponse]
+    cqrs.RequestHandler[GetUserQuery]
 ):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: GetUserQuery) -> UserDetailsResponse:
+    async def handle(self, request: GetUserQuery):
         # Response is validated by Pydantic
         return UserDetailsResponse(
             user_id=request.user_id,

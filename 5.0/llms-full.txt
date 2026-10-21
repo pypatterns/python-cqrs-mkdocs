@@ -8,6 +8,72 @@ outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
 The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-full.txt
 
 
+# Agents
+
+# Rules for coding agents
+
+These rules are for an agent writing an application on `python-cqrs` 5.2 or newer. They are also the first section of `llms.txt`.
+
+## Requests and handlers
+
+- Commands and queries are both `cqrs.Request`. There is no `Query` class and no `CommandBus`.
+- There is no `register_handler` decorator. Register with `mapper.bind(RequestType, Handler)`.
+- One handler per request type. A second `bind` for the same request raises `KeyError`.
+- An event may have many handlers. `EventMap.bind` appends.
+
+## Types to copy
+
+A request that returns data:
+
+```python
+class ReadMeetingQueryResult(cqrs.Response):
+    users: list[str]
+
+class ReadMeetingQuery(cqrs.Request[ReadMeetingQueryResult]):
+    meeting_id: str
+
+class ReadMeetingQueryHandler(cqrs.RequestHandler[ReadMeetingQuery]):
+    async def handle(self, request: ReadMeetingQuery):
+        return ReadMeetingQueryResult(users=["1", "2"])
+```
+
+Do not add `-> ReadMeetingQueryResult` on `handle`. `await mediator.send(query)` is `ReadMeetingQueryResult`.
+
+A command with an empty body:
+
+```python
+class JoinMeetingCommand(cqrs.Request[None]):
+    user_id: str
+    meeting_id: str
+
+class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand]):
+    async def handle(self, request: JoinMeetingCommand):
+        print(request.user_id, request.meeting_id)
+```
+
+`handle` returns `None`. Do not annotate it.
+
+Legacy (still supported): `RequestHandler[Request, Result]` with a return annotation on `handle` still works and is not the form to copy. Do not rewrite existing handlers. `send` on an unparameterized `Request` is `Any`.
+
+The same parameter types a stream element (`StreamingRequestHandler[Command]` with `Request[ItemResult]`) and `PydanticRequest[Result]` when the `pydantic` extra is installed.
+
+## What the library does not check
+
+- A read handler should not write state and should not fill `events`. A command handler may. The library does not enforce that.
+- Publish to a broker through the transactional outbox. Do not write the business row and then publish to the broker in the same handler.
+- Use a saga for a step that has compensation across services, not for a single `UPDATE`.
+
+## Extras
+
+Install extras explicitly: `pydantic`, `sqlalchemy`, `sqlmodel`, `kafka`, and the others listed in the library `pyproject.toml`.
+
+## Examples
+
+- [Request handler](https://github.com/vadikko2/python-cqrs/blob/master/examples/events/typed_request_handler.py)
+- [Streaming handler](https://github.com/vadikko2/python-cqrs/blob/master/examples/streaming/typed_streaming_handler.py)
+- [Chain of responsibility](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/typed_cor_request_handler.py)
+
+Further reading: [Request handlers](https://mkdocs.python-cqrs.dev/latest/request_handler/index.md), [streaming](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md), [chain of responsibility](https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/index.md).
 # Getting started
 
 # Python CQRS
@@ -20,7 +86,7 @@ Event-Driven Architecture Framework for Distributed Systems
 
 Documentation for python-cqrs 5.x
 
-You are viewing **5.x** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, new package layout, `SagaMediator.execute`).
+You are viewing **5.x** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, `Request[Result]` and one-argument handlers since 5.2, new package layout, `SagaMediator.execute`).
 
 Migrating from 4.x? Follow the [4→5 migration guide](https://mkdocs.python-cqrs.dev/latest/migration/4-to-5/index.md). Use the version selector for frozen **4.0** docs.
 
@@ -139,21 +205,18 @@ import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 
-# Define command, response and handler
-class CreateUserCommand(cqrs.Request):
-    email: str
-    name: str
-
 class CreateUserResponse(cqrs.Response):
     user_id: str
 
-class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand, CreateUserResponse]):
-    async def handle(self, request: CreateUserCommand) -> CreateUserResponse:
-        # Your business logic here
+class CreateUserCommand(cqrs.Request[CreateUserResponse]):
+    email: str
+    name: str
+
+class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand]):
+    async def handle(self, request: CreateUserCommand):
         user_id = f"user_{request.email}"
         return CreateUserResponse(user_id=user_id)
 
-# Bootstrap and use
 mediator = bootstrap.bootstrap(
     di_container=di.Container(),
     commands_mapper=lambda m: m.bind(CreateUserCommand, CreateUserHandler),
@@ -161,6 +224,8 @@ mediator = bootstrap.bootstrap(
 
 result = await mediator.send(CreateUserCommand(email="user@example.com", name="John"))
 ```
+
+`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. Rules for agents: [For agents](https://mkdocs.python-cqrs.dev/latest/agents/index.md).
 
 See [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) for detailed setup instructions.
 
@@ -1081,7 +1146,7 @@ from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 from cqrs.middlewares import base
 
-class CreateUserCommand(cqrs.Request):
+class CreateUserCommand(cqrs.Request[None]):
     user_id: str
     email: str
 
@@ -1089,7 +1154,7 @@ class UserCreatedEvent(cqrs.DomainEvent):
     user_id: str
     email: str
 
-class CreateUserCommandHandler(cqrs.RequestHandler[CreateUserCommand, None]):
+class CreateUserCommandHandler(cqrs.RequestHandler[CreateUserCommand]):
     def __init__(self):
         self._events = []
 
@@ -1097,7 +1162,7 @@ class CreateUserCommandHandler(cqrs.RequestHandler[CreateUserCommand, None]):
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: CreateUserCommand) -> None:
+    async def handle(self, request: CreateUserCommand):
         # Business logic
         self._events.append(
             UserCreatedEvent(user_id=request.user_id, email=request.email)
@@ -1424,7 +1489,6 @@ mediator = bootstrap.bootstrap_streaming(
 ### Complete Example
 
 ```python
-import typing
 import asyncio
 import di
 import cqrs
@@ -1432,19 +1496,19 @@ from cqrs.bootstrap import requests as bootstrap
 from cqrs.handlers.request import StreamingRequestHandler
 from cqrs.message_brokers import devnull
 
-class ProcessFilesCommand(cqrs.Request):
-    file_ids: list[str]
-
 class FileProcessedResult(cqrs.Response):
     file_id: str
     status: str
+
+class ProcessFilesCommand(cqrs.Request[FileProcessedResult]):
+    file_ids: list[str]
 
 class FileProcessedEvent(cqrs.DomainEvent):
     file_id: str
     status: str
 
 class ProcessFilesCommandHandler(
-    StreamingRequestHandler[ProcessFilesCommand, FileProcessedResult]
+    StreamingRequestHandler[ProcessFilesCommand]
 ):
     def __init__(self):
         self._events = []
@@ -1456,9 +1520,7 @@ class ProcessFilesCommandHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: ProcessFilesCommand
-    ) -> typing.AsyncIterator[FileProcessedResult]:
+    async def handle(self, request: ProcessFilesCommand):
         for file_id in request.file_ids:
             # Simulate processing
             await asyncio.sleep(0.1)
@@ -1620,7 +1682,10 @@ container.bind(
 Handlers receive dependencies automatically through constructor injection:
 
 ```python
-class MyHandler(RequestHandler[MyCommand, None]):
+class MyCommand(Request[None]):
+    ...
+
+class MyHandler(RequestHandler[MyCommand]):
     def __init__(self, service: ServiceProtocol) -> None:
         self._service = service
 ```
@@ -1722,11 +1787,11 @@ async def uow_provider() -> typing.AsyncIterator[UoW]:
         await uow.close()  # after handle, not before
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
 
@@ -1734,7 +1799,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return []
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         await self._uow.commit()
 
 
@@ -1819,11 +1884,11 @@ di scope=request is not a CQRS scope
 Without a CQRS scope you inject a factory and open the UoW yourself:
 
 ```python
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow_factory: Callable[[], AbstractAsyncContextManager[IUoW]]) -> None:
         self._uow_factory = uow_factory
 
-    async def handle(self, command: CancelTask) -> None:
+    async def handle(self, command: CancelTask):
         async with self._uow_factory() as uow:
             await uow.tasks.cancel(command.task_id)
             await uow.commit()
@@ -1832,11 +1897,11 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
 With `scope_strategy=ScopeStrategy.SEND`, inject the live object:
 
 ```python
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
 
-    async def handle(self, command: CancelTask) -> None:
+    async def handle(self, command: CancelTask):
         await self._uow.tasks.cancel(command.task_id)
         await self._uow.commit()
 ```
@@ -2010,11 +2075,11 @@ async def uow_provider() -> typing.AsyncIterator[UoW]:
         await uow.close()
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
 
@@ -2022,7 +2087,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return []
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         await self._uow.commit()
 
 
@@ -2081,11 +2146,11 @@ class UoW:
         pass
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: UoW) -> None:
         self._uow = uow
 
@@ -2093,7 +2158,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return []
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         await self._uow.commit()
 
 
@@ -2161,11 +2226,11 @@ class UoW:
         pass
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: UoW) -> None:
         self._uow = uow
 
@@ -2173,7 +2238,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return []
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         await self._uow.commit()
 
 
@@ -2453,7 +2518,7 @@ cqrs.OutboxedEventMap.register(
 )
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
@@ -2461,7 +2526,7 @@ class TaskCancelled(cqrs.DomainEvent, frozen=True):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(
         self,
         session: AsyncSession,
@@ -2475,7 +2540,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         self._session.add(TaskRow(id=request.task_id, cancelled=True))
         self._outbox.add(
             cqrs.NotificationEvent[TaskCancelledPayload](
@@ -2575,11 +2640,14 @@ The onboarding story now lives on [Overview](https://mkdocs.python-cqrs.dev/late
 
 ```python
 # Before — factory boilerplate
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTask(cqrs.Request[None]):
+    task_id: int
+
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow_factory: Callable[[], AbstractAsyncContextManager[IUoW]]) -> None:
         self._uow_factory = uow_factory
 
-    async def handle(self, command: CancelTask) -> None:
+    async def handle(self, command: CancelTask):
         async with self._uow_factory() as uow:
             await uow.tasks.cancel(command.task_id)
             await uow.commit()
@@ -2587,11 +2655,14 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
 
 ```python
 # After — live dependency; cleanup on CQRS scope exit
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTask(cqrs.Request[None]):
+    task_id: int
+
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
 
-    async def handle(self, command: CancelTask) -> None:
+    async def handle(self, command: CancelTask):
         await self._uow.tasks.cancel(command.task_id)
         await self._uow.commit()
 ```
@@ -2630,12 +2701,12 @@ Request handlers can be divided into two main types:
 
 Command Handler executes the received command. The logic of the handler may include, for example, modifying the state of the domain model. As a result of executing the command, an event may be produced to the broker.
 
-| Aspect           | Description                                                            |
-| ---------------- | ---------------------------------------------------------------------- |
-| **Purpose**      | Execute write operations, modify system state                          |
-| **Return Value** | Optional (can return `None` or a response)                             |
-| **Events**       | Can emit domain events via `events` property                           |
-| **Handler Type** | `RequestHandler[Command, Response]` or `RequestHandler[Command, None]` |
+| Aspect           | Description                                                                        |
+| ---------------- | ---------------------------------------------------------------------------------- |
+| **Purpose**      | Execute write operations, modify system state                                      |
+| **Return Value** | Optional (can return `None` or a response)                                         |
+| **Events**       | Can emit domain events via `events` property                                       |
+| **Handler Type** | `RequestHandler[Command]` when the command is `Request[None]` or `Request[Result]` |
 
 Return Value
 
@@ -2649,33 +2720,33 @@ By default, the command handler does not return any result, but it is not mandat
 - **Transactional**: Often wrapped in database transactions
 
 ```python
+import cqrs
 from cqrs.handlers.request import RequestHandler
-from cqrs.models.event import Event
 
-class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
+class JoinMeetingCommand(cqrs.Request[None]):
+    user_id: str
+    meeting_id: str
 
-      def __init__(self, meetings_api: MeetingAPIProtocol) -> None:
-          self._meetings_api = meetings_api
-          self.events: list[Event] = []
+class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand]):
+    def __init__(self, meetings_api: MeetingAPIProtocol) -> None:
+        self._meetings_api = meetings_api
 
-      @property
-      def events(self) -> typing.List[events.Event]:
-          return self._events
-
-      async def handle(self, request: JoinMeetingCommand) -> None:
-          await self._meetings_api.join_user(request.user_id, request.meeting_id)
+    async def handle(self, request: JoinMeetingCommand):
+        await self._meetings_api.join_user(request.user_id, request.meeting_id)
 ```
+
+Do not add `-> None` on `handle` in new code: `Request[None]` already says the method returns `None`.
 
 ## Query Handler
 
 Query Handler returns a representation of the requested data, for example, from the [read model](https://radekmaziarka.pl/2018/01/08/cqrs-third-step-simple-read-model/#simple-read-model---to-the-rescue).
 
-| Aspect           | Description                              |
-| ---------------- | ---------------------------------------- |
-| **Purpose**      | Read data without modifying system state |
-| **Return Value** | Always returns a response                |
-| **Events**       | Typically does not emit events           |
-| **Handler Type** | `RequestHandler[Query, QueryResponse]`   |
+| Aspect           | Description                                                      |
+| ---------------- | ---------------------------------------------------------------- |
+| **Purpose**      | Read data without modifying system state                         |
+| **Return Value** | Always returns a response                                        |
+| **Events**       | Typically does not emit events                                   |
+| **Handler Type** | `RequestHandler[Query]` when the query is `Request[QueryResult]` |
 
 Read Model
 
@@ -2689,23 +2760,36 @@ The read model can be constructed based on domain events produced by the `Comman
 - **Fast**: Should be fast and efficient
 
 ```python
+import cqrs
 from cqrs.handlers.request import RequestHandler
-from cqrs.models.event import Event
 
-class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery, ReadMeetingQueryResult]):
+class ReadMeetingQueryResult(cqrs.Response):
+    link: str
+    meeting_id: str
 
-      def __init__(self, meetings_api: MeetingAPIProtocol) -> None:
-          self._meetings_api = meetings_api
-          self.events: list[Event] = []
+class ReadMeetingQuery(cqrs.Request[ReadMeetingQueryResult]):
+    meeting_id: str
 
-      @property
-      def events(self) -> typing.List[events.Event]:
-          return self._events
+class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery]):
+    def __init__(self, meetings_api: MeetingAPIProtocol) -> None:
+        self._meetings_api = meetings_api
 
-      async def handle(self, request: ReadMeetingQuery) -> ReadMeetingQueryResult:
-          link = await self._meetings_api.get_link(request.meeting_id)
-          return ReadMeetingQueryResult(link=link, meeting_id=request.meeting_id)
+    async def handle(self, request: ReadMeetingQuery):
+        link = await self._meetings_api.get_link(request.meeting_id)
+        return ReadMeetingQueryResult(link=link, meeting_id=request.meeting_id)
 ```
+
+`await mediator.send(ReadMeetingQuery(...))` has type `ReadMeetingQueryResult`. Do not add `-> ReadMeetingQueryResult` on `handle`.
+
+**Legacy (still supported).** The two-argument form still works. Copy the one-argument form above.
+
+```python
+class ReadMeetingQueryHandler(cqrs.RequestHandler[ReadMeetingQuery, ReadMeetingQueryResult]):
+    async def handle(self, request: ReadMeetingQuery) -> ReadMeetingQueryResult:
+        ...
+```
+
+A runnable example is [`examples/events/typed_request_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/events/typed_request_handler.py). Register with `mapper.bind(RequestType, Handler)`. One handler per request type: a second `bind` raises `KeyError`.
 
 # Request Handler Fallback
 
@@ -2759,33 +2843,33 @@ def commands_mapper(mapper: cqrs.RequestMap) -> None:
 ## Basic Example
 
 ```python
-class GetUserProfileCommand(cqrs.Request):
-    user_id: str
-
 class UserProfileResult(cqrs.Response):
     user_id: str
     name: str
     source: str  # "primary" or "fallback"
 
+class GetUserProfileCommand(cqrs.Request[UserProfileResult]):
+    user_id: str
+
 class PrimaryGetUserProfileHandler(
-    cqrs.RequestHandler[GetUserProfileCommand, UserProfileResult],
+    cqrs.RequestHandler[GetUserProfileCommand],
 ):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: GetUserProfileCommand) -> UserProfileResult:
+    async def handle(self, request: GetUserProfileCommand):
         # e.g. database call that may raise
         raise ConnectionError("Database unavailable")
 
 class FallbackGetUserProfileHandler(
-    cqrs.RequestHandler[GetUserProfileCommand, UserProfileResult],
+    cqrs.RequestHandler[GetUserProfileCommand],
 ):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: GetUserProfileCommand) -> UserProfileResult:
+    async def handle(self, request: GetUserProfileCommand):
         return UserProfileResult(
             user_id=request.user_id,
             name="Unknown User",
@@ -3076,21 +3160,6 @@ import cqrs
 import attrs
 from typing import Self
 
-@attrs.define
-class AttrsRequest(cqrs.IRequest):
-    """Request using attrs."""
-    user_id: str = attrs.field(validator=attrs.validators.instance_of(str))
-    action: str = attrs.field(validator=attrs.validators.instance_of(str))
-
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        return attrs.asdict(self)
-
-    @classmethod
-    def from_dict(cls, **kwargs) -> Self:
-        """Create from dictionary."""
-        return cls(**kwargs)
-
 @attrs.define(frozen=True)
 class AttrsResponse(cqrs.IResponse):
     """Immutable response using attrs."""
@@ -3106,12 +3175,27 @@ class AttrsResponse(cqrs.IResponse):
         """Create from dictionary."""
         return cls(**kwargs)
 
-class AttrsHandler(cqrs.RequestHandler[AttrsRequest, AttrsResponse]):
+@attrs.define
+class AttrsRequest(cqrs.IRequest[AttrsResponse]):
+    """Request using attrs."""
+    user_id: str = attrs.field(validator=attrs.validators.instance_of(str))
+    action: str = attrs.field(validator=attrs.validators.instance_of(str))
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary."""
+        return attrs.asdict(self)
+
+    @classmethod
+    def from_dict(cls, **kwargs) -> Self:
+        """Create from dictionary."""
+        return cls(**kwargs)
+
+class AttrsHandler(cqrs.RequestHandler[AttrsRequest]):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: AttrsRequest) -> AttrsResponse:
+    async def handle(self, request: AttrsRequest):
         return AttrsResponse(
             result=f"Processed {request.action}",
             status="success"
@@ -3551,13 +3635,6 @@ import dataclasses
 import cqrs
 
 @dataclasses.dataclass
-class CreateProductCommand(cqrs.DCRequest):
-    """Dataclass-based command."""
-    name: str
-    price: float
-    category: str
-
-@dataclasses.dataclass
 class ProductResponse(cqrs.DCResponse):
     """Dataclass-based response."""
     product_id: str
@@ -3565,16 +3642,21 @@ class ProductResponse(cqrs.DCResponse):
     price: float
     category: str
 
+@dataclasses.dataclass
+class CreateProductCommand(cqrs.DCRequest[ProductResponse]):
+    """Dataclass-based command."""
+    name: str
+    price: float
+    category: str
+
 class CreateProductHandler(
-    cqrs.RequestHandler[CreateProductCommand, ProductResponse]
+    cqrs.RequestHandler[CreateProductCommand]
 ):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(
-        self, request: CreateProductCommand
-    ) -> ProductResponse:
+    async def handle(self, request: CreateProductCommand):
         product_id = f"product_{request.name}"
         return ProductResponse(
             product_id=product_id,
@@ -3649,26 +3731,26 @@ import dataclasses
 import cqrs
 import pydantic
 
-# Pydantic request with validation
-class CreateOrderCommand(cqrs.PydanticRequest):
-    user_id: str
-    product_id: str
-    quantity: int = pydantic.Field(gt=0)
-
 # Dataclass response - lightweight
 @dataclasses.dataclass
 class OrderResponse(cqrs.DCResponse):
     order_id: str
     total_price: float
 
+# Pydantic request with validation
+class CreateOrderCommand(cqrs.PydanticRequest[OrderResponse]):
+    user_id: str
+    product_id: str
+    quantity: int = pydantic.Field(gt=0)
+
 class CreateOrderHandler(
-    cqrs.RequestHandler[CreateOrderCommand, OrderResponse]
+    cqrs.RequestHandler[CreateOrderCommand]
 ):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: CreateOrderCommand) -> OrderResponse:
+    async def handle(self, request: CreateOrderCommand):
         # Request is validated by Pydantic
         total_price = 99.99 * request.quantity
         return OrderResponse(
@@ -3682,11 +3764,6 @@ class CreateOrderHandler(
 Use lightweight dataclass for request, but Pydantic for response validation:
 
 ```python
-@dataclasses.dataclass
-class GetUserQuery(cqrs.DCRequest):
-    """Dataclass query - simple and lightweight."""
-    user_id: str
-
 class UserDetailsResponse(cqrs.PydanticResponse):
     """Pydantic response with validation."""
     user_id: str
@@ -3694,14 +3771,19 @@ class UserDetailsResponse(cqrs.PydanticResponse):
     email: str
     total_orders: int = 0
 
+@dataclasses.dataclass
+class GetUserQuery(cqrs.DCRequest[UserDetailsResponse]):
+    """Dataclass query - simple and lightweight."""
+    user_id: str
+
 class GetUserQueryHandler(
-    cqrs.RequestHandler[GetUserQuery, UserDetailsResponse]
+    cqrs.RequestHandler[GetUserQuery]
 ):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: GetUserQuery) -> UserDetailsResponse:
+    async def handle(self, request: GetUserQuery):
         # Response is validated by Pydantic
         return UserDetailsResponse(
             user_id=request.user_id,
@@ -3783,20 +3865,6 @@ import cqrs
 import msgspec
 from typing import Self
 
-class MsgspecRequest(cqrs.IRequest, msgspec.Struct):
-    """Request using msgspec.Struct."""
-    user_id: str
-    action: str
-
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        return msgspec.to_builtins(self)
-
-    @classmethod
-    def from_dict(cls, **kwargs) -> Self:
-        """Create from dictionary."""
-        return msgspec.from_builtins(cls, kwargs)
-
 class MsgspecResponse(cqrs.IResponse, msgspec.Struct):
     """Response using msgspec.Struct."""
     result: str
@@ -3811,12 +3879,26 @@ class MsgspecResponse(cqrs.IResponse, msgspec.Struct):
         """Create from dictionary."""
         return msgspec.from_builtins(cls, kwargs)
 
-class MsgspecHandler(cqrs.RequestHandler[MsgspecRequest, MsgspecResponse]):
+class MsgspecRequest(cqrs.IRequest[MsgspecResponse], msgspec.Struct):
+    """Request using msgspec.Struct."""
+    user_id: str
+    action: str
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary."""
+        return msgspec.to_builtins(self)
+
+    @classmethod
+    def from_dict(cls, **kwargs) -> Self:
+        """Create from dictionary."""
+        return msgspec.from_builtins(cls, kwargs)
+
+class MsgspecHandler(cqrs.RequestHandler[MsgspecRequest]):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: MsgspecRequest) -> MsgspecResponse:
+    async def handle(self, request: MsgspecRequest):
         return MsgspecResponse(
             result=f"Processed {request.action}",
             status="success"
@@ -4036,12 +4118,6 @@ Consider using NamedTuple when:
 import cqrs
 import pydantic
 
-class CreateUserCommand(cqrs.PydanticRequest):
-    """Pydantic-based command with validation."""
-    username: str
-    email: str = pydantic.Field(pattern=r'^[\w\.-]+@[\w\.-]+\.\w+$')
-    age: int = pydantic.Field(gt=0, le=120)
-
 class UserResponse(cqrs.PydanticResponse):
     """Pydantic-based response."""
     user_id: str
@@ -4049,12 +4125,18 @@ class UserResponse(cqrs.PydanticResponse):
     email: str
     age: int
 
-class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand, UserResponse]):
+class CreateUserCommand(cqrs.PydanticRequest[UserResponse]):
+    """Pydantic-based command with validation."""
+    username: str
+    email: str = pydantic.Field(pattern=r'^[\w\.-]+@[\w\.-]+\.\w+$')
+    age: int = pydantic.Field(gt=0, le=120)
+
+class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand]):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: CreateUserCommand) -> UserResponse:
+    async def handle(self, request: CreateUserCommand):
         # Validation happens automatically
         user_id = f"user_{request.username}"
         return UserResponse(
@@ -4145,28 +4227,6 @@ restored = CreateUserCommand.from_dict(**data)
 import cqrs
 from typing import Self
 
-class CustomRequest(cqrs.IRequest):
-    """Custom request using standard Python class."""
-
-    def __init__(self, user_id: str, action: str):
-        self.user_id = user_id
-        self.action = action
-
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        return {
-            "user_id": self.user_id,
-            "action": self.action
-        }
-
-    @classmethod
-    def from_dict(cls, **kwargs) -> Self:
-        """Create from dictionary."""
-        return cls(
-            user_id=kwargs["user_id"],
-            action=kwargs["action"]
-        )
-
 class CustomResponse(cqrs.IResponse):
     """Custom response using standard Python class."""
 
@@ -4189,12 +4249,34 @@ class CustomResponse(cqrs.IResponse):
             status=kwargs["status"]
         )
 
-class CustomHandler(cqrs.RequestHandler[CustomRequest, CustomResponse]):
+class CustomRequest(cqrs.IRequest[CustomResponse]):
+    """Custom request using standard Python class."""
+
+    def __init__(self, user_id: str, action: str):
+        self.user_id = user_id
+        self.action = action
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary."""
+        return {
+            "user_id": self.user_id,
+            "action": self.action
+        }
+
+    @classmethod
+    def from_dict(cls, **kwargs) -> Self:
+        """Create from dictionary."""
+        return cls(
+            user_id=kwargs["user_id"],
+            action=kwargs["action"]
+        )
+
+class CustomHandler(cqrs.RequestHandler[CustomRequest]):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: CustomRequest) -> CustomResponse:
+    async def handle(self, request: CustomRequest):
         return CustomResponse(
             result=f"Processed {request.action} for {request.user_id}",
             status="success"
@@ -4456,23 +4538,20 @@ Streaming is ideal for large batch operations, file processing, or any scenario 
 Here's a simple example of a streaming handler:
 
 ```python
-import typing
 from datetime import datetime
 import cqrs
 from cqrs.handlers.request import StreamingRequestHandler
 from cqrs.models.event import Event
-
-class ProcessFilesCommand(cqrs.Request):
-    file_ids: list[str]
 
 class FileProcessedResult(cqrs.Response):
     file_id: str
     status: str
     processed_at: datetime
 
-class ProcessFilesCommandHandler(
-    StreamingRequestHandler[ProcessFilesCommand, FileProcessedResult]
-):
+class ProcessFilesCommand(cqrs.Request[FileProcessedResult]):
+    file_ids: list[str]
+
+class ProcessFilesCommandHandler(StreamingRequestHandler[ProcessFilesCommand]):
     def __init__(self):
         self._events: list[Event] = []
 
@@ -4483,29 +4562,30 @@ class ProcessFilesCommandHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: ProcessFilesCommand
-    ) -> typing.AsyncIterator[FileProcessedResult]:
+    async def handle(self, request: ProcessFilesCommand):
         for file_id in request.file_ids:
-            # Process file
             result = FileProcessedResult(
                 file_id=file_id,
                 status="completed",
-                processed_at=datetime.now()
+                processed_at=datetime.now(),
             )
-
-            # Emit events
-            self._events.append(
-                FileProcessedEvent(file_id=file_id, ...)
-            )
-
-            # Yield result - events will be processed after this yield
+            self._events.append(FileProcessedEvent(file_id=file_id))
             yield result
 ```
 
 Typing
 
-The base `StreamingRequestHandler` declares `def handle(...) -> AsyncIterator[ResT]`. Your subclass implements it as an async generator (`async def handle(...): yield ...`). This is type-safe; no `# type: ignore` is needed. Call `mediator.stream(request)` **without** `await` and consume the result with `async for`.
+Declare the command as `Request[FileProcessedResult]` and the handler as `StreamingRequestHandler[ProcessFilesCommand]`. Do not annotate the element type on `handle`; `async for` yields `FileProcessedResult`. Call `mediator.stream(request)` **without** `await`.
+
+**Legacy (still supported).** `StreamingRequestHandler[Command, Result]` with an element annotation on `handle` still works. Copy the one-argument form above.
+
+```python
+class ProcessFilesCommandHandler(StreamingRequestHandler[ProcessFilesCommand, FileProcessedResult]):
+    async def handle(self, request: ProcessFilesCommand) -> typing.AsyncIterator[FileProcessedResult]:
+        ...
+```
+
+Runnable example: [`examples/streaming/typed_streaming_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/streaming/typed_streaming_handler.py).
 
 # Configuration
 
@@ -4574,8 +4654,11 @@ async with aclosing(mediator.stream(command)) as stream:
 Streaming handlers support parallel event processing. After each yield, events are collected and can be processed concurrently:
 
 ```python
+class ProcessOrdersCommand(cqrs.Request[OrderProcessedResult]):
+    order_ids: list[str]
+
 class ProcessOrdersCommandHandler(
-    cqrs.StreamingRequestHandler[ProcessOrdersCommand, OrderProcessedResult]
+    cqrs.StreamingRequestHandler[ProcessOrdersCommand]
 ):
     def __init__(self):
         self._events: list[Event] = []
@@ -4587,9 +4670,7 @@ class ProcessOrdersCommandHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: ProcessOrdersCommand
-    ) -> typing.AsyncIterator[OrderProcessedResult]:
+    async def handle(self, request: ProcessOrdersCommand):
         for order_id in request.order_ids:
             # Process order
             result = OrderProcessedResult(order_id=order_id, ...)
@@ -4687,20 +4768,19 @@ Use `bootstrap_streaming` to obtain a `StreamingRequestMediator`; when you call 
 ## Basic Example
 
 ```python
-from typing import AsyncIterator
 import cqrs
 from cqrs.handlers.request import StreamingRequestHandler
-
-class StreamItemsCommand(cqrs.Request):
-    item_ids: list[str]
 
 class StreamItemResult(cqrs.Response):
     item_id: str
     status: str
     source: str  # "primary" or "fallback"
 
+class StreamItemsCommand(cqrs.Request[StreamItemResult]):
+    item_ids: list[str]
+
 class PrimaryStreamItemsHandler(
-    cqrs.StreamingRequestHandler[StreamItemsCommand, StreamItemResult],
+    cqrs.StreamingRequestHandler[StreamItemsCommand],
 ):
     def __init__(self) -> None:
         self._events: list[cqrs.Event] = []
@@ -4712,9 +4792,7 @@ class PrimaryStreamItemsHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: StreamItemsCommand
-    ) -> AsyncIterator[StreamItemResult]:
+    async def handle(self, request: StreamItemsCommand):
         for i, item_id in enumerate(request.item_ids):
             if i >= 2:
                 raise ConnectionError("Stream connection lost")
@@ -4723,13 +4801,11 @@ class PrimaryStreamItemsHandler(
             )
 
 class FallbackStreamItemsHandler(
-    cqrs.StreamingRequestHandler[StreamItemsCommand, StreamItemResult],
+    cqrs.StreamingRequestHandler[StreamItemsCommand],
 ):
     # ... same events protocol ...
 
-    async def handle(
-        self, request: StreamItemsCommand
-    ) -> AsyncIterator[StreamItemResult]:
+    async def handle(self, request: StreamItemsCommand):
         for item_id in request.item_ids:
             yield StreamItemResult(
                 item_id=item_id, status="from_fallback", source="fallback"
@@ -4852,7 +4928,6 @@ Here's a complete example demonstrating streaming handlers with parallel event p
 
 ```python
 import asyncio
-import typing
 from datetime import datetime
 import di
 import cqrs
@@ -4860,14 +4935,14 @@ from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 
 # Domain models
-class ProcessOrdersCommand(cqrs.Request):
-    order_ids: list[str]
-
 class OrderProcessedResult(cqrs.Response):
     order_id: str
     status: str
     processed_at: datetime
     items_count: int
+
+class ProcessOrdersCommand(cqrs.Request[OrderProcessedResult]):
+    order_ids: list[str]
 
 # Domain events
 class OrderProcessedEvent(cqrs.DomainEvent, frozen=True):
@@ -4881,7 +4956,7 @@ class OrderAnalyticsEvent(cqrs.DomainEvent, frozen=True):
 
 # Streaming handler
 class ProcessOrdersCommandHandler(
-    cqrs.StreamingRequestHandler[ProcessOrdersCommand, OrderProcessedResult]
+    cqrs.StreamingRequestHandler[ProcessOrdersCommand]
 ):
     def __init__(self):
         self._events: list[cqrs.Event] = []
@@ -4893,9 +4968,7 @@ class ProcessOrdersCommandHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: ProcessOrdersCommand
-    ) -> typing.AsyncIterator[OrderProcessedResult]:
+    async def handle(self, request: ProcessOrdersCommand):
         for order_id in request.order_ids:
             # Simulate processing
             await asyncio.sleep(0.1)
@@ -5106,26 +5179,25 @@ Each handler in the chain:
 Here's a simple example demonstrating the Chain of Responsibility pattern:
 
 ```python
-import typing
 import cqrs
 from cqrs.handlers.cor import CORRequestHandler
-
-class ProcessPaymentCommand(cqrs.Request):
-    amount: float
-    payment_method: str
-    user_id: str
 
 class PaymentResult(cqrs.Response):
     success: bool
     transaction_id: str | None = None
     message: str = ""
 
+class ProcessPaymentCommand(cqrs.Request[PaymentResult]):
+    amount: float
+    payment_method: str
+    user_id: str
+
 class PaymentProcessedEvent(cqrs.Event):
     transaction_id: str
     amount: float
     user_id: str
 
-class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -5133,7 +5205,7 @@ class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult])
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "credit_card":
             transaction_id = f"cc_{request.user_id}_{int(request.amount * 100)}"
 
@@ -5154,7 +5226,7 @@ class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult])
         # Pass to next handler if can't handle
         return await self.next(request)
 
-class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class PayPalHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -5162,7 +5234,7 @@ class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "paypal":
             transaction_id = f"pp_{request.user_id}_{int(request.amount * 100)}"
 
@@ -5183,18 +5255,30 @@ class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
         # Pass to next handler if can't handle
         return await self.next(request)
 
-class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand]):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         # Default handler always handles the request
         return PaymentResult(
             success=False,
             message=f"Unsupported payment method: {request.payment_method}",
         )
 ```
+
+The command is `Request[PaymentResult]`, so each step is `CORRequestHandler[ProcessPaymentCommand]` and `handle` has no return annotation.
+
+**Legacy (still supported).** `CORRequestHandler[Command, Result]` with a return annotation on `handle` still works. Copy the one-argument form above.
+
+```python
+class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+        ...
+```
+
+Runnable example: [`examples/cor/typed_cor_request_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/typed_cor_request_handler.py).
 
 # Advanced Topics
 
@@ -5244,7 +5328,7 @@ handler1.set_next(handler2).set_next(handler3)
 Passes the request to the next handler in the chain:
 
 ```python
-async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+async def handle(self, request: ProcessPaymentCommand):
     if can_handle(request):
         return process(request)
 
@@ -5355,22 +5439,21 @@ Here's a complete example demonstrating payment processing with multiple handler
 
 ```python
 import asyncio
-import typing
 import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 from cqrs.handlers.cor import CORRequestHandler
 
 # Domain models
-class ProcessPaymentCommand(cqrs.Request):
-    amount: float
-    payment_method: str
-    user_id: str
-
 class PaymentResult(cqrs.Response):
     success: bool
     transaction_id: str | None = None
     message: str = ""
+
+class ProcessPaymentCommand(cqrs.Request[PaymentResult]):
+    amount: float
+    payment_method: str
+    user_id: str
 
 class PaymentProcessedEvent(cqrs.Event):
     transaction_id: str
@@ -5378,7 +5461,7 @@ class PaymentProcessedEvent(cqrs.Event):
     user_id: str
 
 # Chain handlers
-class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -5386,7 +5469,7 @@ class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult])
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "credit_card":
             transaction_id = f"cc_{request.user_id}_{int(request.amount * 100)}"
 
@@ -5406,7 +5489,7 @@ class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult])
 
         return await self.next(request)
 
-class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class PayPalHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -5414,7 +5497,7 @@ class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "paypal":
             transaction_id = f"pp_{request.user_id}_{int(request.amount * 100)}"
 
@@ -5434,7 +5517,7 @@ class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
 
         return await self.next(request)
 
-class BankTransferHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class BankTransferHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -5442,7 +5525,7 @@ class BankTransferHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "bank_transfer":
             transaction_id = f"bt_{request.user_id}_{int(request.amount * 100)}"
 
@@ -5462,12 +5545,12 @@ class BankTransferHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult
 
         return await self.next(request)
 
-class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand]):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         return PaymentResult(
             success=False,
             message=f"Unsupported payment method: {request.payment_method}",
@@ -5593,8 +5676,15 @@ mediator = bootstrap.bootstrap(
 The primary handler is a normal `RequestHandler` that holds the chain entry and delegates:
 
 ```python
+class FetchDataResult(cqrs.Response):
+    data: str
+    source: str
+
+class FetchDataCommand(cqrs.Request[FetchDataResult]):
+    ...
+
 class CORChainWrapperHandler(
-    cqrs.RequestHandler[FetchDataCommand, FetchDataResult],
+    cqrs.RequestHandler[FetchDataCommand],
 ):
     """Primary handler: runs the COR chain; chain entry injected via DI."""
 
@@ -5605,7 +5695,7 @@ class CORChainWrapperHandler(
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: FetchDataCommand) -> FetchDataResult:
+    async def handle(self, request: FetchDataCommand):
         result = await self._chain_entry.handle(request)
         if result is None:
             raise ValueError("COR chain did not handle the request")
@@ -5620,13 +5710,13 @@ The fallback is a simple `RequestHandler` that returns a default or cached respo
 
 ```python
 class FallbackFetchDataHandler(
-    cqrs.RequestHandler[FetchDataCommand, FetchDataResult],
+    cqrs.RequestHandler[FetchDataCommand],
 ):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: FetchDataCommand) -> FetchDataResult:
+    async def handle(self, request: FetchDataCommand):
         return FetchDataResult(
             data="cached_or_default",
             source="fallback",
@@ -7809,7 +7899,11 @@ graph TD
 Command handlers collect events in the `events` property:
 
 ```python
-class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
+class JoinMeetingCommand(cqrs.Request[None]):
+    user_id: str
+    meeting_id: str
+
+class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand]):
     def __init__(self):
         self._events: list[Event] = []
 
@@ -7817,7 +7911,7 @@ class JoinMeetingCommandHandler(RequestHandler[JoinMeetingCommand, None]):
     def events(self) -> list[Event]:
         return self._events
 
-    async def handle(self, request: JoinMeetingCommand) -> None:
+    async def handle(self, request: JoinMeetingCommand):
         # Business logic
         STORAGE[request.meeting_id].append(request.user_id)
 
@@ -7990,11 +8084,11 @@ class UserJoined(cqrs.DomainEvent, frozen=True):
     meeting_id: str
 
 # Command handler
-class JoinMeetingCommand(cqrs.Request):
+class JoinMeetingCommand(cqrs.Request[None]):
     user_id: str
     meeting_id: str
 
-class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand, None]):
+class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -8002,7 +8096,7 @@ class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand, None]):
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: JoinMeetingCommand) -> None:
+    async def handle(self, request: JoinMeetingCommand):
         # Business logic
         print(f"User {request.user_id} joined meeting {request.meeting_id}")
 
@@ -8394,7 +8488,10 @@ Max handlers: **`RequestMediator` / `SagaMediator`** default `max_concurrent_eve
 
 ```python
 # Command handler emits multiple events
-class ProcessOrderCommandHandler(RequestHandler[ProcessOrderCommand, None]):
+class ProcessOrderCommand(cqrs.Request[None]):
+    ...
+
+class ProcessOrderCommandHandler(RequestHandler[ProcessOrderCommand]):
     def __init__(self):
         self._events: list[Event] = []
 
@@ -8402,7 +8499,7 @@ class ProcessOrderCommandHandler(RequestHandler[ProcessOrderCommand, None]):
     def events(self) -> list[Event]:
         return self._events
 
-    async def handle(self, request: ProcessOrderCommand) -> None:
+    async def handle(self, request: ProcessOrderCommand):
         # Business logic
         ...
 
@@ -9277,11 +9374,11 @@ cqrs.OutboxedEventMap.register(
 )
 
 # Command handler
-class JoinMeetingCommand(cqrs.Request):
+class JoinMeetingCommand(cqrs.Request[None]):
     user_id: str
     meeting_id: str
 
-class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand, None]):
+class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand]):
     def __init__(self, outbox: cqrs.OutboxedEventRepository):
         self.outbox = outbox
 
@@ -9289,7 +9386,7 @@ class JoinMeetingCommandHandler(cqrs.RequestHandler[JoinMeetingCommand, None]):
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: JoinMeetingCommand) -> None:
+    async def handle(self, request: JoinMeetingCommand):
         # Business logic
         print(f"User {request.user_id} joined meeting {request.meeting_id}")
 
@@ -9585,11 +9682,14 @@ outbox = SqlAlchemyOutboxedEventRepository(
 )
 
 # Use in command handler
-class MyCommandHandler(RequestHandler[MyCommand, None]):
+class MyCommand(cqrs.Request[None]):
+    ...
+
+class MyCommandHandler(RequestHandler[MyCommand]):
     def __init__(self, outbox: OutboxedEventRepository):
         self.outbox = outbox
 
-    async def handle(self, request: MyCommand) -> None:
+    async def handle(self, request: MyCommand):
         # Business logic
         ...
 
@@ -9949,30 +10049,30 @@ The Sequence diagram visualizes the complete execution flow of a handler chain u
 from cqrs.handlers.cor import CORRequestHandler
 from cqrs.models.response import Response
 
-class ProcessPaymentCommand(cqrs.Request):
-    amount: float
-    payment_method: str
-    user_id: str
-
 class PaymentResult(Response):
     success: bool
     transaction_id: str | None = None
     message: str = ""
 
-class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+class ProcessPaymentCommand(cqrs.Request[PaymentResult]):
+    amount: float
+    payment_method: str
+    user_id: str
+
+class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand]):
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "credit_card":
             return PaymentResult(success=True, transaction_id="cc_123")
         return await self.next(request)
 
-class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+class PayPalHandler(CORRequestHandler[ProcessPaymentCommand]):
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "paypal":
             return PaymentResult(success=True, transaction_id="pp_123")
         return await self.next(request)
 
-class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand]):
+    async def handle(self, request: ProcessPaymentCommand):
         return PaymentResult(success=False, message="Unsupported method")
 
 handlers = [CreditCardHandler, PayPalHandler, DefaultPaymentHandler]
@@ -10229,7 +10329,7 @@ This will output both Sequence and Class diagrams in a format ready to copy and 
 
 ### CoRMermaid Class
 
-#### `__init__(handlers: List[type[CORRequestHandler[Any, Any]]])`
+#### `__init__(handlers: Sequence[type[CORRequestHandler]])`
 
 Initialize Mermaid diagram generator.
 

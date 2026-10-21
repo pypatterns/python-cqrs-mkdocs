@@ -48,23 +48,20 @@ Streaming is ideal for large batch operations, file processing, or any scenario 
 Here's a simple example of a streaming handler:
 
 ```python
-import typing
 from datetime import datetime
 import cqrs
 from cqrs.handlers.request import StreamingRequestHandler
 from cqrs.models.event import Event
-
-class ProcessFilesCommand(cqrs.Request):
-    file_ids: list[str]
 
 class FileProcessedResult(cqrs.Response):
     file_id: str
     status: str
     processed_at: datetime
 
-class ProcessFilesCommandHandler(
-    StreamingRequestHandler[ProcessFilesCommand, FileProcessedResult]
-):
+class ProcessFilesCommand(cqrs.Request[FileProcessedResult]):
+    file_ids: list[str]
+
+class ProcessFilesCommandHandler(StreamingRequestHandler[ProcessFilesCommand]):
     def __init__(self):
         self._events: list[Event] = []
 
@@ -75,26 +72,27 @@ class ProcessFilesCommandHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: ProcessFilesCommand
-    ) -> typing.AsyncIterator[FileProcessedResult]:
+    async def handle(self, request: ProcessFilesCommand):
         for file_id in request.file_ids:
-            # Process file
             result = FileProcessedResult(
                 file_id=file_id,
                 status="completed",
-                processed_at=datetime.now()
+                processed_at=datetime.now(),
             )
-
-            # Emit events
-            self._events.append(
-                FileProcessedEvent(file_id=file_id, ...)
-            )
-
-            # Yield result - events will be processed after this yield
+            self._events.append(FileProcessedEvent(file_id=file_id))
             yield result
 ```
 
 Typing
 
-The base `StreamingRequestHandler` declares `def handle(...) -> AsyncIterator[ResT]`. Your subclass implements it as an async generator (`async def handle(...): yield ...`). This is type-safe; no `# type: ignore` is needed. Call `mediator.stream(request)` **without** `await` and consume the result with `async for`.
+Declare the command as `Request[FileProcessedResult]` and the handler as `StreamingRequestHandler[ProcessFilesCommand]`. Do not annotate the element type on `handle`; `async for` yields `FileProcessedResult`. Call `mediator.stream(request)` **without** `await`.
+
+**Legacy (still supported).** `StreamingRequestHandler[Command, Result]` with an element annotation on `handle` still works. Copy the one-argument form above.
+
+```python
+class ProcessFilesCommandHandler(StreamingRequestHandler[ProcessFilesCommand, FileProcessedResult]):
+    async def handle(self, request: ProcessFilesCommand) -> typing.AsyncIterator[FileProcessedResult]:
+        ...
+```
+
+Runnable example: [`examples/streaming/typed_streaming_handler.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/streaming/typed_streaming_handler.py).

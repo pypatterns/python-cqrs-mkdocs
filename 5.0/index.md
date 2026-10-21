@@ -8,7 +8,7 @@ Event-Driven Architecture Framework for Distributed Systems
 
 Documentation for python-cqrs 5.x
 
-You are viewing **5.x** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, new package layout, `SagaMediator.execute`).
+You are viewing **5.x** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, `Request[Result]` and one-argument handlers since 5.2, new package layout, `SagaMediator.execute`).
 
 Migrating from 4.x? Follow the [4→5 migration guide](https://mkdocs.python-cqrs.dev/latest/migration/4-to-5/index.md). Use the version selector for frozen **4.0** docs.
 
@@ -127,21 +127,18 @@ import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 
-# Define command, response and handler
-class CreateUserCommand(cqrs.Request):
-    email: str
-    name: str
-
 class CreateUserResponse(cqrs.Response):
     user_id: str
 
-class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand, CreateUserResponse]):
-    async def handle(self, request: CreateUserCommand) -> CreateUserResponse:
-        # Your business logic here
+class CreateUserCommand(cqrs.Request[CreateUserResponse]):
+    email: str
+    name: str
+
+class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand]):
+    async def handle(self, request: CreateUserCommand):
         user_id = f"user_{request.email}"
         return CreateUserResponse(user_id=user_id)
 
-# Bootstrap and use
 mediator = bootstrap.bootstrap(
     di_container=di.Container(),
     commands_mapper=lambda m: m.bind(CreateUserCommand, CreateUserHandler),
@@ -149,5 +146,7 @@ mediator = bootstrap.bootstrap(
 
 result = await mediator.send(CreateUserCommand(email="user@example.com", name="John"))
 ```
+
+`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. Rules for agents: [For agents](https://mkdocs.python-cqrs.dev/latest/agents/index.md).
 
 See [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) for detailed setup instructions.

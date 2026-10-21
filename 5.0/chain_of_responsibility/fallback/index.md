@@ -67,8 +67,15 @@ mediator = bootstrap.bootstrap(
 The primary handler is a normal `RequestHandler` that holds the chain entry and delegates:
 
 ```python
+class FetchDataResult(cqrs.Response):
+    data: str
+    source: str
+
+class FetchDataCommand(cqrs.Request[FetchDataResult]):
+    ...
+
 class CORChainWrapperHandler(
-    cqrs.RequestHandler[FetchDataCommand, FetchDataResult],
+    cqrs.RequestHandler[FetchDataCommand],
 ):
     """Primary handler: runs the COR chain; chain entry injected via DI."""
 
@@ -79,7 +86,7 @@ class CORChainWrapperHandler(
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: FetchDataCommand) -> FetchDataResult:
+    async def handle(self, request: FetchDataCommand):
         result = await self._chain_entry.handle(request)
         if result is None:
             raise ValueError("COR chain did not handle the request")
@@ -94,13 +101,13 @@ The fallback is a simple `RequestHandler` that returns a default or cached respo
 
 ```python
 class FallbackFetchDataHandler(
-    cqrs.RequestHandler[FetchDataCommand, FetchDataResult],
+    cqrs.RequestHandler[FetchDataCommand],
 ):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: FetchDataCommand) -> FetchDataResult:
+    async def handle(self, request: FetchDataCommand):
         return FetchDataResult(
             data="cached_or_default",
             source="fallback",

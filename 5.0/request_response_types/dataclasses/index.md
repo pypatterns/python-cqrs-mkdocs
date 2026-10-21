@@ -23,13 +23,6 @@ import dataclasses
 import cqrs
 
 @dataclasses.dataclass
-class CreateProductCommand(cqrs.DCRequest):
-    """Dataclass-based command."""
-    name: str
-    price: float
-    category: str
-
-@dataclasses.dataclass
 class ProductResponse(cqrs.DCResponse):
     """Dataclass-based response."""
     product_id: str
@@ -37,16 +30,21 @@ class ProductResponse(cqrs.DCResponse):
     price: float
     category: str
 
+@dataclasses.dataclass
+class CreateProductCommand(cqrs.DCRequest[ProductResponse]):
+    """Dataclass-based command."""
+    name: str
+    price: float
+    category: str
+
 class CreateProductHandler(
-    cqrs.RequestHandler[CreateProductCommand, ProductResponse]
+    cqrs.RequestHandler[CreateProductCommand]
 ):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(
-        self, request: CreateProductCommand
-    ) -> ProductResponse:
+    async def handle(self, request: CreateProductCommand):
         product_id = f"product_{request.name}"
         return ProductResponse(
             product_id=product_id,

@@ -55,11 +55,11 @@ async def uow_provider() -> typing.AsyncIterator[UoW]:
         await uow.close()
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: IUoW) -> None:
         self._uow = uow
 
@@ -67,7 +67,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return []
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         await self._uow.commit()
 
 
@@ -126,11 +126,11 @@ class UoW:
         pass
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: UoW) -> None:
         self._uow = uow
 
@@ -138,7 +138,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return []
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         await self._uow.commit()
 
 
@@ -206,11 +206,11 @@ class UoW:
         pass
 
 
-class CancelTask(cqrs.Request):
+class CancelTask(cqrs.Request[None]):
     task_id: int
 
 
-class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
+class CancelTaskHandler(cqrs.RequestHandler[CancelTask]):
     def __init__(self, uow: UoW) -> None:
         self._uow = uow
 
@@ -218,7 +218,7 @@ class CancelTaskHandler(cqrs.RequestHandler[CancelTask, None]):
     def events(self) -> typing.List[cqrs.Event]:
         return []
 
-    async def handle(self, request: CancelTask) -> None:
+    async def handle(self, request: CancelTask):
         await self._uow.commit()
 
 

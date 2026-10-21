@@ -54,22 +54,21 @@ Here's a complete example demonstrating payment processing with multiple handler
 
 ```python
 import asyncio
-import typing
 import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 from cqrs.handlers.cor import CORRequestHandler
 
 # Domain models
-class ProcessPaymentCommand(cqrs.Request):
-    amount: float
-    payment_method: str
-    user_id: str
-
 class PaymentResult(cqrs.Response):
     success: bool
     transaction_id: str | None = None
     message: str = ""
+
+class ProcessPaymentCommand(cqrs.Request[PaymentResult]):
+    amount: float
+    payment_method: str
+    user_id: str
 
 class PaymentProcessedEvent(cqrs.Event):
     transaction_id: str
@@ -77,7 +76,7 @@ class PaymentProcessedEvent(cqrs.Event):
     user_id: str
 
 # Chain handlers
-class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -85,7 +84,7 @@ class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult])
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "credit_card":
             transaction_id = f"cc_{request.user_id}_{int(request.amount * 100)}"
 
@@ -105,7 +104,7 @@ class CreditCardHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult])
 
         return await self.next(request)
 
-class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class PayPalHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -113,7 +112,7 @@ class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "paypal":
             transaction_id = f"pp_{request.user_id}_{int(request.amount * 100)}"
 
@@ -133,7 +132,7 @@ class PayPalHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
 
         return await self.next(request)
 
-class BankTransferHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class BankTransferHandler(CORRequestHandler[ProcessPaymentCommand]):
     def __init__(self):
         self._events: list[cqrs.Event] = []
 
@@ -141,7 +140,7 @@ class BankTransferHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult
     def events(self) -> list[cqrs.Event]:
         return self._events
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         if request.payment_method == "bank_transfer":
             transaction_id = f"bt_{request.user_id}_{int(request.amount * 100)}"
 
@@ -161,12 +160,12 @@ class BankTransferHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult
 
         return await self.next(request)
 
-class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand, PaymentResult]):
+class DefaultPaymentHandler(CORRequestHandler[ProcessPaymentCommand]):
     @property
     def events(self) -> list[cqrs.Event]:
         return []
 
-    async def handle(self, request: ProcessPaymentCommand) -> PaymentResult | None:
+    async def handle(self, request: ProcessPaymentCommand):
         return PaymentResult(
             success=False,
             message=f"Unsupported payment method: {request.payment_method}",

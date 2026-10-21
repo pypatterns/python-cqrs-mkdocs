@@ -59,7 +59,6 @@ Here's a complete example demonstrating streaming handlers with parallel event p
 
 ```python
 import asyncio
-import typing
 from datetime import datetime
 import di
 import cqrs
@@ -67,14 +66,14 @@ from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
 
 # Domain models
-class ProcessOrdersCommand(cqrs.Request):
-    order_ids: list[str]
-
 class OrderProcessedResult(cqrs.Response):
     order_id: str
     status: str
     processed_at: datetime
     items_count: int
+
+class ProcessOrdersCommand(cqrs.Request[OrderProcessedResult]):
+    order_ids: list[str]
 
 # Domain events
 class OrderProcessedEvent(cqrs.DomainEvent, frozen=True):
@@ -88,7 +87,7 @@ class OrderAnalyticsEvent(cqrs.DomainEvent, frozen=True):
 
 # Streaming handler
 class ProcessOrdersCommandHandler(
-    cqrs.StreamingRequestHandler[ProcessOrdersCommand, OrderProcessedResult]
+    cqrs.StreamingRequestHandler[ProcessOrdersCommand]
 ):
     def __init__(self):
         self._events: list[cqrs.Event] = []
@@ -100,9 +99,7 @@ class ProcessOrdersCommandHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: ProcessOrdersCommand
-    ) -> typing.AsyncIterator[OrderProcessedResult]:
+    async def handle(self, request: ProcessOrdersCommand):
         for order_id in request.order_ids:
             # Simulate processing
             await asyncio.sleep(0.1)

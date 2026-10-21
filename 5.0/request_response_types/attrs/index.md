@@ -22,21 +22,6 @@ import cqrs
 import attrs
 from typing import Self
 
-@attrs.define
-class AttrsRequest(cqrs.IRequest):
-    """Request using attrs."""
-    user_id: str = attrs.field(validator=attrs.validators.instance_of(str))
-    action: str = attrs.field(validator=attrs.validators.instance_of(str))
-
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        return attrs.asdict(self)
-
-    @classmethod
-    def from_dict(cls, **kwargs) -> Self:
-        """Create from dictionary."""
-        return cls(**kwargs)
-
 @attrs.define(frozen=True)
 class AttrsResponse(cqrs.IResponse):
     """Immutable response using attrs."""
@@ -52,12 +37,27 @@ class AttrsResponse(cqrs.IResponse):
         """Create from dictionary."""
         return cls(**kwargs)
 
-class AttrsHandler(cqrs.RequestHandler[AttrsRequest, AttrsResponse]):
+@attrs.define
+class AttrsRequest(cqrs.IRequest[AttrsResponse]):
+    """Request using attrs."""
+    user_id: str = attrs.field(validator=attrs.validators.instance_of(str))
+    action: str = attrs.field(validator=attrs.validators.instance_of(str))
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary."""
+        return attrs.asdict(self)
+
+    @classmethod
+    def from_dict(cls, **kwargs) -> Self:
+        """Create from dictionary."""
+        return cls(**kwargs)
+
+class AttrsHandler(cqrs.RequestHandler[AttrsRequest]):
     @property
     def events(self) -> list[cqrs.IEvent]:
         return []
 
-    async def handle(self, request: AttrsRequest) -> AttrsResponse:
+    async def handle(self, request: AttrsRequest):
         return AttrsResponse(
             result=f"Processed {request.action}",
             status="success"

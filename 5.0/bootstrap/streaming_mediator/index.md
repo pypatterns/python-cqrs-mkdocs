@@ -88,7 +88,6 @@ mediator = bootstrap.bootstrap_streaming(
 ### Complete Example
 
 ```python
-import typing
 import asyncio
 import di
 import cqrs
@@ -96,19 +95,19 @@ from cqrs.bootstrap import requests as bootstrap
 from cqrs.handlers.request import StreamingRequestHandler
 from cqrs.message_brokers import devnull
 
-class ProcessFilesCommand(cqrs.Request):
-    file_ids: list[str]
-
 class FileProcessedResult(cqrs.Response):
     file_id: str
     status: str
+
+class ProcessFilesCommand(cqrs.Request[FileProcessedResult]):
+    file_ids: list[str]
 
 class FileProcessedEvent(cqrs.DomainEvent):
     file_id: str
     status: str
 
 class ProcessFilesCommandHandler(
-    StreamingRequestHandler[ProcessFilesCommand, FileProcessedResult]
+    StreamingRequestHandler[ProcessFilesCommand]
 ):
     def __init__(self):
         self._events = []
@@ -120,9 +119,7 @@ class ProcessFilesCommandHandler(
     def clear_events(self) -> None:
         self._events.clear()
 
-    async def handle(
-        self, request: ProcessFilesCommand
-    ) -> typing.AsyncIterator[FileProcessedResult]:
+    async def handle(self, request: ProcessFilesCommand):
         for file_id in request.file_ids:
             # Simulate processing
             await asyncio.sleep(0.1)

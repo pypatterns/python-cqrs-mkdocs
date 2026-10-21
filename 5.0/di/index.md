@@ -119,7 +119,10 @@ container.bind(
 Handlers receive dependencies automatically through constructor injection:
 
 ```python
-class MyHandler(RequestHandler[MyCommand, None]):
+class MyCommand(Request[None]):
+    ...
+
+class MyHandler(RequestHandler[MyCommand]):
     def __init__(self, service: ServiceProtocol) -> None:
         self._service = service
 ```
