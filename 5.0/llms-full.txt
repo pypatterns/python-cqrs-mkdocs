@@ -194,7 +194,7 @@ uv pip install python-cqrs
 
 Requirements
 
-Python 3.10+ (tested on 3.10–3.13)
+Python 3.10+ (tested on 3.10–3.14)
 
 ______________________________________________________________________
 
@@ -231,7 +231,7 @@ See [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) for de
 
 # Installation
 
-**Python 3.10+** is required.
+**Python 3.10+** is required (tested on 3.10–3.14).
 
 ```bash
 pip install python-cqrs
