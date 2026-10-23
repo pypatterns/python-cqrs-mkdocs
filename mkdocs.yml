@@ -89,6 +89,10 @@ nav:
       - Usage: outbox/usage.md
       - Examples: outbox/examples.md
       - Best Practices: outbox/best_practices.md
+    - Transactional Inbox:
+      - Overview: inbox/index.md
+      - Usage: inbox/usage.md
+      - Examples: inbox/examples.md
   - ORM: orm.md
   - Integrations:
     - FastAPI Integration: fastapi.md
@@ -157,7 +161,7 @@ plugins:
       markdown_description: |
         python-cqrs is a Python framework for CQRS, Saga, Mediator, and event-driven
         architectures. Use these docs for bootstrap, request/event handlers, transaction
-        outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
+        outbox, transactional inbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
         The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-full.txt
       sections:
         Agents:
@@ -188,6 +192,7 @@ plugins:
         Events and outbox:
           - event_handler/*.md
           - outbox/*.md
+          - inbox/*.md
           - orm.md
           - mermaid/*.md
         Integrations:

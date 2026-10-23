@@ -22,6 +22,9 @@ FastAPI integration with `python-cqrs` allows you to build RESTful APIs where Fa
 !!! tip "Quick Start"
     This integration shows how to use mediators created via [Bootstrap](bootstrap/index.md) in FastAPI endpoints. See [Stream Handling](stream_handling/index.md) for SSE examples.
 
+!!! tip "Accept work before the handler runs"
+    A route that needs the handler result calls `mediator.send`. When the response can be `202` before that work finishes, depend on `InboxRepository`, call `add` with a one-element batch, and let `InboxProcessor` call the mediator. The dependency commits after the route returns. See the [transactional inbox](inbox/index.md).
+
 ## Setup
 
 First, install the required dependencies:
