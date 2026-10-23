@@ -1,6 +1,6 @@
 # Installation
 
-**Python 3.10+** is required.
+**Python 3.10+** is required (tested on 3.10–3.14).
 
 ```bash
 pip install python-cqrs

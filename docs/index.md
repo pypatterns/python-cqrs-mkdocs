@@ -146,7 +146,7 @@ uv pip install python-cqrs
 ```
 
 !!! info "Requirements"
-    Python 3.10+ (tested on 3.10–3.13)
+    Python 3.10+ (tested on 3.10–3.14)
 
 ---
 
