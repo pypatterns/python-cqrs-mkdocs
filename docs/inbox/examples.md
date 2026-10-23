@@ -89,7 +89,7 @@ async def accept_deposit(
 
 ## FastStream
 
-[`examples/inbox/faststream_accept.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/inbox/faststream_accept.py) uses FastStream 0.5 (`faststream[kafka]==0.5.28`). `batch=True` collects the Kafka records. `faststream.Depends(inbox_repository)` injects the same generator. The whole list goes to one `add`. FastStream acks the batch after that generator commits.
+[`examples/inbox/faststream_accept.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/inbox/faststream_accept.py) uses FastStream 0.5 (`faststream[kafka]==0.5.28`). `batch=True` collects the Kafka records. `faststream.Depends(inbox_repository)` injects the same generator. The whole list goes to one `add`. FastStream acks the batch after that generator commits. `retry=True` nacks the batch when that commit does not happen, so Kafka seeks back to those records. Each idempotency key is `{topic}-{partition}-{offset}`.
 
 ```python
 @broker.subscriber(
@@ -97,6 +97,7 @@ async def accept_deposit(
     batch=True,
     max_records=500,
     auto_commit=False,
+    retry=True,
     group_id="deposits-inbox",
 )
 async def on_deposits(
@@ -110,7 +111,7 @@ async def on_deposits(
     await inbox.add(
         [
             (
-                f"{record.offset}-{record.timestamp}",
+                f"{record.topic}-{record.partition}-{record.offset}",
                 ProcessDeposit(
                     account_id=body["account_id"],
                     amount=body["amount"],
