@@ -59,6 +59,7 @@ The Outbox pattern solves this by:
 !!! tip "Related Topics"
     - [Event Producing](../event_producing.md) — For configuring message brokers
     - [FastStream Integration](../faststream.md) — For consuming events from message brokers
+    - [Transactional Inbox](../inbox/index.md) — For accepting a command or event before a separate process runs it
     - [Bootstrap](../bootstrap/index.md) — For configuring outbox in bootstrap process
     - [Protobuf Integration](../protobuf.md) — Opt-in Protobuf codecs for outbox storage and publish
 

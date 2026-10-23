@@ -54,6 +54,7 @@ The same parameter types a stream element (`StreamingRequestHandler[Command]` wi
 
 - A read handler should not write state and should not fill `events`. A command handler may. The library does not enforce that.
 - Publish to a broker through the transactional outbox. Do not write the business row and then publish to the broker in the same handler.
+- A broker or HTTP endpoint that only accepts a command or event opens a session, writes `InboxRepository.add([(message_id, message)])`, and commits. `add` always takes a batch and returns `list[bool]`. A duplicate is `False` and still ends as ack or HTTP 202. Construct `InboxProcessor` with the repository for the worker session. `process` takes the row. It calls `get_many` and the mediator that is already registered. The handler does not commit. The caller owns the session and the commit. Do not call `mediator.send` in that subscriber or route. Do not share the presentation session with the processor. `open_scope` and `bind_scope` are only when that same presentation transaction must also write another row.
 - Use a saga for a step that has compensation across services, not for a single `UPDATE`.
 
 ## Extras
@@ -65,5 +66,6 @@ Install extras explicitly: `pydantic`, `sqlalchemy`, `sqlmodel`, `kafka`, and th
 - [Request handler](https://github.com/vadikko2/python-cqrs/blob/master/examples/events/typed_request_handler.py)
 - [Streaming handler](https://github.com/vadikko2/python-cqrs/blob/master/examples/streaming/typed_streaming_handler.py)
 - [Chain of responsibility](https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/typed_cor_request_handler.py)
+- [Transactional inbox](https://github.com/vadikko2/python-cqrs/blob/master/examples/inbox/process_deposits.py)
 
 Further reading: [Request handlers](request_handler/index.md), [streaming](stream_handling/index.md), [chain of responsibility](chain_of_responsibility/index.md).

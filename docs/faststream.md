@@ -25,6 +25,9 @@ FastStream is a powerful framework for building event-driven applications with m
     - [Event Producing](event_producing.md) — For publishing events to message brokers
     - [Protobuf Integration](protobuf.md) — Opt-in Protobuf produce / consume codecs
     - [Transaction Outbox](outbox/index.md) — For reliable event delivery
+    - [Transactional Inbox](inbox/index.md) — For accepting a Kafka batch before a separate process runs it
+
+`mediator.send` stays the path when this delivery must finish the handler before ack. When the subscriber only accepts the message, depend on `InboxRepository`, pass the Kafka batch (`batch=True`) to `add`, and let FastStream ack after that dependency commits. A duplicate key is still ack. `open_scope` is only for a presentation transaction that also writes another row.
 
 ## Setup
 
