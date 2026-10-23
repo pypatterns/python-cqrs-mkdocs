@@ -121,6 +121,18 @@
          <lastmod>2026-10-23</lastmod>
     </url>
     <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/inbox/</loc>
+         <lastmod>2026-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/inbox/examples/</loc>
+         <lastmod>2026-10-23</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/inbox/usage/</loc>
+         <lastmod>2026-10-23</lastmod>
+    </url>
+    <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/mermaid/</loc>
          <lastmod>2026-10-23</lastmod>
     </url>

@@ -4,7 +4,7 @@
 
 python-cqrs is a Python framework for CQRS, Saga, Mediator, and event-driven
 architectures. Use these docs for bootstrap, request/event handlers, transaction
-outbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
+outbox, transactional inbox, streaming, FastAPI/FastStream integrations, and distributed sagas.
 The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-full.txt
 
 
@@ -98,6 +98,9 @@ The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-fu
 - [Examples](https://mkdocs.python-cqrs.dev/latest/outbox/examples/index.md)
 - [Implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md)
 - [Usage](https://mkdocs.python-cqrs.dev/latest/outbox/usage/index.md)
+- [Overview](https://mkdocs.python-cqrs.dev/latest/inbox/index.md)
+- [Examples](https://mkdocs.python-cqrs.dev/latest/inbox/examples/index.md)
+- [Usage](https://mkdocs.python-cqrs.dev/latest/inbox/usage/index.md)
 - [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md)
 - [Overview](https://mkdocs.python-cqrs.dev/latest/mermaid/index.md)
 - [Chain of Responsibility](https://mkdocs.python-cqrs.dev/latest/mermaid/chain_of_responsibility/index.md)

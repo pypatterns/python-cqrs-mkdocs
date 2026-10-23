@@ -2970,6 +2970,145 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_12" id="__nav_5_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transactional Inbox
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Transactional Inbox
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inbox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inbox/usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inbox/examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3309,6 +3448,7 @@
 <ul>
 <li>A read handler should not write state and should not fill <code>events</code>. A command handler may. The library does not enforce that.</li>
 <li>Publish to a broker through the transactional outbox. Do not write the business row and then publish to the broker in the same handler.</li>
+<li>A broker or HTTP endpoint that only accepts a command or event opens a session, writes <code>InboxRepository.add([(message_id, message)])</code>, and commits. <code>add</code> always takes a batch and returns <code>list[bool]</code>. A duplicate is <code>False</code> and still ends as ack or HTTP 202. Construct <code>InboxProcessor</code> with the repository for the worker session. <code>process</code> takes the row. It calls <code>get_many</code> and the mediator that is already registered. The handler does not commit. The caller owns the session and the commit. Do not call <code>mediator.send</code> in that subscriber or route. Do not share the presentation session with the processor. <code>open_scope</code> and <code>bind_scope</code> are only when that same presentation transaction must also write another row.</li>
 <li>Use a saga for a step that has compensation across services, not for a single <code>UPDATE</code>.</li>
 </ul>
 <h2 id="extras">Extras<a class="headerlink" href="#extras" title="Permanent link">&para;</a></h2>
@@ -3318,6 +3458,7 @@
 <li><a href="https://github.com/vadikko2/python-cqrs/blob/master/examples/events/typed_request_handler.py">Request handler</a></li>
 <li><a href="https://github.com/vadikko2/python-cqrs/blob/master/examples/streaming/typed_streaming_handler.py">Streaming handler</a></li>
 <li><a href="https://github.com/vadikko2/python-cqrs/blob/master/examples/cor/typed_cor_request_handler.py">Chain of responsibility</a></li>
+<li><a href="https://github.com/vadikko2/python-cqrs/blob/master/examples/inbox/process_deposits.py">Transactional inbox</a></li>
 </ul>
 <p>Further reading: <a href="../request_handler/">Request handlers</a>, <a href="../stream_handling/">streaming</a>, <a href="../chain_of_responsibility/">chain of responsibility</a>.</p>
 

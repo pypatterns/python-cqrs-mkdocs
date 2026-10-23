@@ -52,6 +52,7 @@ Related Topics
 
 - [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md) — For configuring message brokers
 - [FastStream Integration](https://mkdocs.python-cqrs.dev/latest/faststream/index.md) — For consuming events from message brokers
+- [Transactional Inbox](https://mkdocs.python-cqrs.dev/latest/inbox/index.md) — For accepting a command or event before a separate process runs it
 - [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) — For configuring outbox in bootstrap process
 - [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md) — Opt-in Protobuf codecs for outbox storage and publish
 
