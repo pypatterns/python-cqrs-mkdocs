@@ -57,9 +57,9 @@ See [Implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation
 | **SQL Server**        | `mssql`      | `aioodbc`             | ⚠️ Portable fallback, native types via [one registration](#worked-example-microsoft-sql-server) |
 | **Oracle and others** | `oracle`, …  | driver-specific       | ⚠️ Portable fallback, or [register a native type](#adding-your-own-database)                    |
 
-SQLite and concurrent publishing
+SQLite and older MySQL or MariaDB
 
-SQLite works for unit tests and local experiments, but it does not provide the row-level locking and isolation guarantees the publisher process relies on. Use MySQL/MariaDB or PostgreSQL in production.
+PostgreSQL always takes the batch with `FOR UPDATE SKIP LOCKED`. MySQL does from 8.0, and MariaDB from 10.6. Older MySQL and MariaDB, and SQLite, take no lock, so two publishers can send the same row twice. The caller's `commit` or `rollback` releases the lock on the databases that take it. Use PostgreSQL, MySQL 8.0 or later, or MariaDB 10.6 or later when more than one publisher runs.
 
 ## Type Mapping
 

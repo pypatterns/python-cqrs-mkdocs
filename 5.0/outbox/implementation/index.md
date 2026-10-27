@@ -76,6 +76,8 @@ outbox.add(
 
 Retrieves events from the outbox in batches. Used by the publisher process.
 
+PostgreSQL always takes those rows with `FOR UPDATE SKIP LOCKED`. MySQL does from 8.0, and MariaDB from 10.6, so a second publisher does not read the same row while the first transaction is open. Older MySQL and MariaDB, and SQLite, do not add the clause. The caller's `commit` or `rollback` releases the lock.
+
 **Parameters:**
 
 - `batch_size` — Maximum number of events to retrieve (default: 100)

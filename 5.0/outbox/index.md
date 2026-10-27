@@ -90,7 +90,7 @@ sequenceDiagram
     Handler->>DB: Commit Transaction
     Note over Handler,Outbox: ✅ System Crashes<br/>Event Safe in Outbox!
 
-    Publisher->>Outbox: Read Events
+    Publisher->>Outbox: Read Events FOR UPDATE SKIP LOCKED
     Publisher->>Broker: Publish Events
     Publisher->>Outbox: Update Status
 ```
@@ -112,7 +112,7 @@ sequenceDiagram
     Handler->>DB: 3. Commit Transaction
     Note over DB,Outbox: Events safely stored
 
-    Publisher->>Outbox: 4. Read Events (batch)
+    Publisher->>Outbox: 4. Read Events FOR UPDATE SKIP LOCKED
     Publisher->>Broker: 5. Publish Events
     Publisher->>Outbox: 6. Update Status (PRODUCED)
     Publisher->>DB: 7. Commit Transaction
