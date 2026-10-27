@@ -67,10 +67,11 @@ PostgreSQL, and a portable `BLOB` fallback everywhere else.
 | **SQL Server** | `mssql` | `aioodbc` | ⚠️ Portable fallback, native types via [one registration](#worked-example-microsoft-sql-server) |
 | **Oracle and others** | `oracle`, … | driver-specific | ⚠️ Portable fallback, or [register a native type](#adding-your-own-database) |
 
-!!! warning "SQLite and concurrent publishing"
-    The batch query already uses `FOR UPDATE SKIP LOCKED` on PostgreSQL, MySQL, and MariaDB. SQLite takes
-    no lock, so two publishers can send the same row twice. The caller's `commit` or `rollback` releases
-    the lock on the databases that take it. Use MySQL, MariaDB, or PostgreSQL in production.
+!!! warning "SQLite and older MySQL or MariaDB"
+    PostgreSQL always takes the batch with `FOR UPDATE SKIP LOCKED`. MySQL does from 8.0, and MariaDB
+    from 10.6. Older MySQL and MariaDB, and SQLite, take no lock, so two publishers can send the same
+    row twice. The caller's `commit` or `rollback` releases the lock on the databases that take it.
+    Use PostgreSQL, MySQL 8.0 or later, or MariaDB 10.6 or later when more than one publisher runs.
 
 ## Type Mapping
 
