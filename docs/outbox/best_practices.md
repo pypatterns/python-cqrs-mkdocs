@@ -15,7 +15,7 @@
 ## Overview
 
 
-1. **Always commit** — Always call `commit()` after adding events (including after `get_many` / publish loops)
+1. **Always commit** — Always call `commit()` after adding events (including after `get_many` / publish loops). `commit` after `get_many` releases the row lock
 2. **Use transactions** — Ensure outbox operations are in the same transaction as business logic
 3. **Register events** — Register all event types on an `OutboxedEventMap` (prefer an isolated instance)
 4. **Handle failures** — Implement retry logic in the publisher process
