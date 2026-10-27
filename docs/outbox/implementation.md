@@ -79,6 +79,8 @@ outbox.add(
 
 Retrieves events from the outbox in batches. Used by the publisher process.
 
+On PostgreSQL, MySQL, and MariaDB the SQL implementation takes those rows with `FOR UPDATE SKIP LOCKED`, so a second publisher does not read the same row while the first transaction is open. SQLite takes no lock. The caller's `commit` or `rollback` releases it.
+
 **Parameters:**
 - `batch_size` — Maximum number of events to retrieve (default: 100)
 - `topic` — Optional topic filter to retrieve events for specific topic

@@ -76,3 +76,5 @@ async def publish_events():
 
 asyncio.run(publish_events())
 ```
+
+That `commit` releases the row lock, and a second publisher skips those rows.

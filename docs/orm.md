@@ -44,7 +44,7 @@ pip install "python-cqrs[sqlalchemy]"   # SqlAlchemyOutboxedEventRepository, Sql
 pip install "python-cqrs[sqlmodel]"     # SqlModelOutboxedEventRepository, SqlModelSagaStorage
 ```
 
-`sqlmodel` pulls in SQLAlchemy. The SQLModel classes are models over that same schema: batch reads, flush budget, status ordering, codecs, compression, checkpoint runs, optimistic locking, and recovery queries behave the same way.
+`sqlmodel` pulls in SQLAlchemy. The SQLModel classes are models over that same schema: batch reads, flush budget, status ordering, codecs, compression, checkpoint runs, optimistic locking, and recovery queries behave the same way. The batch read takes that same `FOR UPDATE SKIP LOCKED` lock on PostgreSQL, MySQL, and MariaDB. SQLite takes no lock. The caller's `commit` or `rollback` releases it.
 
 | | SQLAlchemy | SQLModel |
 |---|---|---|

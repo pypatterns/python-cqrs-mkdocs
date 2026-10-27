@@ -68,8 +68,9 @@ PostgreSQL, and a portable `BLOB` fallback everywhere else.
 | **Oracle and others** | `oracle`, … | driver-specific | ⚠️ Portable fallback, or [register a native type](#adding-your-own-database) |
 
 !!! warning "SQLite and concurrent publishing"
-    SQLite works for unit tests and local experiments, but it does not provide the row-level locking and
-    isolation guarantees the publisher process relies on. Use MySQL/MariaDB or PostgreSQL in production.
+    The batch query already uses `FOR UPDATE SKIP LOCKED` on PostgreSQL, MySQL, and MariaDB. SQLite takes
+    no lock, so two publishers can send the same row twice. The caller's `commit` or `rollback` releases
+    the lock on the databases that take it. Use MySQL, MariaDB, or PostgreSQL in production.
 
 ## Type Mapping
 
