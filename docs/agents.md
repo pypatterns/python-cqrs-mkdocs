@@ -9,17 +9,23 @@ These rules are for an agent writing an application on `python-cqrs` 5.2 or newe
 
 ## Where the skills are installed
 
-The skills are not in the virtualenv and not in the wheel. `pip install python-cqrs` does not copy `SKILL.md`. Run the commands from the application root. The source is the `master` branch of `pypatterns/python-cqrs`, not the tag of the installed package.
+`pip install python-cqrs` does not install the skills. Run this in your application root, not from a clone of `pypatterns/python-cqrs` and not from an empty directory. `npx` copies `cqrs-setup`, `cqrs-eda`, `cqrs-saga`, `cqrs-streaming`, and `cqrs-cor` from the `master` branch of that GitHub repository, not from the installed package version:
 
 ```bash
-npx skills add pypatterns/python-cqrs --skill cqrs-setup -a cursor -y
-npx skills add pypatterns/python-cqrs --skill cqrs-eda -a cursor -y
-npx skills add pypatterns/python-cqrs --skill cqrs-saga -a cursor -y
-npx skills add pypatterns/python-cqrs --skill cqrs-streaming -a cursor -y
-npx skills add pypatterns/python-cqrs --skill cqrs-cor -a cursor -y
+npx skills add pypatterns/python-cqrs --skill cqrs-setup cqrs-eda cqrs-saga cqrs-streaming cqrs-cor -y
 ```
 
-Cursor copies each skill to `.agents/skills/<name>/`. The files are copies, not symlinks. A later install does not replace a skill already there. Start with `cqrs-setup`. Streaming and a chain are short how-tos on the [Agent skills](skills.md) page. Parallel domain handlers stay in `cqrs-eda`. ClawHub publish is the maintainer CLI on that page, run from a checkout of `master` after merge.
+The files land in `<app>/.agents/skills/<name>/`. The coding agent in that project reads them from there.
+
+To add an already published skill to the application, from that same root, run `clawhub install @<owner>/<slug>`. `<slug>` is one of those five names.
+
+A maintainer publishes from a clone of this repository after `clawhub login`:
+
+```bash
+clawhub sync --root ./skills --all
+```
+
+The longer catalog is [Agent skills](skills.md).
 
 ## Requests and handlers
 
