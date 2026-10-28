@@ -7,7 +7,7 @@ description: Accept a command or event in one transaction, then run the existing
 
 The inbox is the inbound side of the [transactional outbox](../outbox/index.md). A broker delivers at-least-once. The presentation layer stores the command or event, commits that short transaction, and only then acknowledges the transport. A separate process reads the row and calls the mediator that is already registered.
 
-Coding agents build the inbox with [cqrs-event-driven](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-event-driven/SKILL.md). It is not a separate skill. The catalog is [Agent skills](../skills.md).
+Coding agents build the inbox with [cqrs-eda](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-eda/SKILL.md). It is not a separate skill. The catalog is [Agent skills](../skills.md).
 
 ## Two steps
 
