@@ -1,19 +1,17 @@
 # Agent skills
 
-`pip install python-cqrs` does not install the skills. Run this in your application root, not from a clone of `pypatterns/python-cqrs` and not from an empty directory. `npx` copies `cqrs-setup`, `cqrs-eda`, `cqrs-saga`, `cqrs-streaming`, and `cqrs-cor` from the `master` branch of that GitHub repository, not from the installed package version:
+Two registries: [skills.sh](https://skills.sh) and [ClawHub](https://clawhub.ai). From your service's project root, not a clone of python-cqrs, either block is enough. Files land in `<app>/.agents/skills/<name>/`.
 
 ```bash
-npx skills add pypatterns/python-cqrs --skill cqrs-setup cqrs-eda cqrs-saga cqrs-streaming cqrs-cor -y
+npx skills add pypatterns/python-cqrs --skill cqrs-setup --skill cqrs-eda --skill cqrs-saga --skill cqrs-streaming --skill cqrs-cor -y
 ```
 
-The files land in `<app>/.agents/skills/<name>/`. The coding agent in that project reads them from there.
-
-To add an already published skill to the application, from that same root, run `clawhub install @<owner>/<slug>`. `<slug>` is one of those five names.
-
-A maintainer publishes from a clone of this repository after `clawhub login`:
-
 ```bash
-clawhub sync --root ./skills --all
+clawhub install @vadikko2/cqrs-setup
+clawhub install @vadikko2/cqrs-eda
+clawhub install @vadikko2/cqrs-saga
+clawhub install @vadikko2/cqrs-streaming
+clawhub install @vadikko2/cqrs-cor
 ```
 
 Start with `cqrs-setup`. It is the chooser. The other skills assume that choice and do not repeat it.
