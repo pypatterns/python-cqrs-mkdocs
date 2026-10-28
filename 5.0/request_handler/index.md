@@ -4,6 +4,8 @@
 
 Request handlers process commands (write operations) and queries (read operations) in your CQRS application. They are the core of your business logic and are automatically resolved through the [Dependency Injection](https://mkdocs.python-cqrs.dev/latest/di/index.md) container configured in [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md).
 
+Coding agents pick this path with [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-setup/SKILL.md): both a command and a query are `cqrs.Request`, and the catalog is [Agent skills](https://mkdocs.python-cqrs.dev/latest/skills/index.md).
+
 | Concept      | Description                               | Can Emit Events   |
 | ------------ | ----------------------------------------- | ----------------- |
 | **Commands** | Modify system state                       | ✅ Yes            |

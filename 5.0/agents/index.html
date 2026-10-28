@@ -18,7 +18,7 @@
         <link rel="prev" href="..">
       
       
-        <link rel="next" href="../installation/">
+        <link rel="next" href="../skills/">
       
       
         
@@ -295,6 +295,55 @@
   
   
   
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    For agents
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    For agents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -310,7 +359,7 @@
   <span class="md-ellipsis">
     
   
-    For agents
+    Rules
   
 
     
@@ -328,7 +377,7 @@
   <span class="md-ellipsis">
     
   
-    For agents
+    Rules
   
 
     
@@ -352,6 +401,17 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-skills-are-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the skills are installed
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#requests-and-handlers" class="md-nav__link">
@@ -411,6 +471,42 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -3336,6 +3432,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#where-the-skills-are-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the skills are installed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#requests-and-handlers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3412,6 +3519,15 @@
 
 <h1 id="rules-for-coding-agents">Rules for coding agents<a class="headerlink" href="#rules-for-coding-agents" title="Permanent link">&para;</a></h1>
 <p>These rules are for an agent writing an application on <code>python-cqrs</code> 5.2 or newer. They are also the first section of <code>llms.txt</code>.</p>
+<h2 id="where-the-skills-are-installed">Where the skills are installed<a class="headerlink" href="#where-the-skills-are-installed" title="Permanent link">&para;</a></h2>
+<p>The skills are not in the virtualenv and not in the wheel. <code>pip install python-cqrs</code> does not copy <code>SKILL.md</code>. Run the commands from the application root. The source is the <code>master</code> branch of <code>pypatterns/python-cqrs</code>, not the tag of the installed package.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>npx<span class="w"> </span>skills<span class="w"> </span>add<span class="w"> </span>pypatterns/python-cqrs<span class="w"> </span>--skill<span class="w"> </span>cqrs-setup<span class="w"> </span>-a<span class="w"> </span>cursor<span class="w"> </span>-y
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npx<span class="w"> </span>skills<span class="w"> </span>add<span class="w"> </span>pypatterns/python-cqrs<span class="w"> </span>--skill<span class="w"> </span>cqrs-eda<span class="w"> </span>-a<span class="w"> </span>cursor<span class="w"> </span>-y
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>npx<span class="w"> </span>skills<span class="w"> </span>add<span class="w"> </span>pypatterns/python-cqrs<span class="w"> </span>--skill<span class="w"> </span>cqrs-saga<span class="w"> </span>-a<span class="w"> </span>cursor<span class="w"> </span>-y
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>npx<span class="w"> </span>skills<span class="w"> </span>add<span class="w"> </span>pypatterns/python-cqrs<span class="w"> </span>--skill<span class="w"> </span>cqrs-streaming<span class="w"> </span>-a<span class="w"> </span>cursor<span class="w"> </span>-y
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>npx<span class="w"> </span>skills<span class="w"> </span>add<span class="w"> </span>pypatterns/python-cqrs<span class="w"> </span>--skill<span class="w"> </span>cqrs-cor<span class="w"> </span>-a<span class="w"> </span>cursor<span class="w"> </span>-y
+</span></code></pre></div>
+<p>Cursor copies each skill to <code>.agents/skills/&lt;name&gt;/</code>. The files are copies, not symlinks. A later install does not replace a skill already there. Start with <code>cqrs-setup</code>. Streaming and a chain are short how-tos on the <a href="../skills/">Agent skills</a> page. Parallel domain handlers stay in <code>cqrs-eda</code>. ClawHub publish is the maintainer CLI on that page, run from a checkout of <code>master</code> after merge.</p>
 <h2 id="requests-and-handlers">Requests and handlers<a class="headerlink" href="#requests-and-handlers" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Commands and queries are both <code>cqrs.Request</code>. There is no <code>Query</code> class and no <code>CommandBus</code>.</li>
@@ -3421,25 +3537,25 @@
 </ul>
 <h2 id="types-to-copy">Types to copy<a class="headerlink" href="#types-to-copy" title="Permanent link">&para;</a></h2>
 <p>A request that returns data:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ReadMeetingQueryResult</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">users</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">ReadMeetingQuery</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Request</span><span class="p">[</span><span class="n">ReadMeetingQueryResult</span><span class="p">]):</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">meeting_id</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">ReadMeetingQueryHandler</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">[</span><span class="n">ReadMeetingQuery</span><span class="p">]):</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">ReadMeetingQuery</span><span class="p">):</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="k">return</span> <span class="n">ReadMeetingQueryResult</span><span class="p">(</span><span class="n">users</span><span class="o">=</span><span class="p">[</span><span class="s2">"1"</span><span class="p">,</span> <span class="s2">"2"</span><span class="p">])</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ReadMeetingQueryResult</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">users</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">ReadMeetingQuery</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Request</span><span class="p">[</span><span class="n">ReadMeetingQueryResult</span><span class="p">]):</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">meeting_id</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">ReadMeetingQueryHandler</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">[</span><span class="n">ReadMeetingQuery</span><span class="p">]):</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">ReadMeetingQuery</span><span class="p">):</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="k">return</span> <span class="n">ReadMeetingQueryResult</span><span class="p">(</span><span class="n">users</span><span class="o">=</span><span class="p">[</span><span class="s2">"1"</span><span class="p">,</span> <span class="s2">"2"</span><span class="p">])</span>
 </span></code></pre></div>
 <p>Do not add <code>-&gt; ReadMeetingQueryResult</code> on <code>handle</code>. <code>await mediator.send(query)</code> is <code>ReadMeetingQueryResult</code>.</p>
 <p>A command with an empty body:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">JoinMeetingCommand</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Request</span><span class="p">[</span><span class="kc">None</span><span class="p">]):</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">meeting_id</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">JoinMeetingCommandHandler</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">[</span><span class="n">JoinMeetingCommand</span><span class="p">]):</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">JoinMeetingCommand</span><span class="p">):</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">meeting_id</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">JoinMeetingCommand</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Request</span><span class="p">[</span><span class="kc">None</span><span class="p">]):</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">meeting_id</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">JoinMeetingCommandHandler</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">[</span><span class="n">JoinMeetingCommand</span><span class="p">]):</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">JoinMeetingCommand</span><span class="p">):</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">meeting_id</span><span class="p">)</span>
 </span></code></pre></div>
 <p><code>handle</code> returns <code>None</code>. Do not annotate it.</p>
 <p>Legacy (still supported): <code>RequestHandler[Request, Result]</code> with a return annotation on <code>handle</code> still works and is not the form to copy. Do not rewrite existing handlers. <code>send</code> on an unparameterized <code>Request</code> is <code>Any</code>.</p>
@@ -3510,13 +3626,13 @@
         
         
           
-          <a href="../installation/" class="md-footer__link md-footer__link--next" aria-label="Next: Installation">
+          <a href="../skills/" class="md-footer__link md-footer__link--next" aria-label="Next: Skills">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Installation
+                Skills
               </div>
             </div>
             <div class="md-footer__button md-icon">

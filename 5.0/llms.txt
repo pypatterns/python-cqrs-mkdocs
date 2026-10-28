@@ -10,7 +10,8 @@ The full text of every current page is in https://mkdocs.python-cqrs.dev/llms-fu
 
 ## Agents
 
-- [For agents](https://mkdocs.python-cqrs.dev/latest/agents/index.md)
+- [Rules](https://mkdocs.python-cqrs.dev/latest/agents/index.md)
+- [Skills](https://mkdocs.python-cqrs.dev/latest/skills/index.md)
 
 ## Getting started
 

@@ -1,5 +1,7 @@
 # Event Handling
 
+Coding agents build a domain event or a notification with [cqrs-eda](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-eda/SKILL.md). The outbox, the inbox, and parallel domain handlers are in that same skill. The catalog is [Agent skills](https://mkdocs.python-cqrs.dev/latest/skills/index.md).
+
 ## Overview
 
 - **Event Flow**

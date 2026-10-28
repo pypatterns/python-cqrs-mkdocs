@@ -2,6 +2,8 @@
 
 The inbox is the inbound side of the [transactional outbox](https://mkdocs.python-cqrs.dev/latest/outbox/index.md). A broker delivers at-least-once. The presentation layer stores the command or event, commits that short transaction, and only then acknowledges the transport. A separate process reads the row and calls the mediator that is already registered.
 
+Coding agents build the inbox with [cqrs-eda](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-eda/SKILL.md). It is not a separate skill. The catalog is [Agent skills](https://mkdocs.python-cqrs.dev/latest/skills/index.md).
+
 ## Two steps
 
 | Step           | Who                                    | What                                                            |

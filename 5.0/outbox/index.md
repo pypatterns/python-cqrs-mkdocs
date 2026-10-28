@@ -2,6 +2,8 @@
 
 The Transactional Outbox pattern ensures reliable event publishing by storing events in a database table within the same transaction as business logic. This guarantees that events are persisted even if the system crashes before they can be published to a message broker. SQLAlchemy and SQLModel are both supported; see [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md).
 
+Coding agents build the outbox with [cqrs-eda](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-eda/SKILL.md), together with domain events, notifications, and the inbox. The catalog is [Agent skills](https://mkdocs.python-cqrs.dev/latest/skills/index.md).
+
 ## Overview
 
 - **Implementation**
