@@ -59,3 +59,32 @@ The application layout the skills ask for is `app/commands.py`, `app/queries.py`
 Dependency injection, FastAPI, FastStream, and protobuf stay in their chapters. They are not skills. A missing `message_broker` discards notifications. The durable publish path is the outbox inside `cqrs-event-driven`.
 
 Do not look for `cqrs-transactional-outbox` or a separate event-handling skill. Those names are not published.
+
+## Short how-tos
+
+These three do not repeat the chooser. `cqrs-core-setup` already has their Use when and Skip when pairs. Install them the same way as the three skills above, with `--skill` and the name, from the application root.
+
+### cqrs-streaming-requests
+
+Use when the caller reads progress before the final answer. Skip when one `send` is enough.
+The handler is `cqrs.StreamingRequestHandler`. Startup calls `cqrs.bootstrap.requests.bootstrap_streaming`. The caller iterates `async for item in mediator.stream(request)`.
+
+- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-streaming-requests/SKILL.md)
+- Chapter: [Stream handling](stream_handling/index.md)
+
+### cqrs-chain-of-responsibility
+
+Use when a request passes several independent decisions and exactly one should handle it. Skip when every step must run, and skip it for HTTP CORS.
+Each step is `cqrs.handlers.CORRequestHandler`. A step that does not apply returns `await self.next(request)`. Register the ordered list with one `mapper.bind`.
+
+- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-chain-of-responsibility/SKILL.md)
+- Chapter: [Chain of responsibility](chain_of_responsibility/index.md)
+
+### cqrs-parallel-events
+
+Use when domain handlers do not share a session and order does not matter. Skip when `ScopeStrategy.SEND` is on.
+
+Set `concurrent_event_handle_enable=True` and `max_concurrent_event_handlers` together, and only with `ScopeStrategy.HANDLER` or `ScopeStrategy.NONE`.
+
+- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-parallel-events/SKILL.md)
+- Chapter: [Parallel event processing](event_handler/parallel_processing.md)

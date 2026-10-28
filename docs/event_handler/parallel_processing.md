@@ -20,6 +20,8 @@ Events can be processed in parallel to improve performance. This is controlled b
 - **`max_concurrent_event_handlers`** — Maximum number of event handlers running simultaneously
 - **`concurrent_event_handle_enable`** — Enable/disable parallel processing
 
+Coding agents turn this on with [cqrs-parallel-events](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-parallel-events/SKILL.md) after [cqrs-core-setup](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-core-setup/SKILL.md) has chosen parallel events. The catalog is [Agent skills](../skills.md). The flag stays off with `ScopeStrategy.SEND`.
+
 ### How Parallel Processing Works
 
 In **sequential** mode, events and follow-ups (from `handler.events`) are processed in **BFS order**: one event at a time, then its follow-ups are appended to the queue. In **parallel** mode, events are processed under a semaphore; as soon as any task completes (FIRST_COMPLETED), its follow-up events are queued and started without waiting for sibling events. `emit_events` returns only when all events and follow-ups are done.

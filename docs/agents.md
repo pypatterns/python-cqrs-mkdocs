@@ -17,7 +17,7 @@ npx skills add pypatterns/python-cqrs --skill cqrs-event-driven -a cursor -y
 npx skills add pypatterns/python-cqrs --skill cqrs-saga-orchestration -a cursor -y
 ```
 
-Cursor copies each skill to `.agents/skills/<name>/`. The files are copies, not symlinks. A later install does not replace a skill already there. Start with `cqrs-core-setup`. The catalog is [Agent skills](skills.md).
+Cursor copies each skill to `.agents/skills/<name>/`. The files are copies, not symlinks. A later install does not replace a skill already there. Start with `cqrs-core-setup`. Streaming, a chain, and parallel events are short how-tos on the [Agent skills](skills.md) page.
 
 ## Requests and handlers
 
