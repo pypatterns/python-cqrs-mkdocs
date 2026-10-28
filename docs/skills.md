@@ -45,7 +45,7 @@ The skill gives a Use when and a Skip when for each of those features, then the 
 
 An agent that follows it names the feature it picked and the neighbor it skipped, then binds one `cqrs.RequestHandler` and calls `await mediator.send(request)`.
 
-- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-setup/SKILL.md)
+- Skill: [SKILL.md on feat/111-agent-skills](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-setup/SKILL.md)
 - Chapter: [Request handlers](request_handler/index.md)
 
 ## cqrs-eda
@@ -54,7 +54,7 @@ Use when a fact stays in this process, must reach another service, or must survi
 
 The skill builds the feature `cqrs-setup` already picked. A domain event is in-process and finishes before `send` returns. A notification on `events` may be lost. The transactional outbox commits that notification with the business row. The transactional inbox commits the accepted message before the handler runs. Outbox and inbox are not separate skills. Parallel domain handlers are in this skill: `concurrent_event_handle_enable=True` only with `ScopeStrategy.HANDLER` or `ScopeStrategy.NONE`, never with `ScopeStrategy.SEND`.
 
-- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-eda/SKILL.md)
+- Skill: [SKILL.md on feat/111-agent-skills](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-eda/SKILL.md)
 - Chapters: [Event handling](event_handler/index.md), [parallel event processing](event_handler/parallel_processing.md), [transactional outbox](outbox/index.md), [transactional inbox](inbox/index.md)
 
 ## cqrs-saga
@@ -63,7 +63,7 @@ Use when a flow crosses services or databases and a completed step must be undon
 
 The skill builds one `cqrs.SagaStepHandler` with `act` and `compensate`, registers a `cqrs.Saga`, and resumes a crashed run with `cqrs.saga.recovery.recover_saga`. It does not invent `OrchestratedSaga` or `SagaLog`. A single `UPDATE` in one service stays a database transaction. One reliable message stays the outbox.
 
-- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-saga/SKILL.md)
+- Skill: [SKILL.md on feat/111-agent-skills](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-saga/SKILL.md)
 - Chapter: [Saga pattern](saga/index.md)
 
 ## What the agent reads
@@ -85,7 +85,7 @@ These two do not repeat the chooser. `cqrs-setup` already has their Use when and
 Use when the caller reads progress before the final answer. Skip when one `send` is enough.
 The handler is `cqrs.StreamingRequestHandler`. Startup calls `cqrs.bootstrap.requests.bootstrap_streaming`. The caller iterates `async for item in mediator.stream(request)`.
 
-- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-streaming/SKILL.md)
+- Skill: [SKILL.md on feat/111-agent-skills](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-streaming/SKILL.md)
 - Chapter: [Stream handling](stream_handling/index.md)
 
 ### cqrs-cor
@@ -93,5 +93,5 @@ The handler is `cqrs.StreamingRequestHandler`. Startup calls `cqrs.bootstrap.req
 Use when a request passes several independent decisions and exactly one should handle it. Skip when every step must run, and skip it for HTTP CORS.
 Each step is `cqrs.handlers.CORRequestHandler`. A step that does not apply returns `await self.next(request)`. Register the ordered list with one `mapper.bind`.
 
-- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-cor/SKILL.md)
+- Skill: [SKILL.md on feat/111-agent-skills](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-cor/SKILL.md)
 - Chapter: [Chain of responsibility](chain_of_responsibility/index.md)

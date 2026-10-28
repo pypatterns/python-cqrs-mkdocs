@@ -9,7 +9,7 @@ description: Commands and queries in python-cqrs — typed request handlers reso
 
 Request handlers process commands (write operations) and queries (read operations) in your CQRS application. They are the core of your business logic and are automatically resolved through the [Dependency Injection](../di.md) container configured in [Bootstrap](../bootstrap/index.md).
 
-Coding agents pick this path with [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-setup/SKILL.md): both a command and a query are `cqrs.Request`, and the catalog is [Agent skills](../skills.md).
+Coding agents pick this path with [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-setup/SKILL.md): both a command and a query are `cqrs.Request`, and the catalog is [Agent skills](../skills.md).
 
 | Concept | Description | Can Emit Events |
 |---------|-------------|----------------|

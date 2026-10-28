@@ -7,7 +7,7 @@ description: Orchestrated Saga for distributed transactions in Python with compe
 
 The Saga pattern enables distributed transactions across multiple services by executing a series of steps where each step can be compensated if a subsequent step fails. This allows for eventual consistency across distributed systems without requiring two-phase commit.
 
-Coding agents build a step and its compensation with [cqrs-saga](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-saga/SKILL.md). Recovery uses `cqrs.saga.recovery.recover_saga`. The catalog is [Agent skills](../skills.md).
+Coding agents build a step and its compensation with [cqrs-saga](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-saga/SKILL.md). Recovery uses `cqrs.saga.recovery.recover_saga`. The catalog is [Agent skills](../skills.md).
 
 ## Overview
 

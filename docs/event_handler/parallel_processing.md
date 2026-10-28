@@ -20,7 +20,7 @@ Events can be processed in parallel to improve performance. This is controlled b
 - **`max_concurrent_event_handlers`** — Maximum number of event handlers running simultaneously
 - **`concurrent_event_handle_enable`** — Enable/disable parallel processing
 
-Coding agents turn this on with [cqrs-eda](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-eda/SKILL.md) after [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-setup/SKILL.md) has chosen parallel events. The catalog is [Agent skills](../skills.md). The flag stays off with `ScopeStrategy.SEND`.
+Coding agents turn this on with [cqrs-eda](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-eda/SKILL.md) after [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-setup/SKILL.md) has chosen parallel events. The catalog is [Agent skills](../skills.md). The flag stays off with `ScopeStrategy.SEND`.
 
 ### How Parallel Processing Works
 
