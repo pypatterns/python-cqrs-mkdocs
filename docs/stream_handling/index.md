@@ -7,6 +7,8 @@ description: Incremental request streaming and Server-Sent Events (SSE) with pyt
 
 Stream handling allows you to process requests incrementally and yield results as they become available. This is particularly useful for processing large batches of items, file uploads, or any operation that benefits from real-time progress updates.
 
+Coding agents build this with [cqrs-streaming](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-streaming/SKILL.md) after [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-setup/SKILL.md) has chosen a stream. The catalog is [Agent skills](../skills.md).
+
 ## Overview
 
 <div class="grid cards" markdown>

@@ -7,6 +7,8 @@ description: Sequential request processing with Chain of Responsibility handlers
 
 The Chain of Responsibility pattern allows multiple handlers to process a request in sequence until one successfully handles it. This pattern is particularly useful when you have multiple processing strategies or need to implement fallback mechanisms.
 
+Coding agents build this with [cqrs-cor](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-cor/SKILL.md) after [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-setup/SKILL.md) has chosen a chain. The catalog is [Agent skills](../skills.md). HTTP CORS is not this feature.
+
 ## Overview
 
 <div class="grid cards" markdown>
