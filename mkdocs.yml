@@ -8,7 +8,9 @@ repo_name: vadikko2/python-cqrs
 dev_addr: 127.0.0.1:8000
 nav:
   - Home: index.md
-  - For agents: agents.md
+  - For agents:
+      - Rules: agents.md
+      - Skills: skills.md
   - Installation: installation.md
   - Migration 4→5: migration/4-to-5.md
   - Core Concepts:
@@ -166,6 +168,7 @@ plugins:
       sections:
         Agents:
           - agents.md
+          - skills.md
         Getting started:
           - index.md
           - installation.md

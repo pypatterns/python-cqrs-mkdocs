@@ -7,6 +7,18 @@ description: How an agent should use python-cqrs — Request[Result], one handle
 
 These rules are for an agent writing an application on `python-cqrs` 5.2 or newer. They are also the first section of `llms.txt`.
 
+## Where the skills are installed
+
+The skills are not in the virtualenv and not in the wheel. `pip install python-cqrs` does not copy `SKILL.md`. Run the commands from the application root. The source is the `master` branch of `pypatterns/python-cqrs`, not the tag of the installed package.
+
+```bash
+npx skills add pypatterns/python-cqrs --skill cqrs-core-setup -a cursor -y
+npx skills add pypatterns/python-cqrs --skill cqrs-event-driven -a cursor -y
+npx skills add pypatterns/python-cqrs --skill cqrs-saga-orchestration -a cursor -y
+```
+
+Cursor copies each skill to `.agents/skills/<name>/`. The files are copies, not symlinks. A later install does not replace a skill already there. Start with `cqrs-core-setup`. The catalog is [Agent skills](skills.md).
+
 ## Requests and handlers
 
 - Commands and queries are both `cqrs.Request`. There is no `Query` class and no `CommandBus`.
