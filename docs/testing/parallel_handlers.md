@@ -5,6 +5,16 @@ description: Assert both handler classes on the invocations journal.
 
 # Parallel Handlers
 
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Testing Overview**
+
+    Return to the Testing overview page with all topics.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+</div>
+
 Both handler classes are on `invocations`. Do not assert their order.
 
 See [Parallel Event Processing](../event_handler/parallel_processing.md).

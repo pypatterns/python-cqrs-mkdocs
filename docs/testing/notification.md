@@ -5,6 +5,16 @@ description: Assert the notice on the published journal, including its topic.
 
 # Notification
 
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Testing Overview**
+
+    Return to the Testing overview page with all topics.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+</div>
+
 `published` records the notice, including its topic. The notice is not in `handled`.
 
 See [Event Types](../event_handler/event_types.md).

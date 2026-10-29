@@ -70,56 +70,278 @@ Three delivery channels stay separate. A test that asks `published` for a domain
 
 ## Handlers
 
-- [Command](command.md)
-- [Query](query.md)
-- [Domain event](domain_event.md)
-- [Notification](notification.md)
-- [Parallel handlers](parallel_handlers.md)
-- [Swallowed handler error](handler_errors.md)
-- [Unhandled event](unhandled_event.md)
-- [Event mediator](event_mediator.md)
-- [Request fallback](request_fallback.md)
-- [Event fallback](event_fallback.md)
-- [Circuit breaker](circuit_breaker.md)
-- [Middleware](middleware.md)
-- [ScopeStrategy.SEND](scope_send.md)
-- [ScopeStrategy.HANDLER and NONE](scope_handler.md)
-- [Chain](chain.md)
-- [Stream](streaming.md)
-- [Streaming fallback](streaming_fallback.md)
-- [Saga step](saga_step.md)
-- [Compensation](saga_compensation.md)
-- [Saga fallback](saga_fallback.md)
-- [Saga circuit breaker](saga_circuit_breaker.md)
-- [Saga recovery](saga_recovery.md)
-- [Inbox](inbox.md)
-- [Inbox handler error](inbox_failure.md)
-- [Outbox](outbox.md)
-- [Outbox broker error](outbox_broker_error.md)
+<div class="grid cards" markdown>
+
+-   :material-code-tags: **Command**
+
+    Assert the command on the requests and invocations journals.
+
+    [:octicons-arrow-right-24: Read More](command.md)
+
+-   :material-book-open-page-variant: **Query**
+
+    After a read, the handled, published, and outbox journals are empty.
+
+    [:octicons-arrow-right-24: Read More](query.md)
+
+-   :material-bell-ring: **Domain event**
+
+    Assert the domain event on the handled and invocations journals.
+
+    [:octicons-arrow-right-24: Read More](domain_event.md)
+
+-   :material-message-processing: **Notification**
+
+    Assert the notice on the published journal, including its topic.
+
+    [:octicons-arrow-right-24: Read More](notification.md)
+
+-   :material-sync: **Parallel handlers**
+
+    Assert both handler classes on the invocations journal.
+
+    [:octicons-arrow-right-24: Read More](parallel_handlers.md)
+
+-   :material-wrench: **Handler errors**
+
+    The command result returns from send; the error is on the handler_errors journal.
+
+    [:octicons-arrow-right-24: Read More](handler_errors.md)
+
+-   :material-bell-ring: **Unhandled event**
+
+    Assert the event type on the unhandled journal.
+
+    [:octicons-arrow-right-24: Read More](unhandled_event.md)
+
+-   :material-routes: **Event mediator**
+
+    Assert the handler on the invocations journal, method handle.
+
+    [:octicons-arrow-right-24: Read More](event_mediator.md)
+
+-   :material-backup-restore: **Request fallback**
+
+    Assert both classes on invocations; the requests journal holds the fallback response.
+
+    [:octicons-arrow-right-24: Read More](request_fallback.md)
+
+-   :material-backup-restore: **Event fallback**
+
+    Assert both classes on the invocations journal.
+
+    [:octicons-arrow-right-24: Read More](event_fallback.md)
+
+-   :material-flash: **Circuit breaker**
+
+    An open fake ICircuitBreaker leaves the primary off the invocations journal.
+
+    [:octicons-arrow-right-24: Read More](circuit_breaker.md)
+
+-   :material-filter-variant: **Middleware**
+
+    The middlewares journal records called_next; requests holds the middleware response.
+
+    [:octicons-arrow-right-24: Read More](middleware.md)
+
+-   :material-sitemap: **Scope SEND**
+
+    Assert invocation order on the invocations journal under ScopeStrategy.SEND.
+
+    [:octicons-arrow-right-24: Read More](scope_send.md)
+
+-   :material-sitemap: **Scope HANDLER and NONE**
+
+    Assert both handlers on the invocations journal; order is not checked.
+
+    [:octicons-arrow-right-24: Read More](scope_handler.md)
+
+-   :material-link-variant: **Chain**
+
+    Assert the entered step on the invocations journal.
+
+    [:octicons-arrow-right-24: Read More](chain.md)
+
+-   :material-play-circle: **Streaming**
+
+    Assert values on the yields journal and the event on handled.
+
+    [:octicons-arrow-right-24: Read More](streaming.md)
+
+-   :material-backup-restore: **Streaming fallback**
+
+    Assert both handlers on the yields and invocations journals.
+
+    [:octicons-arrow-right-24: Read More](streaming_fallback.md)
+
+-   :material-sitemap: **Saga step**
+
+    Assert act on the invocations journal and the running saga count.
+
+    [:octicons-arrow-right-24: Read More](saga_step.md)
+
+-   :material-undo: **Saga compensation**
+
+    Assert compensate on the invocations journal and the failed saga status.
+
+    [:octicons-arrow-right-24: Read More](saga_compensation.md)
+
+-   :material-flash: **Saga fallback**
+
+    Assert both classes on the invocations journal; the saga stays completed.
+
+    [:octicons-arrow-right-24: Read More](saga_fallback.md)
+
+-   :material-flash: **Saga circuit breaker**
+
+    A fake ISagaStepCircuitBreaker leaves the primary off the invocations journal.
+
+    [:octicons-arrow-right-24: Read More](saga_circuit_breaker.md)
+
+-   :material-restore: **Saga recovery**
+
+    Recover through the sagas journal; a finished step does not act again.
+
+    [:octicons-arrow-right-24: Read More](saga_recovery.md)
+
+-   :material-database: **Inbox**
+
+    Assert the command on the requests journal and the processed inbox row.
+
+    [:octicons-arrow-right-24: Read More](inbox.md)
+
+-   :material-wrench: **Inbox failure**
+
+    Assert NOT_PROCESSED and flush_counter on the inbox journal.
+
+    [:octicons-arrow-right-24: Read More](inbox_failure.md)
+
+-   :material-database-outline: **Outbox**
+
+    Assert the row on the outbox journal, then the notice on published.
+
+    [:octicons-arrow-right-24: Read More](outbox.md)
+
+-   :material-wrench: **Outbox broker error**
+
+    A broker error leaves the outbox row not produced; the published journal stays empty.
+
+    [:octicons-arrow-right-24: Read More](outbox_broker_error.md)
+
+</div>
 
 ## Models
 
-- [Dataclass](dataclass.md)
-- [Pydantic](pydantic.md)
-- [JSON](json.md)
-- [Protobuf](protobuf.md)
-- [di.Container](di.md)
+<div class="grid cards" markdown>
+
+-   :material-package-variant: **Dataclass**
+
+    The response is on requests. The harness adds no validator.
+
+    [:octicons-arrow-right-24: Read More](dataclass.md)
+
+-   :material-check-circle: **Pydantic**
+
+    ValidationError is raised by the constructor, before send. A valid send returns the response.
+
+    [:octicons-arrow-right-24: Read More](pydantic.md)
+
+-   :material-code-json: **JSON**
+
+    Default path for a published message. content_type is None.
+
+    [:octicons-arrow-right-24: Read More](json.md)
+
+-   :material-code-braces: **Protobuf**
+
+    Published message content_type and payload_bytes. The harness does not import protobuf.
+
+    [:octicons-arrow-right-24: Read More](protobuf.md)
+
+-   :material-puzzle: **di**
+
+    ScopeStrategy.SEND on di.Container shares one session. Pass di.Container, not TestContainer.
+
+    [:octicons-arrow-right-24: Read More](di.md)
+
+</div>
 
 ## Recipes
 
-- [FastAPI](fastapi.md)
-- [FastStream](faststream.md)
-- [SQLAlchemy](sqlalchemy.md)
-- [SQLModel](sqlmodel.md)
-- [dishka](dishka.md)
-- [dependency-injector](dependency_injector.md)
-- [Kafka and AMQP](kafka_amqp.md)
+<div class="grid cards" markdown>
+
+-   :material-web: **FastAPI**
+
+    TestClient and dependency_overrides. Assert requests and outbox. The harness does not import FastAPI.
+
+    [:octicons-arrow-right-24: Read More](fastapi.md)
+
+-   :material-message-processing: **FastStream**
+
+    TestKafkaBroker delivers. The harness checks invocations or the inbox and does not import FastStream.
+
+    [:octicons-arrow-right-24: Read More](faststream.md)
+
+-   :material-database: **SQLAlchemy**
+
+    Session rollback and SqlAlchemyOutboxedEventRepository on SQLite. The harness does not import SQLAlchemy.
+
+    [:octicons-arrow-right-24: Read More](sqlalchemy.md)
+
+-   :material-database: **SQLModel**
+
+    SqlModelOutboxedEventRepository under the sqlmodel marker. The harness does not import SQLModel.
+
+    [:octicons-arrow-right-24: Read More](sqlmodel.md)
+
+-   :material-puzzle: **dishka**
+
+    around wraps a mediator that is already built. The harness does not import dishka.
+
+    [:octicons-arrow-right-24: Read More](dishka.md)
+
+-   :material-puzzle: **dependency-injector**
+
+    around wraps the mediator. The adapter does not implement SupportsScope, so scope_strategy is not SEND.
+
+    [:octicons-arrow-right-24: Read More](dependency_injector.md)
+
+-   :material-message-processing: **Kafka and AMQP**
+
+    The unit test uses CapturingMessageBroker. Real Kafka and AMQP adapters stay in integration tests.
+
+    [:octicons-arrow-right-24: Read More](kafka_amqp.md)
+
+</div>
 
 ## Outside the harness
 
 These pages are here so the feature is not dropped. They are not a `test_harness` run.
 
-- [Mermaid](mermaid.md)
-- [Compressor](compressor.md)
-- [Alembic](alembic.md)
-- [Transaction log tailing](log_tailing.md)
+<div class="grid cards" markdown>
+
+-   :material-graph: **Mermaid**
+
+    CoRMermaid and SagaMermaid draw sequence and class diagrams. They take no part in send.
+
+    [:octicons-arrow-right-24: Read More](mermaid.md)
+
+-   :material-cog: **Compressor**
+
+    ZlibCompressor is checked by the serializer tests. The harness sees payload_bytes as finished bytes.
+
+    [:octicons-arrow-right-24: Read More](compressor.md)
+
+-   :material-database-cog: **Alembic**
+
+    rebind is a migration, not a handler run. The fence is the short form.
+
+    [:octicons-arrow-right-24: Read More](alembic.md)
+
+-   :material-database: **Transaction log tailing**
+
+    A process that reads the database log. It is not mediator.send and is not run through the harness.
+
+    [:octicons-arrow-right-24: Read More](log_tailing.md)
+
+</div>

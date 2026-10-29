@@ -5,6 +5,16 @@ description: After a read, the handled, published, and outbox journals are empty
 
 # Query
 
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Testing Overview**
+
+    Return to the Testing overview page with all topics.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+</div>
+
 A query uses the same `send` as a command. The handler returns the view. After the read, `handled`, `published`, and `outbox` are empty.
 
 See [Request Handlers](../request_handler/index.md).

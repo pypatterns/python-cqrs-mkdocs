@@ -5,6 +5,16 @@ description: Assert NOT_PROCESSED and flush_counter on the inbox journal.
 
 # Inbox Failure
 
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Testing Overview**
+
+    Return to the Testing overview page with all topics.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+</div>
+
 A handler error leaves the inbox row `NOT_PROCESSED`. `flush_counter` is `1`.
 
 See [Using the transactional inbox](../inbox/usage.md).

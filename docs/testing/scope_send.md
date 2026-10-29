@@ -5,6 +5,16 @@ description: Assert invocation order on the invocations journal under ScopeStrat
 
 # Scope SEND
 
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Testing Overview**
+
+    Return to the Testing overview page with all topics.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+</div>
+
 Under `ScopeStrategy.SEND`, `invocations` for argument type `OrderCreated` are `AuditHandler`, then `SearchHandler`.
 
 See [Scope Strategies](../scoped_dependencies/strategies.md).

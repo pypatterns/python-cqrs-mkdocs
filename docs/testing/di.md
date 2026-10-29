@@ -5,6 +5,16 @@ description: ScopeStrategy.SEND on di.Container shares one session. Pass di.Cont
 
 # di container
 
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Testing Overview**
+
+    Return to the Testing overview page with all topics.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+</div>
+
 `invocations` holds the command handler and the domain handler. Under `di.Container` and `ScopeStrategy.SEND`, their sessions are the same object. A second session stays absent. `di` is already a core dependency. For `SEND`, pass `di.Container`. `TestContainer` stays unused.
 
 See [Dependency injection](../di.md) and [Scope strategies](../scoped_dependencies/strategies.md).

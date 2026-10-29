@@ -5,6 +5,16 @@ description: The unit test uses CapturingMessageBroker. Real Kafka and AMQP adap
 
 # Kafka and AMQP
 
+<div class="grid cards" markdown>
+
+-   :material-home: **Back to Testing Overview**
+
+    Return to the Testing overview page with all topics.
+
+    [:octicons-arrow-left-24: Back to Overview](index.md)
+
+</div>
+
 The harness does not import Kafka or AMQP. The unit test uses `CapturingMessageBroker` and reads `published`. The real Kafka and AMQP adapters stay in integration tests, so those clients stay out of `published`.
 
 See [Message brokers](../bootstrap/message_brokers.md) and [Event producing](../event_producing.md).
