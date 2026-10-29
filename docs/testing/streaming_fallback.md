@@ -26,10 +26,15 @@ def streaming_mapper(mapper: cqrs.RequestMap) -> None:
         cqrs.RequestHandlerFallback(ExportOrdersHandler, ExportOrdersFallback),
     )
 
-items = [item async for item in harness.streaming_mediator.stream(ExportOrders(batch=2))]
-harness.invocations.assert_entered(ExportOrdersHandler)
-harness.invocations.assert_entered(ExportOrdersFallback)
-assert [item.index for item in harness.yields] == [0, 0, 1]
+async def test_stream_fallback_restarts_the_stream() -> None:
+    container = di.Container()
+    async with test_harness(container, streaming_mapper=streaming_mapper) as harness:
+        items = [item async for item in harness.streaming_mediator.stream(ExportOrders(batch=2))]
+
+        harness.invocations.assert_entered(ExportOrdersHandler)
+        harness.invocations.assert_entered(ExportOrdersFallback)
+        assert [item.index for item in harness.yields] == [0, 0, 1]
+        assert [item.index for item in items] == [0, 0, 1]
 ```
 
-Library example: [`examples/testing/streaming.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/streaming.py).
+Library example: [`examples/testing/test_streaming.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_streaming.py).

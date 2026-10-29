@@ -188,10 +188,11 @@ Test thoroughly when migrating:
 
 ```python
 # Test that serialization works
-def test_migration():
+def test_migration() -> None:
     command = MyCommand(id="123")
-    data = command.to_dict()
-    restored = MyCommand.from_dict(**data)
+
+    restored = MyCommand.from_dict(**command.to_dict())
+
     assert restored.id == "123"
 ```
 

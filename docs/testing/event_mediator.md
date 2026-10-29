@@ -20,9 +20,16 @@ description: Assert the handler on the invocations journal, method handle.
 See [Event Mediator](../bootstrap/event_mediator.md).
 
 ```python
-await harness.event_mediator.send(OrderCreated(order_id="1"))
-harness.invocations.assert_entered(AuditHandler)
-assert harness.invocations.of(AuditHandler)[0].method == "handle"
+def events_mapper(mapper: cqrs.EventMap) -> None:
+    mapper.bind(OrderCreated, AuditHandler)
+
+async def test_event_mediator_enters_handle() -> None:
+    container = di.Container()
+    async with test_harness(container, events_mapper=events_mapper) as harness:
+        await harness.event_mediator.send(OrderCreated(order_id="1"))
+
+        harness.invocations.assert_entered(AuditHandler)
+        assert harness.invocations.of(AuditHandler)[0].method == "handle"
 ```
 
-Library example: [`examples/testing/event_mediator.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/event_mediator.py).
+Library example: [`examples/testing/test_event_mediator.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_event_mediator.py).

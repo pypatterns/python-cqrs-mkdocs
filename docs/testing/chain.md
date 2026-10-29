@@ -29,10 +29,14 @@ class CardHandler(cqrs.handlers.CORRequestHandler[PayOrder]):
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
     mapper.bind(PayOrder, [CardHandler, CashHandler])
 
-result = await harness.mediator.send(PayOrder(method="card"))
-assert result.method == "card"
-harness.invocations.assert_entered(CardHandler)
-harness.invocations.assert_not_entered(CashHandler)
+async def test_matching_step_does_not_call_next() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        result = await harness.mediator.send(PayOrder(method="card"))
+
+        assert result.method == "card"
+        harness.invocations.assert_entered(CardHandler)
+        harness.invocations.assert_not_entered(CashHandler)
 ```
 
-Library example: [`examples/testing/chain.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/chain.py).
+Library example: [`examples/testing/test_chain.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_chain.py).

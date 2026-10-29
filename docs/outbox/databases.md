@@ -509,7 +509,9 @@ Make it a test so a lost import cannot slip through review:
 
 ```python
 def test_outbox_uses_native_mssql_types() -> None:
-    ddl = str(CreateTable(OutboxModel.__table__).compile(dialect=mssql.dialect()))
+    table = CreateTable(OutboxModel.__table__)
+
+    ddl = str(table.compile(dialect=mssql.dialect()))
 
     assert "event_id UNIQUEIDENTIFIER" in ddl
     assert "event_id_bin BINARY(16)" in ddl

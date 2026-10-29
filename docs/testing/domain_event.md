@@ -31,12 +31,24 @@ class AuditHandler(cqrs.EventHandler[OrderCreated]):
     async def handle(self, event: OrderCreated) -> None:
         return None
 
-await harness.mediator.send(CreateOrder(sku="book"))
-assert harness.handled.contains(OrderCreated)
-assert harness.handled.contains(InvoiceRequested)
-harness.invocations.assert_entered(AuditHandler)
-harness.invocations.assert_entered(InvoiceHandler)
-harness.published.assert_empty()
+def domain_events_mapper(mapper: cqrs.EventMap) -> None:
+    mapper.bind(OrderCreated, AuditHandler)
+    mapper.bind(InvoiceRequested, InvoiceHandler)
+
+async def test_domain_event_and_follow_up_are_handled() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert harness.handled.contains(OrderCreated)
+        assert harness.handled.contains(InvoiceRequested)
+        harness.invocations.assert_entered(AuditHandler)
+        harness.invocations.assert_entered(InvoiceHandler)
+        harness.published.assert_empty()
 ```
 
-Library example: [`examples/testing/domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/domain_and_notification.py).
+Library example: [`examples/testing/test_domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_domain_and_notification.py).

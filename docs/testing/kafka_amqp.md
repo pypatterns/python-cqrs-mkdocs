@@ -22,14 +22,22 @@ See [Message brokers](../bootstrap/message_brokers.md) and [Event producing](../
 ```python
 from cqrs.testing import CapturingMessageBroker
 
-broker = CapturingMessageBroker()
-mediator = bootstrap.bootstrap(container, message_broker=broker, commands_mapper=commands_mapper)
-async with test_harness.around(mediator, broker=broker) as harness:
-    await mediator.send(CreateOrder(sku="book"))
-    harness.published.assert_one(OrderCreatedNotice, topic="order_events")
+async def test_capturing_broker_records_the_notice() -> None:
+    broker = CapturingMessageBroker()
+    mediator = bootstrap.bootstrap(
+        di_container=di.Container(),
+        message_broker=broker,
+        commands_mapper=commands_mapper,
+    )
+    async with test_harness.around(mediator, broker=broker) as harness:
+        await mediator.send(CreateOrder(sku="book"))
+
+        harness.published.assert_one(OrderCreatedNotice, topic="order_events")
 ```
 
-`KafkaMessageBroker` construction stays in the integration tests:
+Library example: [`examples/testing/test_outside_harness.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py).
+
+`KafkaMessageBroker` construction stays in the integration tests. This is application wiring, not a unit test:
 
 ```python
 broker = cqrs.message_brokers.kafka.KafkaMessageBroker(producer)

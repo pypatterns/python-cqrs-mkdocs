@@ -19,14 +19,30 @@ description: Assert compensate on the invocations journal and the failed saga st
 
 See [Compensation Strategy](../saga/compensation.md).
 
-```python
-async for step in harness.saga_mediator.execute(OrderContext(order_id="1")):
-    pass
+`execute` raises the step error after compensation, so Act waits for it with `pytest.raises`.
 
-assert harness.invocations.of(ReserveStock)[-1].method == "compensate"
-saga = harness.sagas.one(OrderSaga)
-assert saga.status is SagaStatus.FAILED
-assert saga.step_status("ReserveStock") is SagaStepStatus.COMPENSATED
+```python
+class ChargeCard(cqrs.SagaStepHandler[OrderContext, None]):
+    async def act(self, context: OrderContext):
+        raise CardDeclined("card declined")
+
+    async def compensate(self, context: OrderContext) -> None:
+        return None
+
+class OrderSaga(cqrs.Saga[OrderContext]):
+    steps = [ReserveStock, ChargeCard]
+
+async def test_failed_step_compensates_finished_steps() -> None:
+    container = di.Container()
+    async with test_harness(container, sagas_mapper=sagas_mapper) as harness:
+        with pytest.raises(CardDeclined):
+            async for _ in harness.saga_mediator.execute(OrderContext(order_id="1")):
+                pass
+
+        assert harness.invocations.of(ReserveStock)[-1].method == "compensate"
+        saga = harness.sagas.one(OrderSaga)
+        assert saga.status is SagaStatus.FAILED
+        assert saga.step_status("ReserveStock") is SagaStepStatus.COMPENSATED
 ```
 
-Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/saga.py).
+Library example: [`examples/testing/test_saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_saga.py).

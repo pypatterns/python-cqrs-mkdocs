@@ -20,15 +20,18 @@ Under `ScopeStrategy.SEND`, `invocations` for argument type `OrderCreated` are `
 See [Scope Strategies](../scoped_dependencies/strategies.md).
 
 ```python
-async with test_harness(
-    di_container,
-    commands_mapper=commands_mapper,
-    domain_events_mapper=domain_events_mapper,
-    scope_strategy=cqrs.ScopeStrategy.SEND,
-) as harness:
-    await harness.mediator.send(CreateOrder(sku="book"))
-    entered = [item.handler for item in harness.invocations if item.argument_type is OrderCreated]
-    assert entered == [AuditHandler, SearchHandler]
+async def test_scope_send_runs_handlers_in_order() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+        scope_strategy=cqrs.ScopeStrategy.SEND,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        entered = [item.handler for item in harness.invocations if item.argument_type is OrderCreated]
+        assert entered == [AuditHandler, SearchHandler]
 ```
 
-Library example: [`examples/testing/parallel_handlers.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/parallel_handlers.py).
+Library example: [`examples/testing/test_parallel_handlers.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_parallel_handlers.py).

@@ -26,10 +26,14 @@ def commands_mapper(mapper: cqrs.RequestMap) -> None:
         cqrs.RequestHandlerFallback(CreateOrderHandler, CreateOrderFallback),
     )
 
-result = await harness.mediator.send(CreateOrder(sku="book"))
-assert result.source == "fallback"
-harness.invocations.assert_entered(CreateOrderHandler)
-harness.invocations.assert_entered(CreateOrderFallback)
+async def test_request_fallback_answers_after_the_primary_fails() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.source == "fallback"
+        harness.invocations.assert_entered(CreateOrderHandler)
+        harness.invocations.assert_entered(CreateOrderFallback)
 ```
 
-Library example: [`examples/testing/fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/fallback.py).
+Library example: [`examples/testing/test_fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_fallback.py).

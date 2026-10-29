@@ -20,6 +20,13 @@ This is not run through `test_harness`. `CoRMermaid` generates diagrams for Chai
 See [Mermaid diagrams](../mermaid/index.md).
 
 ```python
-diagram = cqrs.CoRMermaid([CardHandler, CashHandler]).sequence()
-assert "CardHandler" in diagram
+def test_cor_sequence_diagram_names_each_step() -> None:
+    diagram = cqrs.CoRMermaid([CardHandler, CashHandler])
+
+    sequence = diagram.sequence()
+
+    assert "CardHandler" in sequence
+    assert "CashHandler" in sequence
 ```
+
+Library example: [`examples/testing/test_outside_harness.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py).

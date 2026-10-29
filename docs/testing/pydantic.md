@@ -20,14 +20,23 @@ description: ValidationError is raised by the constructor, before send. A valid 
 See [Pydantic](../request_response_types/pydantic.md).
 
 ```python
+pytestmark = pytest.mark.pydantic
+
 class CreateOrder(cqrs.PydanticRequest[CreatedOrder]):
     sku: str = pydantic.Field(min_length=1)
 
-with pytest.raises(pydantic.ValidationError):
-    CreateOrder(sku="")
+def test_empty_sku_fails_before_send() -> None:
+    sku = ""
 
-result = await harness.mediator.send(CreateOrder(sku="book"))
-assert result.order_id == "1"
+    with pytest.raises(pydantic.ValidationError):
+        CreateOrder(sku=sku)
+
+async def test_valid_request_returns_the_response() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.order_id == "1"
 ```
 
-Library example: [`examples/testing/pydantic_request.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/pydantic_request.py).
+Library example: [`examples/testing/test_pydantic_request.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_pydantic_request.py).
