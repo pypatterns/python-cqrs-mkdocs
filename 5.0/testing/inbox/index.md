@@ -10,14 +10,28 @@ A duplicate `add` is `False`. A command is on `requests`, and an event would be 
 
 See [Transactional Inbox](https://mkdocs.python-cqrs.dev/latest/inbox/index.md).
 
+Two tests, one action each: a second `add` of the same message, and processing.
+
 ```python
-inserted = await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
-assert inserted == [True]
-duplicate = await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
-assert duplicate == [False]
-await harness.inbox.process_available()
-assert harness.requests.contains(CreateOrder)
-assert harness.inbox.one("msg-1").status is cqrs.InboxStatus.PROCESSED
+async def test_inbox_rejects_a_duplicate_message() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        inserted = await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
+
+        duplicate = await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
+
+        assert inserted == [True]
+        assert duplicate == [False]
+
+async def test_inbox_processes_the_command() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
+
+        await harness.inbox.process_available()
+
+        assert harness.requests.contains(CreateOrder)
+        assert harness.inbox.one("msg-1").status is cqrs.InboxStatus.PROCESSED
 ```
 
-Library example: [`examples/testing/outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/outbox_inbox.py).
+Library example: [`examples/testing/test_outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outbox_inbox.py).

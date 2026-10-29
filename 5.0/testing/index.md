@@ -4,36 +4,51 @@
 
 Two entries return the same harness. Building a stand takes the same mapper and middleware arguments as bootstrap. The builder passes `compensation_retry_delay=0` unless the test passes a delay. `around` does not change the delay of a mediator that is already built.
 
+Every example on these pages is a pytest test written as Arrange, Act, Assert. Arrange builds the container, the mappers, and the harness. Act is one call: `send`, `stream`, `execute`, `process_available`, or `produce_available`. Assert reads the journals. Setup that a test needs but does not check, such as a database session, goes into a fixture. The test functions are `async def`, so run them with `pytest-asyncio` and `asyncio_mode = auto`.
+
 ```python
+import di
+
+import cqrs
 from cqrs.testing import test_harness
 
-async with test_harness(
-    container,
-    commands_mapper=commands_mapper,
-    queries_mapper=queries_mapper,
-    domain_events_mapper=domain_events_mapper,
-    events_mapper=events_mapper,
-    streaming_mapper=streaming_mapper,
-    sagas_mapper=sagas_mapper,
-    middlewares=middlewares,
-    scope_strategy=cqrs.ScopeStrategy.NONE,
-) as harness:
-    await harness.mediator.send(CreateOrder(sku="book"))
+async def test_create_order() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        queries_mapper=queries_mapper,
+        domain_events_mapper=domain_events_mapper,
+        events_mapper=events_mapper,
+        streaming_mapper=streaming_mapper,
+        sagas_mapper=sagas_mapper,
+        middlewares=middlewares,
+        scope_strategy=cqrs.ScopeStrategy.NONE,
+    ) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.order_id == "1"
+        assert harness.requests.contains(CreateOrder)
 ```
 
 `around` wraps mediators the application already built. For the block it wraps resolve, the broker, saga storage, and the listener, and puts them back in `finally`.
 
 ```python
-async with test_harness.around(
-    mediator,
-    event_mediator=event_mediator,
-    streaming_mediator=streaming_mediator,
-    saga_mediator=saga_mediator,
-    outbox=outbox,
-    inbox=inbox,
-) as harness:
-    await mediator.send(CreateOrder(sku="book"))
+async def test_create_order_on_the_application_mediator() -> None:
+    async with test_harness.around(
+        mediator,
+        event_mediator=event_mediator,
+        streaming_mediator=streaming_mediator,
+        saga_mediator=saga_mediator,
+        outbox=outbox,
+        inbox=inbox,
+    ) as harness:
+        await mediator.send(CreateOrder(sku="book"))
+
+        harness.invocations.assert_entered(CreateOrderHandler)
 ```
+
+The library keeps each page's test in [`examples/testing/`](https://github.com/vadikko2/python-cqrs/tree/master/examples/testing). Run them with `pytest -c tests/pytest-config.ini --rootdir=. examples/testing`.
 
 `test_harness(...)` creates a memory outbox and a memory inbox and stores them on `harness.outbox_repository` and `harness.inbox_repository`. It does not bind those ports. The test binds the port.
 
@@ -315,7 +330,7 @@ These pages are here so the feature is not dropped. They are not a `test_harness
 
 - **Alembic**
 
-  rebind is a migration, not a handler run. The fence is the short form.
+  rebind_outbox_model puts the outbox table on the application metadata. It is a migration, not a handler run.
 
   [Read More](https://mkdocs.python-cqrs.dev/latest/testing/alembic/index.md)
 

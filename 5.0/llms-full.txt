@@ -3627,10 +3627,11 @@ Test thoroughly when migrating:
 
 ```python
 # Test that serialization works
-def test_migration():
+def test_migration() -> None:
     command = MyCommand(id="123")
-    data = command.to_dict()
-    restored = MyCommand.from_dict(**data)
+
+    restored = MyCommand.from_dict(**command.to_dict())
+
     assert restored.id == "123"
 ```
 
@@ -9490,7 +9491,9 @@ Make it a test so a lost import cannot slip through review:
 
 ```python
 def test_outbox_uses_native_mssql_types() -> None:
-    ddl = str(CreateTable(OutboxModel.__table__).compile(dialect=mssql.dialect()))
+    table = CreateTable(OutboxModel.__table__)
+
+    ddl = str(table.compile(dialect=mssql.dialect()))
 
     assert "event_id UNIQUEIDENTIFIER" in ddl
     assert "event_id_bin BINARY(16)" in ddl
@@ -13427,36 +13430,51 @@ Source: [examples/outbox/protobuf_outbox.py](https://github.com/vadikko2/python-
 
 Two entries return the same harness. Building a stand takes the same mapper and middleware arguments as bootstrap. The builder passes `compensation_retry_delay=0` unless the test passes a delay. `around` does not change the delay of a mediator that is already built.
 
+Every example on these pages is a pytest test written as Arrange, Act, Assert. Arrange builds the container, the mappers, and the harness. Act is one call: `send`, `stream`, `execute`, `process_available`, or `produce_available`. Assert reads the journals. Setup that a test needs but does not check, such as a database session, goes into a fixture. The test functions are `async def`, so run them with `pytest-asyncio` and `asyncio_mode = auto`.
+
 ```python
+import di
+
+import cqrs
 from cqrs.testing import test_harness
 
-async with test_harness(
-    container,
-    commands_mapper=commands_mapper,
-    queries_mapper=queries_mapper,
-    domain_events_mapper=domain_events_mapper,
-    events_mapper=events_mapper,
-    streaming_mapper=streaming_mapper,
-    sagas_mapper=sagas_mapper,
-    middlewares=middlewares,
-    scope_strategy=cqrs.ScopeStrategy.NONE,
-) as harness:
-    await harness.mediator.send(CreateOrder(sku="book"))
+async def test_create_order() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        queries_mapper=queries_mapper,
+        domain_events_mapper=domain_events_mapper,
+        events_mapper=events_mapper,
+        streaming_mapper=streaming_mapper,
+        sagas_mapper=sagas_mapper,
+        middlewares=middlewares,
+        scope_strategy=cqrs.ScopeStrategy.NONE,
+    ) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.order_id == "1"
+        assert harness.requests.contains(CreateOrder)
 ```
 
 `around` wraps mediators the application already built. For the block it wraps resolve, the broker, saga storage, and the listener, and puts them back in `finally`.
 
 ```python
-async with test_harness.around(
-    mediator,
-    event_mediator=event_mediator,
-    streaming_mediator=streaming_mediator,
-    saga_mediator=saga_mediator,
-    outbox=outbox,
-    inbox=inbox,
-) as harness:
-    await mediator.send(CreateOrder(sku="book"))
+async def test_create_order_on_the_application_mediator() -> None:
+    async with test_harness.around(
+        mediator,
+        event_mediator=event_mediator,
+        streaming_mediator=streaming_mediator,
+        saga_mediator=saga_mediator,
+        outbox=outbox,
+        inbox=inbox,
+    ) as harness:
+        await mediator.send(CreateOrder(sku="book"))
+
+        harness.invocations.assert_entered(CreateOrderHandler)
 ```
+
+The library keeps each page's test in [`examples/testing/`](https://github.com/vadikko2/python-cqrs/tree/master/examples/testing). Run them with `pytest -c tests/pytest-config.ini --rootdir=. examples/testing`.
 
 `test_harness(...)` creates a memory outbox and a memory inbox and stores them on `harness.outbox_repository` and `harness.inbox_repository`. It does not bind those ports. The test binds the port.
 
@@ -13738,7 +13756,7 @@ These pages are here so the feature is not dropped. They are not a `test_harness
 
 - **Alembic**
 
-  rebind is a migration, not a handler run. The fence is the short form.
+  rebind_outbox_model puts the outbox table on the application metadata. It is a migration, not a handler run.
 
   [Read More](https://mkdocs.python-cqrs.dev/latest/testing/alembic/index.md)
 
@@ -13756,14 +13774,40 @@ These pages are here so the feature is not dropped. They are not a `test_harness
 
   [Back to Overview](https://mkdocs.python-cqrs.dev/latest/testing/index.md)
 
-This is not run through `test_harness`. Rebind is a migration, not a handler run, so `requests` stays empty. The fence below is the short form.
+This is not run through `test_harness`. Rebind is a migration, not a handler run, so `requests` stays empty.
+
+`rebind_outbox_model(model, new_base, table_name)` changes `OutboxModel` for the whole process. The fixture puts the original base and table name back after the test.
 
 See [Database support](https://mkdocs.python-cqrs.dev/latest/outbox/databases/index.md) for the full call.
 
 ```python
-cqrs.rebind_outbox_model(Base)
-Base.metadata.create_all(engine)
+import pytest
+import sqlalchemy
+from sqlalchemy import orm
+
+import cqrs
+
+@pytest.fixture
+def outbox_model():
+    from cqrs.outbox.sqlalchemy import OutboxModel
+
+    original_base = OutboxModel.__bases__[0]
+    original_name = OutboxModel.__table__.name
+    yield OutboxModel
+    cqrs.rebind_outbox_model(OutboxModel, original_base, original_name)
+
+@pytest.mark.sqlalchemy
+def test_rebind_puts_the_outbox_table_on_the_application_metadata(outbox_model) -> None:
+    Base = orm.registry().generate_base()
+    engine = sqlalchemy.create_engine("sqlite://")
+
+    cqrs.rebind_outbox_model(outbox_model, Base, "app_outbox")
+    Base.metadata.create_all(engine)
+
+    assert "app_outbox" in sqlalchemy.inspect(engine).get_table_names()
 ```
+
+Library example: [`examples/testing/test_outside_harness.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py).
 
 # Chain of Responsibility
 
@@ -13787,13 +13831,17 @@ class CardHandler(cqrs.handlers.CORRequestHandler[PayOrder]):
 def commands_mapper(mapper: cqrs.RequestMap) -> None:
     mapper.bind(PayOrder, [CardHandler, CashHandler])
 
-result = await harness.mediator.send(PayOrder(method="card"))
-assert result.method == "card"
-harness.invocations.assert_entered(CardHandler)
-harness.invocations.assert_not_entered(CashHandler)
+async def test_matching_step_does_not_call_next() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        result = await harness.mediator.send(PayOrder(method="card"))
+
+        assert result.method == "card"
+        harness.invocations.assert_entered(CardHandler)
+        harness.invocations.assert_not_entered(CashHandler)
 ```
 
-Library example: [`examples/testing/chain.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/chain.py).
+Library example: [`examples/testing/test_chain.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_chain.py).
 
 # Circuit Breaker
 
@@ -13808,21 +13856,36 @@ An open fake `ICircuitBreaker` leaves the primary off `invocations`. The fallbac
 See [Request Handler Fallback](https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/index.md) and [Event Handler Fallback](https://mkdocs.python-cqrs.dev/latest/event_handler/fallback/index.md).
 
 ```python
-breaker = OpenCircuitBreaker()
-mapper.bind(
-    CreateOrder,
-    cqrs.RequestHandlerFallback(
-        CreateOrderHandler,
-        CreateOrderFallback,
-        circuit_breaker=breaker,
-    ),
-)
-await harness.mediator.send(CreateOrder(sku="book"))
-harness.invocations.assert_not_entered(CreateOrderHandler)
-harness.invocations.assert_entered(CreateOrderFallback)
+class CircuitOpen(Exception):
+    pass
+
+class OpenCircuitBreaker:
+    async def call(self, identifier, func, *args, **kwargs):
+        raise CircuitOpen()
+
+    def is_circuit_breaker_error(self, exc: Exception) -> bool:
+        return isinstance(exc, CircuitOpen)
+
+def commands_mapper(mapper: cqrs.RequestMap) -> None:
+    mapper.bind(
+        CreateOrder,
+        cqrs.RequestHandlerFallback(
+            CreateOrderHandler,
+            CreateOrderFallback,
+            circuit_breaker=OpenCircuitBreaker(),
+        ),
+    )
+
+async def test_open_circuit_breaker_skips_the_primary() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        harness.invocations.assert_not_entered(CreateOrderHandler)
+        harness.invocations.assert_entered(CreateOrderFallback)
 ```
 
-Library example: [`examples/testing/fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/fallback.py).
+Library example: [`examples/testing/test_fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_fallback.py).
 
 # Command
 
@@ -13852,13 +13915,20 @@ class CreateOrderHandler(cqrs.RequestHandler[CreateOrder]):
         self._events.append(OrderCreated(order_id="1"))
         return CreatedOrder(order_id="1")
 
-result = await harness.mediator.send(CreateOrder(sku="book"))
-assert result.order_id == "1"
-assert harness.requests.contains(CreateOrder)
-harness.invocations.assert_entered(CreateOrderHandler)
+def commands_mapper(mapper: cqrs.RequestMap) -> None:
+    mapper.bind(CreateOrder, CreateOrderHandler)
+
+async def test_command_is_on_requests_and_invocations() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.order_id == "1"
+        assert harness.requests.contains(CreateOrder)
+        harness.invocations.assert_entered(CreateOrderHandler)
 ```
 
-Library example: [`examples/testing/command_and_query.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/command_and_query.py).
+Library example: [`examples/testing/test_command_and_query.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_command_and_query.py).
 
 # Compressor
 
@@ -13873,9 +13943,16 @@ This is not run through `test_harness`. `ZlibCompressor` is checked by the exist
 See [Outbox implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md).
 
 ```python
-compressed = cqrs.ZlibCompressor().compress(message.payload_bytes)
-assert cqrs.ZlibCompressor().decompress(compressed) == message.payload_bytes
+def test_zlib_round_trip_returns_the_payload() -> None:
+    compressor = cqrs.ZlibCompressor()
+    payload = b'{"order_id": "1"}'
+
+    restored = compressor.decompress(compressor.compress(payload))
+
+    assert restored == payload
 ```
+
+Library example: [`examples/testing/test_outside_harness.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py).
 
 # Dataclass requests
 
@@ -13890,11 +13967,15 @@ assert cqrs.ZlibCompressor().decompress(compressed) == message.payload_bytes
 See [Dataclasses](https://mkdocs.python-cqrs.dev/latest/request_response_types/dataclasses/index.md).
 
 ```python
-await harness.mediator.send(CreateOrder(sku="book"))
-assert harness.requests.of(CreateOrder)[0].response == CreatedOrder(order_id="1")
+async def test_dataclass_response_is_on_requests() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert harness.requests.of(CreateOrder)[0].response == CreatedOrder(order_id="1")
 ```
 
-Library example: [`examples/testing/command_and_query.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/command_and_query.py).
+Library example: [`examples/testing/test_command_and_query.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_command_and_query.py).
 
 # dependency-injector
 
@@ -13909,18 +13990,27 @@ The harness does not import dependency-injector. The adapter does not implement 
 See [Dependency injection](https://mkdocs.python-cqrs.dev/latest/di/index.md).
 
 ```python
+from dependency_injector import containers, providers
+
 from cqrs.container.dependency_injector import DependencyInjectorCQRSContainer
 
-mediator = bootstrap.bootstrap(
-    di_container=DependencyInjectorCQRSContainer(container),
-    commands_mapper=commands_mapper,
-)
-async with test_harness.around(mediator) as harness:
-    await mediator.send(CreateOrder(sku="book"))
-    assert harness.requests.contains(CreateOrder)
+class Container(containers.DeclarativeContainer):
+    create_order_handler = providers.Factory(CreateOrderHandler)
+
+async def test_around_records_a_mediator_on_dependency_injector() -> None:
+    adapter = DependencyInjectorCQRSContainer()
+    adapter.attach_external_container(Container())
+    mediator = bootstrap.bootstrap(
+        di_container=adapter,
+        commands_mapper=commands_mapper,
+    )
+    async with test_harness.around(mediator) as harness:
+        await mediator.send(CreateOrder(sku="book"))
+
+        assert harness.requests.contains(CreateOrder)
 ```
 
-Library example: [`examples/testing/dependency_injector_container.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/dependency_injector_container.py).
+Library example: [`examples/testing/test_dependency_injector_container.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_dependency_injector_container.py).
 
 # di container
 
@@ -13935,22 +14025,30 @@ Library example: [`examples/testing/dependency_injector_container.py`](https://g
 See [Dependency injection](https://mkdocs.python-cqrs.dev/latest/di/index.md) and [Scope strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md).
 
 ```python
-container = di.Container()
-container.bind(di.bind_by_type(di.dependent.Dependent(Session, scope="request"), Session))
+class AuditHandler(cqrs.EventHandler[OrderCreated]):
+    def __init__(self, session: Session) -> None:
+        self.session = session
 
-async with test_harness(
-    container,
-    commands_mapper=commands_mapper,
-    domain_events_mapper=domain_events_mapper,
-    scope_strategy=cqrs.ScopeStrategy.SEND,
-) as harness:
-    await harness.mediator.send(CreateOrder(sku="book"))
-    command_session = harness.invocations.of(CreateOrderHandler)[0].handler_instance.session
-    audit_session = harness.invocations.of(AuditHandler)[0].handler_instance.session
-    assert command_session is audit_session
+    async def handle(self, event: OrderCreated) -> None:
+        return None
+
+async def test_scope_send_shares_one_session() -> None:
+    container = di.Container()
+    container.bind(di.bind_by_type(di.dependent.Dependent(Session, scope="request"), Session))
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+        scope_strategy=cqrs.ScopeStrategy.SEND,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        command_session = harness.invocations.of(CreateOrderHandler)[0].handler_instance.session
+        audit_session = harness.invocations.of(AuditHandler)[0].handler_instance.session
+        assert command_session is audit_session
 ```
 
-Library example: [`examples/di/scoped_dependencies_di.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/di/scoped_dependencies_di.py).
+Library example: [`examples/testing/test_scoped_session.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_scoped_session.py). The application side of scoped dependencies is in [`examples/di/scoped_dependencies_di.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/di/scoped_dependencies_di.py).
 
 # dishka
 
@@ -13965,19 +14063,27 @@ The harness does not import dishka. The mediator is already built, and `around` 
 See [DI containers](https://mkdocs.python-cqrs.dev/latest/bootstrap/di_containers/index.md).
 
 ```python
+from dishka import Provider, Scope, make_async_container, provide
+
 from cqrs.container.dishka import DishkaCQRSContainer
 
-mediator = bootstrap.bootstrap(
-    di_container=DishkaCQRSContainer(container),
-    commands_mapper=commands_mapper,
-    scope_strategy=cqrs.ScopeStrategy.HANDLER,
-)
-async with test_harness.around(mediator) as harness:
-    await mediator.send(CreateOrder(sku="book"))
-    harness.invocations.assert_entered(CreateOrderHandler)
+class AppProvider(Provider):
+    create_order_handler = provide(CreateOrderHandler, scope=Scope.REQUEST)
+
+async def test_around_records_a_mediator_on_dishka() -> None:
+    container = make_async_container(AppProvider())
+    mediator = bootstrap.bootstrap(
+        di_container=DishkaCQRSContainer(container),
+        commands_mapper=commands_mapper,
+        scope_strategy=cqrs.ScopeStrategy.HANDLER,
+    )
+    async with test_harness.around(mediator) as harness:
+        await mediator.send(CreateOrder(sku="book"))
+
+        harness.invocations.assert_entered(CreateOrderHandler)
 ```
 
-Library example: [`examples/testing/dishka_container.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/dishka_container.py).
+Library example: [`examples/testing/test_dishka_container.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_dishka_container.py).
 
 # Domain Event
 
@@ -14003,15 +14109,27 @@ class AuditHandler(cqrs.EventHandler[OrderCreated]):
     async def handle(self, event: OrderCreated) -> None:
         return None
 
-await harness.mediator.send(CreateOrder(sku="book"))
-assert harness.handled.contains(OrderCreated)
-assert harness.handled.contains(InvoiceRequested)
-harness.invocations.assert_entered(AuditHandler)
-harness.invocations.assert_entered(InvoiceHandler)
-harness.published.assert_empty()
+def domain_events_mapper(mapper: cqrs.EventMap) -> None:
+    mapper.bind(OrderCreated, AuditHandler)
+    mapper.bind(InvoiceRequested, InvoiceHandler)
+
+async def test_domain_event_and_follow_up_are_handled() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert harness.handled.contains(OrderCreated)
+        assert harness.handled.contains(InvoiceRequested)
+        harness.invocations.assert_entered(AuditHandler)
+        harness.invocations.assert_entered(InvoiceHandler)
+        harness.published.assert_empty()
 ```
 
-Library example: [`examples/testing/domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/domain_and_notification.py).
+Library example: [`examples/testing/test_domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_domain_and_notification.py).
 
 # Event Fallback
 
@@ -14032,12 +14150,20 @@ def domain_events_mapper(mapper: cqrs.EventMap) -> None:
         cqrs.EventHandlerFallback(AuditHandler, AuditFallback),
     )
 
-await harness.mediator.send(CreateOrder(sku="book"))
-harness.invocations.assert_entered(AuditHandler)
-harness.invocations.assert_entered(AuditFallback)
+async def test_event_fallback_runs_after_the_primary_fails() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        harness.invocations.assert_entered(AuditHandler)
+        harness.invocations.assert_entered(AuditFallback)
 ```
 
-Library example: [`examples/testing/fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/fallback.py).
+Library example: [`examples/testing/test_fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_fallback.py).
 
 # Event Mediator
 
@@ -14052,12 +14178,19 @@ Library example: [`examples/testing/fallback.py`](https://github.com/vadikko2/py
 See [Event Mediator](https://mkdocs.python-cqrs.dev/latest/bootstrap/event_mediator/index.md).
 
 ```python
-await harness.event_mediator.send(OrderCreated(order_id="1"))
-harness.invocations.assert_entered(AuditHandler)
-assert harness.invocations.of(AuditHandler)[0].method == "handle"
+def events_mapper(mapper: cqrs.EventMap) -> None:
+    mapper.bind(OrderCreated, AuditHandler)
+
+async def test_event_mediator_enters_handle() -> None:
+    container = di.Container()
+    async with test_harness(container, events_mapper=events_mapper) as harness:
+        await harness.event_mediator.send(OrderCreated(order_id="1"))
+
+        harness.invocations.assert_entered(AuditHandler)
+        assert harness.invocations.of(AuditHandler)[0].method == "handle"
 ```
 
-Library example: [`examples/testing/event_mediator.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/event_mediator.py).
+Library example: [`examples/testing/test_event_mediator.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_event_mediator.py).
 
 # FastAPI
 
@@ -14071,18 +14204,27 @@ The harness does not import FastAPI. `TestClient` calls the route, and `dependen
 
 See [FastAPI](https://mkdocs.python-cqrs.dev/latest/fastapi/index.md).
 
-```python
-from fastapi.testclient import TestClient
+Import the module, not `TestClient` itself: pytest tries to collect any `Test*` name in a test module.
 
-app.dependency_overrides[mediator_factory] = lambda: mediator
-async with test_harness.around(mediator, outbox=outbox) as harness:
-    response = TestClient(app).post("/orders", json={"sku": "book"})
-    assert response.status_code == 201
-    assert harness.requests.contains(CreateOrder)
-    assert harness.outbox.pending_count == 1
+```python
+from fastapi import testclient
+
+async def test_route_sends_the_command_and_stores_the_row() -> None:
+    mediator = bootstrap.bootstrap(
+        di_container=di.Container(),
+        commands_mapper=commands_mapper,
+    )
+    app.dependency_overrides[mediator_factory] = lambda: mediator
+    client = testclient.TestClient(app)
+    async with test_harness.around(mediator, outbox=outbox) as harness:
+        response = client.post("/orders", json={"sku": "book"})
+
+        assert response.status_code == 201
+        assert harness.requests.contains(CreateOrder)
+        assert harness.outbox.pending_count == 1
 ```
 
-Library example: [`examples/testing/fastapi_app.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/fastapi_app.py).
+Library example: [`examples/testing/test_fastapi_app.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_fastapi_app.py).
 
 # FastStream
 
@@ -14096,24 +14238,54 @@ The harness does not import FastStream. `TestKafkaBroker` delivers the message. 
 
 See [FastStream](https://mkdocs.python-cqrs.dev/latest/faststream/index.md).
 
-```python
-from faststream.kafka import TestKafkaBroker
+Import the `kafka` module, not `TestKafkaBroker` itself: pytest tries to collect any `Test*` name in a test module.
 
-async with TestKafkaBroker(broker) as test_broker:
-    async with test_harness.around(event_mediator, inbox=inbox) as harness:
-        await test_broker.publish({"order_id": "1"}, "order_events")
-        harness.invocations.assert_entered(AuditHandler)
+```python
+from faststream import kafka
+
+async def test_subscriber_sends_the_event_to_event_mediator() -> None:
+    event_mediator = events_bootstrap.bootstrap(
+        di_container=di.Container(),
+        events_mapper=events_mapper,
+    )
+    inbox = _inbox()
+    broker = kafka.KafkaBroker()
+
+    @broker.subscriber("order_events")
+    async def on_order(body: dict) -> None:
+        await event_mediator.send(OrderCreated(order_id=body["order_id"]))
+
+    async with kafka.TestKafkaBroker(broker) as test_broker:
+        async with test_harness.around(event_mediator, inbox=inbox) as harness:
+            await test_broker.publish({"order_id": "1"}, "order_events")
+
+            harness.invocations.assert_entered(AuditHandler)
 ```
 
 A subscriber that only accepts the message into the inbox:
 
 ```python
-await test_broker.publish({"order_id": "1"}, "order_events")
-assert harness.inbox.pending_count == 1
-harness.invocations.assert_not_entered(CreateOrderHandler)
+async def test_subscriber_only_stores_the_message_in_the_inbox() -> None:
+    event_mediator = events_bootstrap.bootstrap(
+        di_container=di.Container(),
+        events_mapper=events_mapper,
+    )
+    inbox = _inbox()
+    broker = kafka.KafkaBroker()
+
+    @broker.subscriber("order_events")
+    async def on_order(body: dict) -> None:
+        await inbox.add([("msg-1", CreateOrder(sku=body["order_id"]))])
+
+    async with kafka.TestKafkaBroker(broker) as test_broker:
+        async with test_harness.around(event_mediator, inbox=inbox) as harness:
+            await test_broker.publish({"order_id": "1"}, "order_events")
+
+            assert harness.inbox.pending_count == 1
+            harness.invocations.assert_not_entered(CreateOrderHandler)
 ```
 
-Library example: [`examples/testing/faststream_subscriber.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/faststream_subscriber.py).
+Library example: [`examples/testing/test_faststream_subscriber.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_faststream_subscriber.py).
 
 # Handler Errors
 
@@ -14128,12 +14300,24 @@ Library example: [`examples/testing/faststream_subscriber.py`](https://github.co
 See [Runtime Processing](https://mkdocs.python-cqrs.dev/latest/event_handler/runtime_processing/index.md).
 
 ```python
-result = await harness.mediator.send(CreateOrder(sku="book"))
-assert result.order_id == "1"
-assert harness.handler_errors.of(OrderCreated, AuditHandler)
+class AuditHandler(cqrs.EventHandler[OrderCreated]):
+    async def handle(self, event: OrderCreated) -> None:
+        raise RuntimeError("audit failed")
+
+async def test_domain_handler_error_is_swallowed() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+    ) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.order_id == "1"
+        assert harness.handler_errors.of(OrderCreated, AuditHandler)
 ```
 
-Library example: [`examples/testing/domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/domain_and_notification.py).
+Library example: [`examples/testing/test_domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_domain_and_notification.py).
 
 # Inbox
 
@@ -14147,17 +14331,31 @@ A duplicate `add` is `False`. A command is on `requests`, and an event would be 
 
 See [Transactional Inbox](https://mkdocs.python-cqrs.dev/latest/inbox/index.md).
 
+Two tests, one action each: a second `add` of the same message, and processing.
+
 ```python
-inserted = await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
-assert inserted == [True]
-duplicate = await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
-assert duplicate == [False]
-await harness.inbox.process_available()
-assert harness.requests.contains(CreateOrder)
-assert harness.inbox.one("msg-1").status is cqrs.InboxStatus.PROCESSED
+async def test_inbox_rejects_a_duplicate_message() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        inserted = await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
+
+        duplicate = await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
+
+        assert inserted == [True]
+        assert duplicate == [False]
+
+async def test_inbox_processes_the_command() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.inbox.add([("msg-1", CreateOrder(sku="book"))])
+
+        await harness.inbox.process_available()
+
+        assert harness.requests.contains(CreateOrder)
+        assert harness.inbox.one("msg-1").status is cqrs.InboxStatus.PROCESSED
 ```
 
-Library example: [`examples/testing/outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/outbox_inbox.py).
+Library example: [`examples/testing/test_outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outbox_inbox.py).
 
 # Inbox Failure
 
@@ -14172,14 +14370,26 @@ A handler error leaves the inbox row `NOT_PROCESSED`. `flush_counter` is `1`.
 See [Using the transactional inbox](https://mkdocs.python-cqrs.dev/latest/inbox/usage/index.md).
 
 ```python
-await harness.inbox.add([("msg-2", CreateOrder(sku="book"))])
-await harness.inbox.process_available()
-row = harness.inbox.one("msg-2")
-assert row.status is cqrs.InboxStatus.NOT_PROCESSED
-assert row.flush_counter == 1
+class FailingCreateOrderHandler(cqrs.RequestHandler[CreateOrder]):
+    async def handle(self, request: CreateOrder):
+        raise RuntimeError("inbox handler failed")
+
+def commands_mapper(mapper: cqrs.RequestMap) -> None:
+    mapper.bind(CreateOrder, FailingCreateOrderHandler)
+
+async def test_inbox_keeps_a_failed_row_not_processed() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.inbox.add([("msg-2", CreateOrder(sku="book"))])
+
+        await harness.inbox.process_available()
+
+        row = harness.inbox.one("msg-2")
+        assert row.status is cqrs.InboxStatus.NOT_PROCESSED
+        assert row.flush_counter == 1
 ```
 
-Library example: [`examples/testing/outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/outbox_inbox.py).
+Library example: [`examples/testing/test_outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outbox_inbox.py).
 
 # JSON messages
 
@@ -14194,13 +14404,17 @@ Library example: [`examples/testing/outbox_inbox.py`](https://github.com/vadikko
 See [Outbox usage](https://mkdocs.python-cqrs.dev/latest/outbox/usage/index.md).
 
 ```python
-await harness.mediator.send(CreateOrder(sku="book"))
-message = harness.published.one(OrderCreatedNotice)
-assert message.content_type is None
-assert message.payload["event_name"] == "order_created"
+async def test_notification_is_published_as_json() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        message = harness.published.one(OrderCreatedNotice)
+        assert message.content_type is None
+        assert message.payload["event_name"] == "order_created"
 ```
 
-Library example: [`examples/testing/domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/domain_and_notification.py).
+Library example: [`examples/testing/test_domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_domain_and_notification.py).
 
 # Kafka and AMQP
 
@@ -14217,14 +14431,22 @@ See [Message brokers](https://mkdocs.python-cqrs.dev/latest/bootstrap/message_br
 ```python
 from cqrs.testing import CapturingMessageBroker
 
-broker = CapturingMessageBroker()
-mediator = bootstrap.bootstrap(container, message_broker=broker, commands_mapper=commands_mapper)
-async with test_harness.around(mediator, broker=broker) as harness:
-    await mediator.send(CreateOrder(sku="book"))
-    harness.published.assert_one(OrderCreatedNotice, topic="order_events")
+async def test_capturing_broker_records_the_notice() -> None:
+    broker = CapturingMessageBroker()
+    mediator = bootstrap.bootstrap(
+        di_container=di.Container(),
+        message_broker=broker,
+        commands_mapper=commands_mapper,
+    )
+    async with test_harness.around(mediator, broker=broker) as harness:
+        await mediator.send(CreateOrder(sku="book"))
+
+        harness.published.assert_one(OrderCreatedNotice, topic="order_events")
 ```
 
-`KafkaMessageBroker` construction stays in the integration tests:
+Library example: [`examples/testing/test_outside_harness.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py).
+
+`KafkaMessageBroker` construction stays in the integration tests. This is application wiring, not a unit test:
 
 ```python
 broker = cqrs.message_brokers.kafka.KafkaMessageBroker(producer)
@@ -14258,9 +14480,16 @@ This is not run through `test_harness`. `CoRMermaid` generates diagrams for Chai
 See [Mermaid diagrams](https://mkdocs.python-cqrs.dev/latest/mermaid/index.md).
 
 ```python
-diagram = cqrs.CoRMermaid([CardHandler, CashHandler]).sequence()
-assert "CardHandler" in diagram
+def test_cor_sequence_diagram_names_each_step() -> None:
+    diagram = cqrs.CoRMermaid([CardHandler, CashHandler])
+
+    sequence = diagram.sequence()
+
+    assert "CardHandler" in sequence
+    assert "CashHandler" in sequence
 ```
+
+Library example: [`examples/testing/test_outside_harness.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py).
 
 # Middleware
 
@@ -14279,14 +14508,21 @@ class DenyMiddleware:
     async def __call__(self, request, handle):
         return CreatedOrder(order_id="denied")
 
-async with test_harness(container, commands_mapper=commands_mapper, middlewares=[DenyMiddleware()]) as harness:
-    result = await harness.mediator.send(CreateOrder(sku="book"))
-    assert result.order_id == "denied"
-    harness.invocations.assert_not_entered(CreateOrderHandler)
-    assert harness.middlewares.of(DenyMiddleware)[0].called_next is False
+async def test_middleware_answers_without_the_handler() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        middlewares=[DenyMiddleware()],
+    ) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.order_id == "denied"
+        harness.invocations.assert_not_entered(CreateOrderHandler)
+        assert harness.middlewares.of(DenyMiddleware)[0].called_next is False
 ```
 
-Library example: [`examples/testing/middleware.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/middleware.py).
+Library example: [`examples/testing/test_middleware.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_middleware.py).
 
 # Notification
 
@@ -14305,12 +14541,16 @@ class OrderCreatedNotice(cqrs.NotificationEvent):
     event_name: str = "order_created"
     topic: str = "order_events"
 
-await harness.mediator.send(CreateOrder(sku="book"))
-harness.published.assert_one(OrderCreatedNotice, topic="order_events")
-assert not harness.handled.contains(OrderCreatedNotice)
+async def test_notification_is_published() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        harness.published.assert_one(OrderCreatedNotice, topic="order_events")
+        assert not harness.handled.contains(OrderCreatedNotice)
 ```
 
-Library example: [`examples/testing/domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/domain_and_notification.py).
+Library example: [`examples/testing/test_domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_domain_and_notification.py).
 
 # Outbox
 
@@ -14326,16 +14566,51 @@ See [Transactional Outbox](https://mkdocs.python-cqrs.dev/latest/outbox/index.md
 
 Transaction log tailing is a different process, not this page; see [Transaction log tailing](https://mkdocs.python-cqrs.dev/latest/testing/log_tailing/index.md).
 
+The harness creates `harness.outbox_repository` and does not bind it. Arrange binds it into the container, so the handler receives it as `cqrs.OutboxedEventRepository`. Sending and producing are two actions, so they are two tests.
+
 ```python
-await harness.mediator.send(CreateOrder(sku="book"))
-assert harness.outbox.pending_count == 1
-harness.published.assert_empty()
-await harness.outbox.produce_available()
-assert harness.outbox.produced_count == 1
-harness.published.assert_one(OrderCreatedNotice, topic="order_events")
+class CreateOrderHandler(cqrs.RequestHandler[CreateOrder]):
+    def __init__(self, repository: cqrs.OutboxedEventRepository) -> None:
+        self._repository = repository
+
+    async def handle(self, request: CreateOrder):
+        self._repository.add(OrderCreatedNotice(payload={"order_id": "1"}))
+        return CreatedOrder(order_id="1")
+
+def bind_outbox(container: di.Container, repository: cqrs.OutboxedEventRepository) -> None:
+    def outbox_repository() -> cqrs.OutboxedEventRepository:
+        return repository
+
+    container.bind(
+        di.bind_by_type(
+            di.dependent.Dependent(outbox_repository, scope="request"),
+            cqrs.OutboxedEventRepository,
+        ),
+    )
+
+async def test_outbox_holds_the_row_until_produce() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        bind_outbox(container, harness.outbox_repository)
+
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert harness.outbox.pending_count == 1
+        harness.published.assert_empty()
+
+async def test_outbox_produce_publishes_the_row() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        bind_outbox(container, harness.outbox_repository)
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        await harness.outbox.produce_available()
+
+        assert harness.outbox.produced_count == 1
+        harness.published.assert_one(OrderCreatedNotice, topic="order_events")
 ```
 
-Library example: [`examples/testing/outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/outbox_inbox.py).
+Library example: [`examples/testing/test_outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outbox_inbox.py).
 
 # Outbox Broker Error
 
@@ -14350,13 +14625,20 @@ Library example: [`examples/testing/outbox_inbox.py`](https://github.com/vadikko
 See [Event Producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md).
 
 ```python
-harness.broker.fail_next(ConnectionError("down"))
-await harness.outbox.produce_available()
-assert harness.outbox.not_produced_count == 1
-harness.published.assert_empty()
+async def test_outbox_broker_error_leaves_the_row_not_produced() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        bind_outbox(container, harness.outbox_repository)
+        await harness.mediator.send(CreateOrder(sku="book"))
+        harness.broker.fail_next(ConnectionError("down"))
+
+        await harness.outbox.produce_available()
+
+        assert harness.outbox.not_produced_count == 1
+        harness.published.assert_empty()
 ```
 
-Library example: [`examples/testing/outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/outbox_inbox.py).
+Library example: [`examples/testing/test_outbox_inbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outbox_inbox.py).
 
 # Parallel Handlers
 
@@ -14371,19 +14653,26 @@ Both handler classes are on `invocations`. Do not assert their order.
 See [Parallel Event Processing](https://mkdocs.python-cqrs.dev/latest/event_handler/parallel_processing/index.md).
 
 ```python
-async with test_harness(
-    container,
-    commands_mapper=commands_mapper,
-    domain_events_mapper=domain_events_mapper,
-    concurrent_event_handle_enable=True,
-    scope_strategy=cqrs.ScopeStrategy.HANDLER,
-) as harness:
-    await harness.mediator.send(CreateOrder(sku="book"))
-    harness.invocations.assert_entered(AuditHandler)
-    harness.invocations.assert_entered(SearchHandler)
+def domain_events_mapper(mapper: cqrs.EventMap) -> None:
+    mapper.bind(OrderCreated, AuditHandler)
+    mapper.bind(OrderCreated, SearchHandler)
+
+async def test_parallel_handlers_both_enter() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+        concurrent_event_handle_enable=True,
+        scope_strategy=cqrs.ScopeStrategy.HANDLER,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        harness.invocations.assert_entered(AuditHandler)
+        harness.invocations.assert_entered(SearchHandler)
 ```
 
-Library example: [`examples/testing/parallel_handlers.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/parallel_handlers.py).
+Library example: [`examples/testing/test_parallel_handlers.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_parallel_handlers.py).
 
 # Protobuf messages
 
@@ -14398,18 +14687,24 @@ Library example: [`examples/testing/parallel_handlers.py`](https://github.com/va
 See [Protobuf](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md).
 
 ```python
-async with test_harness(
-    container,
-    commands_mapper=commands_mapper,
-    serializer=cqrs.ProtobufEventSerializer({OrderCreatedNotice: order_pb2.OrderCreated}),
-) as harness:
-    await harness.mediator.send(CreateOrder(sku="book"))
-    message = harness.published.one(OrderCreatedNotice)
-    assert message.content_type == "application/x-protobuf"
-    assert message.payload_bytes
+pytestmark = pytest.mark.protobuf
+
+async def test_notification_is_published_as_protobuf() -> None:
+    container = di.Container()
+    serializer = cqrs.ProtobufEventSerializer({OrderCreatedNotice: order_pb2.OrderCreated})
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        serializer=serializer,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        message = harness.published.one(OrderCreatedNotice)
+        assert message.content_type == "application/x-protobuf"
+        assert message.payload_bytes
 ```
 
-Library example: [`examples/testing/protobuf_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/protobuf_notification.py).
+Library example: [`examples/testing/test_protobuf_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_protobuf_notification.py).
 
 # Pydantic requests
 
@@ -14424,17 +14719,26 @@ Library example: [`examples/testing/protobuf_notification.py`](https://github.co
 See [Pydantic](https://mkdocs.python-cqrs.dev/latest/request_response_types/pydantic/index.md).
 
 ```python
+pytestmark = pytest.mark.pydantic
+
 class CreateOrder(cqrs.PydanticRequest[CreatedOrder]):
     sku: str = pydantic.Field(min_length=1)
 
-with pytest.raises(pydantic.ValidationError):
-    CreateOrder(sku="")
+def test_empty_sku_fails_before_send() -> None:
+    sku = ""
 
-result = await harness.mediator.send(CreateOrder(sku="book"))
-assert result.order_id == "1"
+    with pytest.raises(pydantic.ValidationError):
+        CreateOrder(sku=sku)
+
+async def test_valid_request_returns_the_response() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.order_id == "1"
 ```
 
-Library example: [`examples/testing/pydantic_request.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/pydantic_request.py).
+Library example: [`examples/testing/test_pydantic_request.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_pydantic_request.py).
 
 # Query
 
@@ -14456,14 +14760,21 @@ class ReadOrderHandler(cqrs.RequestHandler[ReadOrder]):
     async def handle(self, request: ReadOrder) -> OrderView:
         return OrderView(order_id=request.order_id)
 
-view = await harness.mediator.send(ReadOrder(order_id="1"))
-assert view.order_id == "1"
-harness.handled.assert_empty()
-harness.published.assert_empty()
-harness.outbox.assert_empty()
+def queries_mapper(mapper: cqrs.RequestMap) -> None:
+    mapper.bind(ReadOrder, ReadOrderHandler)
+
+async def test_query_leaves_delivery_journals_empty() -> None:
+    container = di.Container()
+    async with test_harness(container, queries_mapper=queries_mapper) as harness:
+        view = await harness.mediator.send(ReadOrder(order_id="1"))
+
+        assert view.order_id == "1"
+        harness.handled.assert_empty()
+        harness.published.assert_empty()
+        harness.outbox.assert_empty()
 ```
 
-Library example: [`examples/testing/command_and_query.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/command_and_query.py).
+Library example: [`examples/testing/test_command_and_query.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_command_and_query.py).
 
 # Request Fallback
 
@@ -14484,13 +14795,17 @@ def commands_mapper(mapper: cqrs.RequestMap) -> None:
         cqrs.RequestHandlerFallback(CreateOrderHandler, CreateOrderFallback),
     )
 
-result = await harness.mediator.send(CreateOrder(sku="book"))
-assert result.source == "fallback"
-harness.invocations.assert_entered(CreateOrderHandler)
-harness.invocations.assert_entered(CreateOrderFallback)
+async def test_request_fallback_answers_after_the_primary_fails() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.source == "fallback"
+        harness.invocations.assert_entered(CreateOrderHandler)
+        harness.invocations.assert_entered(CreateOrderFallback)
 ```
 
-Library example: [`examples/testing/fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/fallback.py).
+Library example: [`examples/testing/test_fallback.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_fallback.py).
 
 # Saga Circuit Breaker
 
@@ -14514,14 +14829,17 @@ class OrderSaga(cqrs.Saga[OrderContext]):
         ),
     ]
 
-async for step in harness.saga_mediator.execute(OrderContext(order_id="1")):
-    pass
+async def test_open_saga_breaker_skips_the_step() -> None:
+    container = di.Container()
+    async with test_harness(container, sagas_mapper=sagas_mapper) as harness:
+        async for _ in harness.saga_mediator.execute(OrderContext(order_id="1")):
+            pass
 
-harness.invocations.assert_not_entered(ReserveStock)
-harness.invocations.assert_entered(ReserveStockFallback)
+        harness.invocations.assert_not_entered(ReserveStock)
+        harness.invocations.assert_entered(ReserveStockFallback)
 ```
 
-Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/saga.py).
+Library example: [`examples/testing/test_saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_saga.py).
 
 # Saga Compensation
 
@@ -14535,17 +14853,33 @@ Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python
 
 See [Compensation Strategy](https://mkdocs.python-cqrs.dev/latest/saga/compensation/index.md).
 
-```python
-async for step in harness.saga_mediator.execute(OrderContext(order_id="1")):
-    pass
+`execute` raises the step error after compensation, so Act waits for it with `pytest.raises`.
 
-assert harness.invocations.of(ReserveStock)[-1].method == "compensate"
-saga = harness.sagas.one(OrderSaga)
-assert saga.status is SagaStatus.FAILED
-assert saga.step_status("ReserveStock") is SagaStepStatus.COMPENSATED
+```python
+class ChargeCard(cqrs.SagaStepHandler[OrderContext, None]):
+    async def act(self, context: OrderContext):
+        raise CardDeclined("card declined")
+
+    async def compensate(self, context: OrderContext) -> None:
+        return None
+
+class OrderSaga(cqrs.Saga[OrderContext]):
+    steps = [ReserveStock, ChargeCard]
+
+async def test_failed_step_compensates_finished_steps() -> None:
+    container = di.Container()
+    async with test_harness(container, sagas_mapper=sagas_mapper) as harness:
+        with pytest.raises(CardDeclined):
+            async for _ in harness.saga_mediator.execute(OrderContext(order_id="1")):
+                pass
+
+        assert harness.invocations.of(ReserveStock)[-1].method == "compensate"
+        saga = harness.sagas.one(OrderSaga)
+        assert saga.status is SagaStatus.FAILED
+        assert saga.step_status("ReserveStock") is SagaStepStatus.COMPENSATED
 ```
 
-Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/saga.py).
+Library example: [`examples/testing/test_saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_saga.py).
 
 # Saga Fallback
 
@@ -14566,16 +14900,19 @@ class OrderSaga(cqrs.Saga[OrderContext]):
         ChargeCard,
     ]
 
-async for step in harness.saga_mediator.execute(OrderContext(order_id="1")):
-    pass
+async def test_saga_fallback_replaces_the_failed_step() -> None:
+    container = di.Container()
+    async with test_harness(container, sagas_mapper=sagas_mapper) as harness:
+        async for _ in harness.saga_mediator.execute(OrderContext(order_id="1")):
+            pass
 
-harness.invocations.assert_entered(ReserveStock)
-harness.invocations.assert_entered(ReserveStockFallback)
-assert harness.invocations.of(ReserveStock)[-1].method == "act"
-assert harness.sagas.one(OrderSaga).status is SagaStatus.COMPLETED
+        harness.invocations.assert_entered(ReserveStock)
+        harness.invocations.assert_entered(ReserveStockFallback)
+        assert harness.invocations.of(ReserveStock)[-1].method == "act"
+        assert harness.sagas.one(OrderSaga).status is SagaStatus.COMPLETED
 ```
 
-Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/saga.py).
+Library example: [`examples/testing/test_saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_saga.py).
 
 # Saga Recovery
 
@@ -14589,15 +14926,25 @@ Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python
 
 See [Saga Recovery & Eventual Consistency](https://mkdocs.python-cqrs.dev/latest/saga/recovery/index.md).
 
+Arrange stops the saga after the first step. Act recovers it.
+
 ```python
-saga_id = harness.sagas.one(OrderSaga).saga_id
-await harness.sagas.recover(OrderSaga(), saga_id, OrderContext)
-acts = [item for item in harness.invocations.of(ReserveStock) if item.method == "act"]
-assert len(acts) == 1
-assert harness.sagas.one(OrderSaga).status is SagaStatus.COMPLETED
+async def test_recovery_does_not_repeat_a_finished_step() -> None:
+    container = di.Container()
+    async with test_harness(container, sagas_mapper=sagas_mapper) as harness:
+        async for step in harness.saga_mediator.execute(OrderContext(order_id="1")):
+            if step.step_type is ReserveStock:
+                break
+        saga_id = harness.sagas.one(OrderSaga).saga_id
+
+        await harness.sagas.recover(OrderSaga(), saga_id, OrderContext)
+
+        acts = [item for item in harness.invocations.of(ReserveStock) if item.method == "act"]
+        assert len(acts) == 1
+        assert harness.sagas.one(OrderSaga).status is SagaStatus.COMPLETED
 ```
 
-Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/saga.py).
+Library example: [`examples/testing/test_saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_saga.py).
 
 # Saga Step
 
@@ -14611,19 +14958,31 @@ Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python
 
 See [Saga Pattern](https://mkdocs.python-cqrs.dev/latest/saga/index.md).
 
-```python
-async for step in harness.saga_mediator.execute(OrderContext(order_id="1")):
-    if step.step_type is ReserveStock:
-        assert harness.sagas.running_count == 1
-        assert harness.invocations.of(ReserveStock)[0].method == "act"
+The count inside the loop is kept in a variable during Act and checked in Assert, so the test has one place for assertions.
 
-assert harness.sagas.running_count == 0
-assert harness.sagas.completed_count == 1
-saga = harness.sagas.one(OrderSaga)
-assert saga.completed_steps == ["ReserveStock", "ChargeCard"]
+```python
+class OrderSaga(cqrs.Saga[OrderContext]):
+    steps = [ReserveStock, ChargeCard]
+
+def sagas_mapper(mapper: cqrs.SagaMap) -> None:
+    mapper.bind(OrderContext, OrderSaga)
+
+async def test_saga_step_acts_and_the_saga_completes() -> None:
+    container = di.Container()
+    async with test_harness(container, sagas_mapper=sagas_mapper) as harness:
+        running_after_reserve = None
+        async for step in harness.saga_mediator.execute(OrderContext(order_id="1")):
+            if step.step_type is ReserveStock:
+                running_after_reserve = harness.sagas.running_count
+
+        assert running_after_reserve == 1
+        assert harness.invocations.of(ReserveStock)[0].method == "act"
+        assert harness.sagas.running_count == 0
+        assert harness.sagas.completed_count == 1
+        assert harness.sagas.one(OrderSaga).completed_steps == ["ReserveStock", "ChargeCard"]
 ```
 
-Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/saga.py).
+Library example: [`examples/testing/test_saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_saga.py).
 
 # Scope HANDLER and NONE
 
@@ -14638,19 +14997,22 @@ Both handlers are in the set of `invocations`. Order is not asserted. `HANDLER` 
 See [Scope Strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md).
 
 ```python
-async with test_harness(
-    container,
-    commands_mapper=commands_mapper,
-    domain_events_mapper=domain_events_mapper,
-    concurrent_event_handle_enable=True,
-    scope_strategy=cqrs.ScopeStrategy.NONE,
-) as harness:
-    await harness.mediator.send(CreateOrder(sku="book"))
-    handlers = {item.handler for item in harness.invocations if item.argument_type is OrderCreated}
-    assert handlers == {AuditHandler, SearchHandler}
+async def test_scope_none_enters_both_handlers_in_any_order() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+        concurrent_event_handle_enable=True,
+        scope_strategy=cqrs.ScopeStrategy.NONE,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        handlers = {item.handler for item in harness.invocations if item.argument_type is OrderCreated}
+        assert handlers == {AuditHandler, SearchHandler}
 ```
 
-Library example: [`examples/testing/parallel_handlers.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/parallel_handlers.py).
+Library example: [`examples/testing/test_parallel_handlers.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_parallel_handlers.py).
 
 # Scope SEND
 
@@ -14665,18 +15027,21 @@ Under `ScopeStrategy.SEND`, `invocations` for argument type `OrderCreated` are `
 See [Scope Strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md).
 
 ```python
-async with test_harness(
-    di_container,
-    commands_mapper=commands_mapper,
-    domain_events_mapper=domain_events_mapper,
-    scope_strategy=cqrs.ScopeStrategy.SEND,
-) as harness:
-    await harness.mediator.send(CreateOrder(sku="book"))
-    entered = [item.handler for item in harness.invocations if item.argument_type is OrderCreated]
-    assert entered == [AuditHandler, SearchHandler]
+async def test_scope_send_runs_handlers_in_order() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        commands_mapper=commands_mapper,
+        domain_events_mapper=domain_events_mapper,
+        scope_strategy=cqrs.ScopeStrategy.SEND,
+    ) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        entered = [item.handler for item in harness.invocations if item.argument_type is OrderCreated]
+        assert entered == [AuditHandler, SearchHandler]
 ```
 
-Library example: [`examples/testing/parallel_handlers.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/parallel_handlers.py).
+Library example: [`examples/testing/test_parallel_handlers.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_parallel_handlers.py).
 
 # SQLAlchemy outbox
 
@@ -14690,18 +15055,36 @@ The harness does not import SQLAlchemy. The session rolls back. `SqlAlchemyOutbo
 
 See [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md).
 
+The fixture owns the engine, the table, and the rollback, so the test body is only Arrange, Act, and Assert.
+
 ```python
-async with engine.begin() as connection:
-    session = AsyncSession(bind=connection)
+pytestmark = pytest.mark.sqlalchemy
+
+@pytest.fixture
+async def session() -> typing.AsyncIterator[AsyncSession]:
+    engine = create_async_engine("sqlite+aiosqlite://")
+    async with engine.begin() as connection:
+        await connection.run_sync(_create_sqlite_outbox_table)
+        yield AsyncSession(bind=connection)
+        await connection.rollback()
+    await engine.dispose()
+
+async def test_produce_publishes_the_stored_row(session: AsyncSession) -> None:
+    event_map = cqrs.OutboxedEventMap()
+    event_map.register("order_created", OrderCreatedNotice)
     outbox = cqrs.SqlAlchemyOutboxedEventRepository(session, event_map=event_map)
+    container = di.Container()
+    bind_outbox(container, outbox)
+    mediator = bootstrap.bootstrap(di_container=container, commands_mapper=commands_mapper)
     async with test_harness.around(mediator, outbox=outbox) as harness:
         await mediator.send(CreateOrder(sku="book"))
+
         await harness.outbox.produce_available()
+
         assert harness.outbox.produced_count == 1
-    await connection.rollback()
 ```
 
-Library example: [`examples/testing/sqlalchemy_outbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/sqlalchemy_outbox.py).
+Library example: [`examples/testing/test_sqlalchemy_outbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_sqlalchemy_outbox.py).
 
 # SQLModel outbox
 
@@ -14715,14 +15098,25 @@ The harness does not import SQLModel. Mark the test `sqlmodel`. Read `outbox` on
 
 See [ORM](https://mkdocs.python-cqrs.dev/latest/orm/index.md).
 
+The `session` fixture is the same as on the [SQLAlchemy](https://mkdocs.python-cqrs.dev/latest/testing/sqlalchemy/index.md) page, with `sqlmodel.ext.asyncio.session.AsyncSession`.
+
 ```python
-outbox = cqrs.outbox.sqlmodel.SqlModelOutboxedEventRepository(session, event_map=event_map)
-async with test_harness.around(mediator, outbox=outbox) as harness:
-    await mediator.send(CreateOrder(sku="book"))
-    assert harness.outbox.pending_count == 1
+pytestmark = pytest.mark.sqlmodel
+
+async def test_send_stores_a_pending_row(session: AsyncSession) -> None:
+    event_map = cqrs.OutboxedEventMap()
+    event_map.register("order_created", OrderCreatedNotice)
+    outbox = cqrs.outbox.sqlmodel.SqlModelOutboxedEventRepository(session, event_map=event_map)
+    container = di.Container()
+    bind_outbox(container, outbox)
+    mediator = bootstrap.bootstrap(di_container=container, commands_mapper=commands_mapper)
+    async with test_harness.around(mediator, outbox=outbox) as harness:
+        await mediator.send(CreateOrder(sku="book"))
+
+        assert harness.outbox.pending_count == 1
 ```
 
-Library example: [`examples/testing/sqlmodel_outbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/sqlmodel_outbox.py).
+Library example: [`examples/testing/test_sqlmodel_outbox.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_sqlmodel_outbox.py).
 
 # Streaming
 
@@ -14736,14 +15130,30 @@ Library example: [`examples/testing/sqlmodel_outbox.py`](https://github.com/vadi
 
 See [Stream Handling](https://mkdocs.python-cqrs.dev/latest/stream_handling/index.md).
 
+A domain event from a stream is on `handled` only when its type has a handler in `domain_events_mapper`. Without one it is on `unhandled`.
+
 ```python
-items = [item async for item in harness.streaming_mediator.stream(ExportOrders(batch=2))]
-assert [item.index for item in items] == [0, 1]
-assert items == harness.yields
-assert harness.handled.contains(RowExported)
+def streaming_mapper(mapper: cqrs.RequestMap) -> None:
+    mapper.bind(ExportOrders, ExportOrdersHandler)
+
+def domain_events_mapper(mapper: cqrs.EventMap) -> None:
+    mapper.bind(RowExported, RowExportedHandler)
+
+async def test_stream_records_yields_and_events() -> None:
+    container = di.Container()
+    async with test_harness(
+        container,
+        streaming_mapper=streaming_mapper,
+        domain_events_mapper=domain_events_mapper,
+    ) as harness:
+        items = [item async for item in harness.streaming_mediator.stream(ExportOrders(batch=2))]
+
+        assert [item.index for item in items] == [0, 1]
+        assert items == harness.yields
+        assert harness.handled.contains(RowExported)
 ```
 
-Library example: [`examples/testing/streaming.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/streaming.py).
+Library example: [`examples/testing/test_streaming.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_streaming.py).
 
 # Streaming Fallback
 
@@ -14764,13 +15174,18 @@ def streaming_mapper(mapper: cqrs.RequestMap) -> None:
         cqrs.RequestHandlerFallback(ExportOrdersHandler, ExportOrdersFallback),
     )
 
-items = [item async for item in harness.streaming_mediator.stream(ExportOrders(batch=2))]
-harness.invocations.assert_entered(ExportOrdersHandler)
-harness.invocations.assert_entered(ExportOrdersFallback)
-assert [item.index for item in harness.yields] == [0, 0, 1]
+async def test_stream_fallback_restarts_the_stream() -> None:
+    container = di.Container()
+    async with test_harness(container, streaming_mapper=streaming_mapper) as harness:
+        items = [item async for item in harness.streaming_mediator.stream(ExportOrders(batch=2))]
+
+        harness.invocations.assert_entered(ExportOrdersHandler)
+        harness.invocations.assert_entered(ExportOrdersFallback)
+        assert [item.index for item in harness.yields] == [0, 0, 1]
+        assert [item.index for item in items] == [0, 0, 1]
 ```
 
-Library example: [`examples/testing/streaming.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/streaming.py).
+Library example: [`examples/testing/test_streaming.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_streaming.py).
 
 # Unhandled Event
 
@@ -14785,9 +15200,13 @@ The event type is on `unhandled`. `send` does not raise. The handler is not on `
 See [Event Flow](https://mkdocs.python-cqrs.dev/latest/event_handler/event_flow/index.md).
 
 ```python
-await harness.mediator.send(CreateOrder(sku="book"))
-assert harness.unhandled.contains(OrderCreated)
-harness.invocations.assert_not_entered(AuditHandler)
+async def test_event_without_handler_is_unhandled() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert harness.unhandled.contains(OrderCreated)
+        harness.invocations.assert_not_entered(AuditHandler)
 ```
 
-Library example: [`examples/testing/domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/domain_and_notification.py).
+Library example: [`examples/testing/test_domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_domain_and_notification.py).

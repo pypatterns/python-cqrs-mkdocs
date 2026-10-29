@@ -17,13 +17,16 @@ class OrderSaga(cqrs.Saga[OrderContext]):
         ChargeCard,
     ]
 
-async for step in harness.saga_mediator.execute(OrderContext(order_id="1")):
-    pass
+async def test_saga_fallback_replaces_the_failed_step() -> None:
+    container = di.Container()
+    async with test_harness(container, sagas_mapper=sagas_mapper) as harness:
+        async for _ in harness.saga_mediator.execute(OrderContext(order_id="1")):
+            pass
 
-harness.invocations.assert_entered(ReserveStock)
-harness.invocations.assert_entered(ReserveStockFallback)
-assert harness.invocations.of(ReserveStock)[-1].method == "act"
-assert harness.sagas.one(OrderSaga).status is SagaStatus.COMPLETED
+        harness.invocations.assert_entered(ReserveStock)
+        harness.invocations.assert_entered(ReserveStockFallback)
+        assert harness.invocations.of(ReserveStock)[-1].method == "act"
+        assert harness.sagas.one(OrderSaga).status is SagaStatus.COMPLETED
 ```
 
-Library example: [`examples/testing/saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/saga.py).
+Library example: [`examples/testing/test_saga.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_saga.py).

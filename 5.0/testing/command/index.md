@@ -26,10 +26,17 @@ class CreateOrderHandler(cqrs.RequestHandler[CreateOrder]):
         self._events.append(OrderCreated(order_id="1"))
         return CreatedOrder(order_id="1")
 
-result = await harness.mediator.send(CreateOrder(sku="book"))
-assert result.order_id == "1"
-assert harness.requests.contains(CreateOrder)
-harness.invocations.assert_entered(CreateOrderHandler)
+def commands_mapper(mapper: cqrs.RequestMap) -> None:
+    mapper.bind(CreateOrder, CreateOrderHandler)
+
+async def test_command_is_on_requests_and_invocations() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        result = await harness.mediator.send(CreateOrder(sku="book"))
+
+        assert result.order_id == "1"
+        assert harness.requests.contains(CreateOrder)
+        harness.invocations.assert_entered(CreateOrderHandler)
 ```
 
-Library example: [`examples/testing/command_and_query.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/command_and_query.py).
+Library example: [`examples/testing/test_command_and_query.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_command_and_query.py).

@@ -11,6 +11,13 @@ This is not run through `test_harness`. `ZlibCompressor` is checked by the exist
 See [Outbox implementation](https://mkdocs.python-cqrs.dev/latest/outbox/implementation/index.md).
 
 ```python
-compressed = cqrs.ZlibCompressor().compress(message.payload_bytes)
-assert cqrs.ZlibCompressor().decompress(compressed) == message.payload_bytes
+def test_zlib_round_trip_returns_the_payload() -> None:
+    compressor = cqrs.ZlibCompressor()
+    payload = b'{"order_id": "1"}'
+
+    restored = compressor.decompress(compressor.compress(payload))
+
+    assert restored == payload
 ```
+
+Library example: [`examples/testing/test_outside_harness.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py).

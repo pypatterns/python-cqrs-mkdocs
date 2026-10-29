@@ -4832,9 +4832,15 @@
 </div>
 <p>This is not run through <code>test_harness</code>. <code>CoRMermaid</code> generates diagrams for Chain of Responsibility handler chains: a sequence diagram of the execution flow, and a class diagram of the handlers, the request, and the response. <code>SagaMermaid</code> generates diagrams for saga instances: a sequence diagram of execution, failure, and compensation, and a class diagram of the saga, its steps, and its context. Drawing a diagram takes no part in <code>send</code>, so <code>invocations</code> stays empty.</p>
 <p>See <a href="../../mermaid/">Mermaid diagrams</a>.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">diagram</span> <span class="o">=</span> <span class="n">cqrs</span><span class="o">.</span><span class="n">CoRMermaid</span><span class="p">([</span><span class="n">CardHandler</span><span class="p">,</span> <span class="n">CashHandler</span><span class="p">])</span><span class="o">.</span><span class="n">sequence</span><span class="p">()</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="s2">"CardHandler"</span> <span class="ow">in</span> <span class="n">diagram</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_cor_sequence_diagram_names_each_step</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">diagram</span> <span class="o">=</span> <span class="n">cqrs</span><span class="o">.</span><span class="n">CoRMermaid</span><span class="p">([</span><span class="n">CardHandler</span><span class="p">,</span> <span class="n">CashHandler</span><span class="p">])</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">sequence</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">sequence</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">assert</span> <span class="s2">"CardHandler"</span> <span class="ow">in</span> <span class="n">sequence</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">assert</span> <span class="s2">"CashHandler"</span> <span class="ow">in</span> <span class="n">sequence</span>
 </span></code></pre></div>
+<p>Library example: <a href="https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py"><code>examples/testing/test_outside_harness.py</code></a>.</p>
 
 
 

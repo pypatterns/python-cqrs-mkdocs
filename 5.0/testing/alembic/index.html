@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="rebind is a migration, not a handler run. The fence is the short form.">
+        <meta name="description" content="rebind_outbox_model puts the outbox table on the application metadata. It is a migration, not a handler run.">
       
       
         <meta name="author" content="Vadim Kozyrevskii">
@@ -4830,11 +4830,35 @@
 </li>
 </ul>
 </div>
-<p>This is not run through <code>test_harness</code>. Rebind is a migration, not a handler run, so <code>requests</code> stays empty. The fence below is the short form.</p>
+<p>This is not run through <code>test_harness</code>. Rebind is a migration, not a handler run, so <code>requests</code> stays empty.</p>
+<p><code>rebind_outbox_model(model, new_base, table_name)</code> changes <code>OutboxModel</code> for the whole process. The fixture puts the original base and table name back after the test.</p>
 <p>See <a href="../../outbox/databases/">Database support</a> for the full call.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">cqrs</span><span class="o">.</span><span class="n">rebind_outbox_model</span><span class="p">(</span><span class="n">Base</span><span class="p">)</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sqlalchemy</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">orm</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cqrs</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">outbox_model</span><span class="p">():</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.outbox.sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">OutboxModel</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">original_base</span> <span class="o">=</span> <span class="n">OutboxModel</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">original_name</span> <span class="o">=</span> <span class="n">OutboxModel</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">name</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="k">yield</span> <span class="n">OutboxModel</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">cqrs</span><span class="o">.</span><span class="n">rebind_outbox_model</span><span class="p">(</span><span class="n">OutboxModel</span><span class="p">,</span> <span class="n">original_base</span><span class="p">,</span> <span class="n">original_name</span><span class="p">)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">sqlalchemy</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_rebind_puts_the_outbox_table_on_the_application_metadata</span><span class="p">(</span><span class="n">outbox_model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">Base</span> <span class="o">=</span> <span class="n">orm</span><span class="o">.</span><span class="n">registry</span><span class="p">()</span><span class="o">.</span><span class="n">generate_base</span><span class="p">()</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span><span class="s2">"sqlite://"</span><span class="p">)</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">cqrs</span><span class="o">.</span><span class="n">rebind_outbox_model</span><span class="p">(</span><span class="n">outbox_model</span><span class="p">,</span> <span class="n">Base</span><span class="p">,</span> <span class="s2">"app_outbox"</span><span class="p">)</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="k">assert</span> <span class="s2">"app_outbox"</span> <span class="ow">in</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">()</span>
 </span></code></pre></div>
+<p>Library example: <a href="https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_outside_harness.py"><code>examples/testing/test_outside_harness.py</code></a>.</p>
 
 
 

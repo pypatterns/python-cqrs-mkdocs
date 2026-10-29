@@ -15,9 +15,13 @@ class OrderCreatedNotice(cqrs.NotificationEvent):
     event_name: str = "order_created"
     topic: str = "order_events"
 
-await harness.mediator.send(CreateOrder(sku="book"))
-harness.published.assert_one(OrderCreatedNotice, topic="order_events")
-assert not harness.handled.contains(OrderCreatedNotice)
+async def test_notification_is_published() -> None:
+    container = di.Container()
+    async with test_harness(container, commands_mapper=commands_mapper) as harness:
+        await harness.mediator.send(CreateOrder(sku="book"))
+
+        harness.published.assert_one(OrderCreatedNotice, topic="order_events")
+        assert not harness.handled.contains(OrderCreatedNotice)
 ```
 
-Library example: [`examples/testing/domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/domain_and_notification.py).
+Library example: [`examples/testing/test_domain_and_notification.py`](https://github.com/vadikko2/python-cqrs/blob/master/examples/testing/test_domain_and_notification.py).
