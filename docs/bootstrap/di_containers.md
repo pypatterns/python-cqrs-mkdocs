@@ -20,6 +20,8 @@
 
 ## Overview
 
+dishka is [Testing dishka](../testing/dishka.md). dependency-injector is [Testing dependency-injector](../testing/dependency_injector.md).
+
 The bootstrap functions support multiple DI container implementations.
 
 | Container | Library | Default | Best For |

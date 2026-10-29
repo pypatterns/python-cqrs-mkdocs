@@ -20,6 +20,8 @@
 
 ## Overview
 
+[Testing middleware](../testing/middleware.md) records `middlewares`. `invocations` stays empty when `handle` is not called.
+
 Middlewares allow you to intercept and modify request processing. The `python-cqrs` package includes a built-in `LoggingMiddleware` and allows you to create custom middlewares.
 
 ### LoggingMiddleware

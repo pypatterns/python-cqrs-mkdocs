@@ -17,6 +17,8 @@ description: Choose SEND, HANDLER, or NONE — one UoW per send, per handler, or
 
 ---
 
+[Testing ScopeStrategy.SEND](../testing/scope_send.md) checks order on `invocations`. [Testing HANDLER and NONE](../testing/scope_handler.md) expects both handlers present.
+
 ```python
 from cqrs import ScopeStrategy
 

@@ -14,6 +14,7 @@
 
 ## Overview
 
+[Testing a compressor](../testing/compressor.md) is not run through `test_harness`.
 
 The `OutboxedEventRepository` interface defines the contract for outbox implementations:
 

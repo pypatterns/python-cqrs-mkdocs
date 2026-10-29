@@ -26,6 +26,8 @@
 
 ## Overview
 
+[Testing Alembic rebind](../testing/alembic.md) is not a handler run.
+
 The SQLAlchemy outbox implementation renders its DDL through *dialect-aware* column types. The same
 `OutboxModel` produces native types on every supported database: `BINARY(16)` on MySQL, `BYTEA` and `UUID` on
 PostgreSQL, and a portable `BLOB` fallback everywhere else.

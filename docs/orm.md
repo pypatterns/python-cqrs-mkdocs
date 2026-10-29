@@ -7,6 +7,8 @@ description: SQLAlchemy and SQLModel storage for the transactional outbox and sa
 
 The transactional outbox and saga storage can use **SQLAlchemy** or **SQLModel**. Both extras cover the same operations and render the same DDL, including the dialect-aware column types in [Database support](outbox/databases.md).
 
+The two storages are [Testing SQLAlchemy](testing/sqlalchemy.md) and [Testing SQLModel](testing/sqlmodel.md).
+
 Use one ORM for these tables in a process.
 
 <div class="grid cards" markdown>

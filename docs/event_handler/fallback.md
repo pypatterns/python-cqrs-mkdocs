@@ -14,6 +14,8 @@
 
 ## Overview
 
+Primary failure is [Testing event fallback](../testing/event_fallback.md). An open circuit is [Testing a circuit breaker](../testing/circuit_breaker.md).
+
 The **Event Handler Fallback** pattern allows you to register an alternative event handler that runs when the primary event handler fails (or when the circuit breaker is open). This provides resilience for side effects such as sending notifications or updating read models when the primary path (e.g. external API) is unavailable.
 
 | Concept | Description |

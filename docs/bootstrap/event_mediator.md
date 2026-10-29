@@ -20,6 +20,8 @@
 
 ## Overview
 
+[Testing EventMediator](../testing/event_mediator.md) records `invocations`, not the emitter's `handled` journal.
+
 The `EventMediator` processes events received from message brokers (like Kafka, RabbitMQ). It's used in event consumers to handle incoming events.
 
 ### Basic Configuration

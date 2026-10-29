@@ -101,6 +101,54 @@ nav:
     - FastStream Integration: faststream.md
     - Event Producing: event_producing.md
     - Protobuf Integration: protobuf.md
+  - Testing:
+    - Overview: testing/index.md
+    - Handlers:
+      - Command: testing/command.md
+      - Query: testing/query.md
+      - Domain event: testing/domain_event.md
+      - Notification: testing/notification.md
+      - Parallel handlers: testing/parallel_handlers.md
+      - Handler errors: testing/handler_errors.md
+      - Unhandled event: testing/unhandled_event.md
+      - Event mediator: testing/event_mediator.md
+      - Request fallback: testing/request_fallback.md
+      - Event fallback: testing/event_fallback.md
+      - Circuit breaker: testing/circuit_breaker.md
+      - Middleware: testing/middleware.md
+      - Scope SEND: testing/scope_send.md
+      - Scope HANDLER and NONE: testing/scope_handler.md
+      - Chain: testing/chain.md
+      - Streaming: testing/streaming.md
+      - Streaming fallback: testing/streaming_fallback.md
+      - Saga step: testing/saga_step.md
+      - Saga compensation: testing/saga_compensation.md
+      - Saga fallback: testing/saga_fallback.md
+      - Saga circuit breaker: testing/saga_circuit_breaker.md
+      - Saga recovery: testing/saga_recovery.md
+      - Inbox: testing/inbox.md
+      - Inbox failure: testing/inbox_failure.md
+      - Outbox: testing/outbox.md
+      - Outbox broker error: testing/outbox_broker_error.md
+    - Models:
+      - Dataclass: testing/dataclass.md
+      - Pydantic: testing/pydantic.md
+      - JSON: testing/json.md
+      - Protobuf: testing/protobuf.md
+      - di: testing/di.md
+    - Recipes:
+      - FastAPI: testing/fastapi.md
+      - FastStream: testing/faststream.md
+      - SQLAlchemy: testing/sqlalchemy.md
+      - SQLModel: testing/sqlmodel.md
+      - dishka: testing/dishka.md
+      - dependency-injector: testing/dependency_injector.md
+      - Kafka and AMQP: testing/kafka_amqp.md
+    - Outside the harness:
+      - Mermaid: testing/mermaid.md
+      - Compressor: testing/compressor.md
+      - Alembic: testing/alembic.md
+      - Transaction log tailing: testing/log_tailing.md
 theme:
   name: material
   custom_dir: overrides
@@ -203,6 +251,8 @@ plugins:
           - faststream.md
           - event_producing.md
           - protobuf.md
+        Testing:
+          - testing/*.md
 use_directory_urls: true
 strict: true
 docs_dir: docs

@@ -17,6 +17,8 @@ description: Fallback strategies and circuit breaker patterns for Saga steps in 
 
 The Fallback pattern allows you to define alternative steps that execute automatically when primary steps fail. This provides resilience and graceful degradation for distributed transactions.
 
+The fallback step is [Testing saga fallback](../../testing/saga_fallback.md).
+
 ## Overview
 
 <div class="grid cards" markdown>

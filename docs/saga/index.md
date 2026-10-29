@@ -9,6 +9,8 @@ The Saga pattern enables distributed transactions across multiple services by ex
 
 Coding agents build a step and its compensation with [cqrs-saga](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-saga/SKILL.md). Recovery uses `cqrs.saga.recovery.recover_saga`. The catalog is [Agent skills](../skills.md).
 
+A single step is [Testing a saga step](../testing/saga_step.md).
+
 ## Overview
 
 <div class="grid cards" markdown>

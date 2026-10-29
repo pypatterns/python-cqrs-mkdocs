@@ -9,6 +9,8 @@ Stream handling allows you to process requests incrementally and yield results a
 
 Coding agents build this with [cqrs-streaming](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-streaming/SKILL.md) after [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-setup/SKILL.md) has chosen a stream. The catalog is [Agent skills](../skills.md).
 
+[Testing a stream](../testing/streaming.md) records each item on `yields`.
+
 ## Overview
 
 <div class="grid cards" markdown>

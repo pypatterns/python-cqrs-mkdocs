@@ -2,6 +2,8 @@
 
 **Default implementation** - Uses Pydantic v2 for validation and serialization.
 
+[Testing Pydantic](../testing/pydantic.md) fails validation before `send`.
+
 ## Best For
 
 - Web APIs (especially with FastAPI)

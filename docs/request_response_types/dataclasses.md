@@ -2,6 +2,8 @@
 
 **Lightweight implementation** - Uses Python's standard library `dataclasses`.
 
+A dataclass request is [Testing a dataclass request](../testing/dataclass.md).
+
 ## Best For
 
 - When you want to avoid Pydantic dependency

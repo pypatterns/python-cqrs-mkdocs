@@ -14,6 +14,8 @@
 
 ## Overview
 
+The fallback stream is [Testing streaming fallback](../testing/streaming_fallback.md).
+
 The **Stream Handling Fallback** uses the same `RequestHandlerFallback` wrapper as ordinary request handlers, but with **streaming handlers** as primary and fallback. When the primary streaming handler fails (e.g. raises after yielding some items), the dispatcher switches to the fallback streaming handler and consumes its stream. This is useful when the primary stream source (e.g. live API) can fail mid-way and you want to continue with a fallback stream (e.g. cached or degraded results).
 
 | Concept | Description |

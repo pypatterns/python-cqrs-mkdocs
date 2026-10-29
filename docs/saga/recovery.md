@@ -12,6 +12,8 @@
 
 Recovery ensures eventual consistency by resuming interrupted sagas from persistent storage, guaranteeing all sagas eventually reach a terminal state (COMPLETED or FAILED). Recovery **attempts** are tracked per saga so you can limit retries and exclude persistently failing sagas.
 
+Resuming a stored saga is [Testing saga recovery](../testing/saga_recovery.md).
+
 ## Overview
 
 Sagas can be interrupted due to server crashes, network timeouts, or system overload. Recovery solves this by:

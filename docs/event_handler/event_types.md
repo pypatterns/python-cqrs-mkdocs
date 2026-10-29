@@ -14,6 +14,7 @@
 
 ## Overview
 
+A domain event is [Testing a domain event](../testing/domain_event.md) (`handled`, not `published`). A notification is [Testing a notification](../testing/notification.md) (`published`, not `handled`).
 
 | Event Type | Processing | Use Case |
 |------------|------------|----------|

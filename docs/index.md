@@ -89,6 +89,12 @@ description: Python CQRS framework for event-driven architecture — Saga, Media
 
     [:octicons-arrow-right-24: Read More](fastapi.md)
 
+-   :material-test-tube: **Testing**
+
+    Run the real mediators and read what they handled, published, and stored.
+
+    [:octicons-arrow-right-24: Read More](testing/index.md)
+
 -   :material-graph: **Mermaid Diagrams**
 
     Visualize architecture patterns and flows with interactive Mermaid diagrams.

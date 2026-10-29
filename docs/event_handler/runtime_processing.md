@@ -14,6 +14,7 @@
 
 ## Overview
 
+A swallowed handler error is [Testing a swallowed handler error](../testing/handler_errors.md). An event with no handler is [Testing an unhandled event](../testing/unhandled_event.md).
 
 **Important:** Events are processed **synchronously** in the same request context, not asynchronously. This means:
 

@@ -14,6 +14,8 @@
 
 ## Overview
 
+Primary failure is [Testing request fallback](../testing/request_fallback.md). An open circuit is [Testing a circuit breaker](../testing/circuit_breaker.md).
+
 The **Request Handler Fallback** pattern allows you to register an alternative handler that runs when the primary request handler fails (or when the circuit breaker is open). This provides resilience for commands and queries when the primary path (e.g. database or external API) is unavailable.
 
 | Concept | Description |

@@ -9,6 +9,8 @@ description: Opt-in Protobuf codecs for outbox, EventEmitter, and broker consume
 
 JSON is the default wire format for notification events. Protobuf is an **opt-in codec**: register a `ProtobufEventSerializer` for specific event names, keep everything else on JSON, and leave Kafka/AMQP frames unchanged unless the codec sets a `content_type`.
 
+The opt-in codec is [Testing protobuf](testing/protobuf.md).
+
 | Layer | JSON (default) | Protobuf (opt-in) |
 |-------|----------------|-------------------|
 | Outbox storage | `orjson.dumps(event.to_dict())` | `event.proto().SerializeToString()` |

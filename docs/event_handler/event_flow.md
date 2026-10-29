@@ -14,6 +14,8 @@
 
 ## Overview
 
+An event with no handler is [Testing an unhandled event](../testing/unhandled_event.md).
+
 The event handling flow follows these steps:
 
 ### High-Level Flow

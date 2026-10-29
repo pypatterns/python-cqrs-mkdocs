@@ -9,6 +9,8 @@ The Transactional Outbox pattern ensures reliable event publishing by storing ev
 
 Coding agents build the outbox with [cqrs-eda](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-eda/SKILL.md), together with domain events, notifications, and the inbox. The catalog is [Agent skills](../skills.md).
 
+[Testing the outbox](../testing/outbox.md) leaves the event absent from `published` until `produce_available`. Transaction log tailing is not this harness: [Transaction log tailing](../testing/log_tailing.md).
+
 ## Overview
 
 <div class="grid cards" markdown>

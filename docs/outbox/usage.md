@@ -14,6 +14,7 @@
 
 ## Overview
 
+Publish, a broker failure, and the JSON codec are [Testing the outbox](../testing/outbox.md), [Testing a broker error](../testing/outbox_broker_error.md), and [Testing JSON](../testing/json.md).
 
 Events must be registered in `OutboxedEventMap` before they can be stored.
 

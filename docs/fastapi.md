@@ -9,6 +9,8 @@ description: Integrate python-cqrs with FastAPI for typed commands, queries, and
 
 FastAPI integration with `python-cqrs` allows you to build RESTful APIs where FastAPI handles HTTP layer (routing, validation, serialization) while CQRS handles business logic through command/query handlers.
 
+A route that calls the mediator is [Testing FastAPI](testing/fastapi.md).
+
 | Benefit | Description |
 |---------|-------------|
 | **Separation of Concerns** | HTTP layer vs business logic |

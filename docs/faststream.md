@@ -9,6 +9,8 @@ description: Process Kafka and RabbitMQ events with python-cqrs handlers via Fas
 
 FastStream is a powerful framework for building event-driven applications with message brokers. The `python-cqrs` package integrates seamlessly with FastStream to process events from Kafka and RabbitMQ using CQRS event handlers.
 
+A subscriber that calls the mediator is [Testing FastStream](testing/faststream.md).
+
 **Key Features:**
 
 - **Kafka Support** — Process events from Apache Kafka topics using `aiokafka`

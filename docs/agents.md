@@ -17,6 +17,7 @@ npx skills add pypatterns/python-cqrs --skill cqrs-eda -y
 npx skills add pypatterns/python-cqrs --skill cqrs-saga -y
 npx skills add pypatterns/python-cqrs --skill cqrs-streaming -y
 npx skills add pypatterns/python-cqrs --skill cqrs-cor -y
+npx skills add pypatterns/python-cqrs --skill cqrs-testing -y
 ```
 
 ```bash
@@ -25,6 +26,7 @@ clawhub install @vadikko2/cqrs-eda
 clawhub install @vadikko2/cqrs-saga
 clawhub install @vadikko2/cqrs-streaming
 clawhub install @vadikko2/cqrs-cor
+clawhub install @vadikko2/cqrs-testing
 ```
 
 The longer catalog is [Agent skills](skills.md).

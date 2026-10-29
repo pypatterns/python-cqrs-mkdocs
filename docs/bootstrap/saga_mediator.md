@@ -18,6 +18,8 @@
 
 ## Overview
 
+A single step is [Testing a saga step](../testing/saga_step.md).
+
 The `SagaMediator` runs orchestrated sagas: it resolves the saga by context type, creates a transaction, and streams step results. It is bootstrapped via `cqrs.bootstrap.saga.bootstrap()` with a saga map, DI container, optional saga storage, and optional event mapping for domain events emitted by steps.
 
 ### Basic Configuration

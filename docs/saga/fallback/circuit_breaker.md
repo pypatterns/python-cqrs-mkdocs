@@ -12,6 +12,8 @@
 
 Circuit Breaker prevents cascading failures by "opening" the circuit after repeated failures, failing fast instead of attempting execution.
 
+An open circuit on a saga step is [Testing a saga circuit breaker](../../testing/saga_circuit_breaker.md).
+
 ## Why Circuit Breaker?
 
 When a service is experiencing issues:

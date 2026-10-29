@@ -7,6 +7,8 @@ description: Generate Mermaid sequence and class diagrams for Saga and Chain of 
 
 The `python-cqrs` package includes built-in support for generating Mermaid diagrams from various components. This feature is perfect for documentation, visualization, and understanding component structure and execution flow.
 
+[Testing Mermaid](../testing/mermaid.md) checks the generated diagram. It is not `test_harness`.
+
 ## Overview
 
 Mermaid diagram generation is available for:
