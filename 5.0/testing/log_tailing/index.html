@@ -4829,8 +4829,8 @@
 </ul>
 </div>
 <p>This is not run through <code>test_harness</code>. Transaction log tailing is a process that reads the database log, not <code>mediator.send</code>. The harness journals stay empty.</p>
-<p>The polling path that the harness does run is <a href="../outbox/">Outbox</a>.</p>
-<p>See <a href="../../outbox/">Transactional outbox</a>. The README section is <a href="https://github.com/vadikko2/python-cqrs/blob/master/README.md#transaction-log-tailing">Transaction log tailing</a>.</p>
+<p>python-cqrs publishes by polling outbox storage. That path is <a href="../outbox/">Outbox</a> and <a href="../../outbox/">Transactional outbox</a>.</p>
+<p>The same outbox table can be tailed outside this package with <a href="https://debezium.io/documentation/reference/stable/architecture.html">Debezium and Kafka Connect</a>. New outbox rows are then produced to the broker topic.</p>
 
 
 
