@@ -16,6 +16,8 @@ ______________________________________________________________________
 
 ## Overview
 
+[Testing EventMediator](https://mkdocs.python-cqrs.dev/latest/testing/event_mediator/index.md) records `invocations`, not the emitter's `handled` journal.
+
 The `EventMediator` processes events received from message brokers (like Kafka, RabbitMQ). It's used in event consumers to handle incoming events.
 
 ### Basic Configuration

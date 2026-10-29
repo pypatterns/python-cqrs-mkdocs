@@ -8,6 +8,8 @@
 
 ______________________________________________________________________
 
+[Testing ScopeStrategy.SEND](https://mkdocs.python-cqrs.dev/latest/testing/scope_send/index.md) checks order on `invocations`. [Testing HANDLER and NONE](https://mkdocs.python-cqrs.dev/latest/testing/scope_handler/index.md) expects both handlers present.
+
 ```python
 from cqrs import ScopeStrategy
 

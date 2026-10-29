@@ -8,6 +8,7 @@ npx skills add pypatterns/python-cqrs --skill cqrs-eda -y
 npx skills add pypatterns/python-cqrs --skill cqrs-saga -y
 npx skills add pypatterns/python-cqrs --skill cqrs-streaming -y
 npx skills add pypatterns/python-cqrs --skill cqrs-cor -y
+npx skills add pypatterns/python-cqrs --skill cqrs-testing -y
 ```
 
 ```bash
@@ -16,6 +17,7 @@ clawhub install @vadikko2/cqrs-eda
 clawhub install @vadikko2/cqrs-saga
 clawhub install @vadikko2/cqrs-streaming
 clawhub install @vadikko2/cqrs-cor
+clawhub install @vadikko2/cqrs-testing
 ```
 
 Start with `cqrs-setup`. It is the chooser. The other skills assume that choice and do not repeat it.
@@ -51,6 +53,15 @@ The skill builds one `cqrs.SagaStepHandler` with `act` and `compensate`, registe
 - Skill: [SKILL.md on feat/111-agent-skills](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-saga/SKILL.md)
 - Chapter: [Saga pattern](https://mkdocs.python-cqrs.dev/latest/saga/index.md)
 
+## cqrs-testing
+
+Use when a test must show what a command, a query, a domain event, a notification, an outbox row, an inbox row, a saga step, a chain, a stream, a fallback, or middleware actually did.
+
+The skill names the journal to assert and the neighbor journal that stays empty. A query leaves `handled` and `published` empty. An outbox notification is absent from `published` until `produce_available`. A chain is asserted on `invocations`. The skill does not read `DevnullMessageBroker.MESSAGE_BUS`.
+
+- Skill: [SKILL.md on master](https://github.com/pypatterns/python-cqrs/blob/master/skills/cqrs-testing/SKILL.md)
+- Chapter: [Testing](https://mkdocs.python-cqrs.dev/latest/testing/index.md)
+
 ## What the agent reads
 
 `SKILL.md` is the permanent context. `references/` and `assets/` are opened from links inside that file. Full demos stay under `examples/` in the library repository and are not copied into the skill.
@@ -59,7 +70,7 @@ The application layout the skills ask for is `app/commands.py`, `app/queries.py`
 
 Dependency injection, FastAPI, FastStream, and protobuf stay in their chapters. They are not skills. A missing `message_broker` discards notifications. The durable publish path is the outbox inside `cqrs-eda`.
 
-Do not look for `cqrs-transactional-outbox`, a separate event-handling skill, or `cqrs-parallel-events`. Those names are not published. Parallel domain handlers stay in `cqrs-eda`.
+Do not look for `cqrs-transactional-outbox`, a separate event-handling skill, or `cqrs-parallel-events`. Those names are not published. Parallel domain handlers stay in `cqrs-eda`. Tests stay in `cqrs-testing`.
 
 ## Short how-tos
 

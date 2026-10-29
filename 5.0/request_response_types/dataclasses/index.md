@@ -2,6 +2,8 @@
 
 **Lightweight implementation** - Uses Python's standard library `dataclasses`.
 
+A dataclass request is [Testing a dataclass request](https://mkdocs.python-cqrs.dev/latest/testing/dataclass/index.md).
+
 ## Best For
 
 - When you want to avoid Pydantic dependency

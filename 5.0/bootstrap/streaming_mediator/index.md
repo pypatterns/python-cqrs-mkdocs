@@ -16,6 +16,8 @@ ______________________________________________________________________
 
 ## Overview
 
+[Testing a stream](https://mkdocs.python-cqrs.dev/latest/testing/streaming/index.md) records each item on `yields`.
+
 The `StreamingRequestMediator` processes requests incrementally, yielding results as they become available. Perfect for batch processing, file uploads, and real-time progress updates.
 
 ### Basic Configuration

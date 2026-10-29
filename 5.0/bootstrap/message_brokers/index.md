@@ -16,6 +16,8 @@ ______________________________________________________________________
 
 ## Overview
 
+[Testing Kafka and AMQP](https://mkdocs.python-cqrs.dev/latest/testing/kafka_amqp/index.md) uses `CapturingMessageBroker` in a unit test.
+
 Message brokers are used to publish `NotificationEvent` and `ECSTEvent` events to external systems. The `python-cqrs` package supports multiple message broker implementations.
 
 | Broker Type              | Use Case                             | Production Ready |

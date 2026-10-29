@@ -10,6 +10,8 @@ ______________________________________________________________________
 
 ## Overview
 
+[Testing a compressor](https://mkdocs.python-cqrs.dev/latest/testing/compressor/index.md) is not run through `test_harness`.
+
 The `OutboxedEventRepository` interface defines the contract for outbox implementations:
 
 ```python

@@ -2,6 +2,8 @@
 
 **Default implementation** - Uses Pydantic v2 for validation and serialization.
 
+[Testing Pydantic](https://mkdocs.python-cqrs.dev/latest/testing/pydantic/index.md) fails validation before `send`.
+
 ## Best For
 
 - Web APIs (especially with FastAPI)

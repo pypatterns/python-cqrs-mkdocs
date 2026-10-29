@@ -2,6 +2,8 @@
 
 The transactional outbox and saga storage can use **SQLAlchemy** or **SQLModel**. Both extras cover the same operations and render the same DDL, including the dialect-aware column types in [Database support](https://mkdocs.python-cqrs.dev/latest/outbox/databases/index.md).
 
+The two storages are [Testing SQLAlchemy](https://mkdocs.python-cqrs.dev/latest/testing/sqlalchemy/index.md) and [Testing SQLModel](https://mkdocs.python-cqrs.dev/latest/testing/sqlmodel/index.md).
+
 Use one ORM for these tables in a process.
 
 - **SQLAlchemy**

@@ -10,6 +10,8 @@ ______________________________________________________________________
 
 ## Overview
 
+A domain event is [Testing a domain event](https://mkdocs.python-cqrs.dev/latest/testing/domain_event/index.md) (`handled`, not `published`). A notification is [Testing a notification](https://mkdocs.python-cqrs.dev/latest/testing/notification/index.md) (`published`, not `handled`).
+
 | Event Type            | Processing                             | Use Case                         |
 | --------------------- | -------------------------------------- | -------------------------------- |
 | **DomainEvent**       | Processed by event handlers in-process | Domain logic, read model updates |

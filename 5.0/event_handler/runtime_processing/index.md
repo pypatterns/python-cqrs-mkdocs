@@ -10,6 +10,8 @@ ______________________________________________________________________
 
 ## Overview
 
+A swallowed handler error is [Testing a swallowed handler error](https://mkdocs.python-cqrs.dev/latest/testing/handler_errors/index.md). An event with no handler is [Testing an unhandled event](https://mkdocs.python-cqrs.dev/latest/testing/unhandled_event/index.md).
+
 **Important:** Events are processed **synchronously** in the same request context, not asynchronously. This means:
 
 - Events are processed **before** the command response is returned

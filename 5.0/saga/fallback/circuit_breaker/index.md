@@ -8,6 +8,8 @@
 
 Circuit Breaker prevents cascading failures by "opening" the circuit after repeated failures, failing fast instead of attempting execution.
 
+An open circuit on a saga step is [Testing a saga circuit breaker](https://mkdocs.python-cqrs.dev/latest/testing/saga_circuit_breaker/index.md).
+
 ## Why Circuit Breaker?
 
 When a service is experiencing issues:

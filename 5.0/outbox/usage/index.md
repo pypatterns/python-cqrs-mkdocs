@@ -10,6 +10,8 @@ ______________________________________________________________________
 
 ## Overview
 
+Publish, a broker failure, and the JSON codec are [Testing the outbox](https://mkdocs.python-cqrs.dev/latest/testing/outbox/index.md), [Testing a broker error](https://mkdocs.python-cqrs.dev/latest/testing/outbox_broker_error/index.md), and [Testing JSON](https://mkdocs.python-cqrs.dev/latest/testing/json/index.md).
+
 Events must be registered in `OutboxedEventMap` before they can be stored.
 
 Prefer an **isolated** map instance. Class-level `OutboxedEventMap.register(...)` still works but mutates a process-global singleton.

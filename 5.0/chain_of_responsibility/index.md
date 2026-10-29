@@ -4,6 +4,8 @@ The Chain of Responsibility pattern allows multiple handlers to process a reques
 
 Coding agents build this with [cqrs-cor](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-cor/SKILL.md) after [cqrs-setup](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-setup/SKILL.md) has chosen a chain. The catalog is [Agent skills](https://mkdocs.python-cqrs.dev/latest/skills/index.md). HTTP CORS is not this feature.
 
+[Testing a chain](https://mkdocs.python-cqrs.dev/latest/testing/chain/index.md) records `invocations` only.
+
 ## Overview
 
 - **Examples**

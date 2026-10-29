@@ -2,6 +2,8 @@
 
 Dependency Injection (DI) is a design pattern that allows injecting dependencies into application components, simplifying their management and improving code testability.
 
+The three containers are [Testing di.Container](https://mkdocs.python-cqrs.dev/latest/testing/di/index.md), [Testing dishka](https://mkdocs.python-cqrs.dev/latest/testing/dishka/index.md), and [Testing dependency-injector](https://mkdocs.python-cqrs.dev/latest/testing/dependency_injector/index.md).
+
 ## Overview
 
 The `python-cqrs` package supports multiple DI container libraries:

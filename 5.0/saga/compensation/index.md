@@ -8,6 +8,8 @@
 
 Compensation undoes the effects of completed steps when a saga fails, ensuring resources are properly released and the system returns to a consistent state.
 
+[Testing compensation](https://mkdocs.python-cqrs.dev/latest/testing/saga_compensation/index.md) records the saga as `failed` and the step as `compensated`.
+
 When the storage supports **`create_run()`**, the saga runs compensation within a single storage run and persists each successfully compensated step at a **checkpoint** (by committing the run after each step). This keeps the number of commits low and aligns with the checkpoint model used for forward execution.
 
 ## Overview

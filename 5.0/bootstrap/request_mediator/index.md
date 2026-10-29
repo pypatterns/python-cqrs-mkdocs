@@ -14,6 +14,8 @@
 
 ## Overview
 
+A command is [Testing a command](https://mkdocs.python-cqrs.dev/latest/testing/command/index.md) (`requests`, `invocations`). A query is [Testing a query](https://mkdocs.python-cqrs.dev/latest/testing/query/index.md) (`handled` and `published` stay empty).
+
 The `RequestMediator` is the standard mediator for handling commands and queries. It processes requests synchronously and emits events after handler execution.
 
 ### Basic Configuration

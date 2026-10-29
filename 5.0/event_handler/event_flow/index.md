@@ -10,6 +10,8 @@ ______________________________________________________________________
 
 ## Overview
 
+An event with no handler is [Testing an unhandled event](https://mkdocs.python-cqrs.dev/latest/testing/unhandled_event/index.md).
+
 The event handling flow follows these steps:
 
 ### High-Level Flow

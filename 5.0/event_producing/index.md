@@ -4,6 +4,8 @@
 
 Event producing allows you to publish events to message brokers (Kafka, RabbitMQ) for asynchronous processing. The `python-cqrs` package provides message broker abstractions with **JSON as the default** codec. Protobuf is available as an opt-in per-event serializer — see [Protobuf Integration](https://mkdocs.python-cqrs.dev/latest/protobuf/index.md).
 
+A broker failure is [Testing a broker error](https://mkdocs.python-cqrs.dev/latest/testing/outbox_broker_error/index.md).
+
 **Key Features:**
 
 - **Multiple Brokers** — Support for Kafka and RabbitMQ

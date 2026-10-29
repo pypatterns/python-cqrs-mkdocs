@@ -64,6 +64,12 @@ ______________________________________________________________________
 
   [Read More](https://mkdocs.python-cqrs.dev/latest/fastapi/index.md)
 
+- **Testing**
+
+  Run the real mediators and read what they handled, published, and stored.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/index.md)
+
 - **Mermaid Diagrams**
 
   Visualize architecture patterns and flows with interactive Mermaid diagrams.

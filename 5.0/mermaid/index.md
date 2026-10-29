@@ -2,6 +2,8 @@
 
 The `python-cqrs` package includes built-in support for generating Mermaid diagrams from various components. This feature is perfect for documentation, visualization, and understanding component structure and execution flow.
 
+[Testing Mermaid](https://mkdocs.python-cqrs.dev/latest/testing/mermaid/index.md) checks the generated diagram. It is not `test_harness`.
+
 ## Overview
 
 Mermaid diagram generation is available for:

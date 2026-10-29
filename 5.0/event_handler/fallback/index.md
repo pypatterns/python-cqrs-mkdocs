@@ -10,6 +10,8 @@ ______________________________________________________________________
 
 ## Overview
 
+Primary failure is [Testing event fallback](https://mkdocs.python-cqrs.dev/latest/testing/event_fallback/index.md). An open circuit is [Testing a circuit breaker](https://mkdocs.python-cqrs.dev/latest/testing/circuit_breaker/index.md).
+
 The **Event Handler Fallback** pattern allows you to register an alternative event handler that runs when the primary event handler fails (or when the circuit breaker is open). This provides resilience for side effects such as sending notifications or updating read models when the primary path (e.g. external API) is unavailable.
 
 | Concept                | Description                                                                          |

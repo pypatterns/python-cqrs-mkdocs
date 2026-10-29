@@ -10,6 +10,8 @@ ______________________________________________________________________
 
 ## Overview
 
+Primary failure is [Testing request fallback](https://mkdocs.python-cqrs.dev/latest/testing/request_fallback/index.md). An open circuit is [Testing a circuit breaker](https://mkdocs.python-cqrs.dev/latest/testing/circuit_breaker/index.md).
+
 The **Request Handler Fallback** pattern allows you to register an alternative handler that runs when the primary request handler fails (or when the circuit breaker is open). This provides resilience for commands and queries when the primary path (e.g. database or external API) is unavailable.
 
 | Concept                | Description                                                                          |

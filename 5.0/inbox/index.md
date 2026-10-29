@@ -4,6 +4,8 @@ The inbox is the inbound side of the [transactional outbox](https://mkdocs.pytho
 
 Coding agents build the inbox with [cqrs-eda](https://github.com/pypatterns/python-cqrs/blob/feat/111-agent-skills/skills/cqrs-eda/SKILL.md). It is not a separate skill. The catalog is [Agent skills](https://mkdocs.python-cqrs.dev/latest/skills/index.md).
 
+Accept and process are [Testing the inbox](https://mkdocs.python-cqrs.dev/latest/testing/inbox/index.md).
+
 ## Two steps
 
 | Step           | Who                                    | What                                                            |

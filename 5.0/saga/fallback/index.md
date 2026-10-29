@@ -8,6 +8,8 @@
 
 The Fallback pattern allows you to define alternative steps that execute automatically when primary steps fail. This provides resilience and graceful degradation for distributed transactions.
 
+The fallback step is [Testing saga fallback](https://mkdocs.python-cqrs.dev/latest/testing/saga_fallback/index.md).
+
 ## Overview
 
 - **Mechanics & Internals**

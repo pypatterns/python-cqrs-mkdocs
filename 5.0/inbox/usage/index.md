@@ -2,6 +2,8 @@
 
 `add` always takes a batch and returns `list[bool]` of the same length. One record is a batch of one element. There is no second method for a single message.
 
+[Testing an inbox handler error](https://mkdocs.python-cqrs.dev/latest/testing/inbox_failure/index.md) leaves the row `not_processed` and increments `flush_counter`.
+
 ```python
 stored = await inbox.add(
     [

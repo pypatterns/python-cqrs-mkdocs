@@ -2,318 +2,490 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/agents/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/di/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_producing/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/fastapi/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/faststream/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/installation/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/orm/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/protobuf/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/skills/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/advanced/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/di_containers/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/event_mediator/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/message_brokers/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/middlewares/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/request_mediator/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/saga_mediator/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/bootstrap/streaming_mediator/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/advanced/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/examples/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/chain_of_responsibility/fallback/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/best_practices/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/event_flow/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/event_types/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/examples/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/fallback/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/parallel_processing/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/event_handler/runtime_processing/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/inbox/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/inbox/examples/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/inbox/usage/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/mermaid/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/mermaid/chain_of_responsibility/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/mermaid/saga/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/migration/4-to-5/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/outbox/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/outbox/best_practices/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/outbox/databases/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/outbox/examples/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/outbox/implementation/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/outbox/usage/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_handler/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_handler/fallback/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/attrs/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/best_practices/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/dataclasses/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/mixed_usage/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/msgspec/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/namedtuple/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/pydantic/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/standard_classes/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/request_response_types/typeddict/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/compensation/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/examples/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/flow/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/recovery/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/storage/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/fallback/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/fallback/circuit_breaker/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/fallback/examples/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/saga/fallback/mechanics/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/advanced/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/containers/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/custom_container/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/troubleshooting/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/tutorial/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/why/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/configuration/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/fallback/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/fastapi_integration/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
     </url>
     <url>
          <loc>https://mkdocs.python-cqrs.dev/latest/stream_handling/reference/</loc>
-         <lastmod>2026-10-28</lastmod>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/alembic/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/chain/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/circuit_breaker/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/command/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/compressor/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/dataclass/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/dependency_injector/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/di/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/dishka/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/domain_event/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/event_fallback/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/event_mediator/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/fastapi/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/faststream/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/handler_errors/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/inbox/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/inbox_failure/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/json/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/kafka_amqp/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/log_tailing/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/mermaid/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/middleware/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/notification/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/outbox/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/outbox_broker_error/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/parallel_handlers/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/protobuf/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/pydantic/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/query/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/request_fallback/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/saga_circuit_breaker/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/saga_compensation/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/saga_fallback/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/saga_recovery/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/saga_step/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/scope_handler/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/scope_send/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/sqlalchemy/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/sqlmodel/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/streaming/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/streaming_fallback/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocs.python-cqrs.dev/latest/testing/unhandled_event/</loc>
+         <lastmod>2026-10-29</lastmod>
     </url>
 </urlset>
