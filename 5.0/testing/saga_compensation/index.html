@@ -4821,6 +4821,15 @@
 
 
 <h1 id="saga-compensation">Saga Compensation<a class="headerlink" href="#saga-compensation" title="Permanent link">&para;</a></h1>
+<div class="grid cards">
+<ul>
+<li>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span> <strong>Back to Testing Overview</strong></p>
+<p>Return to the Testing overview page with all topics.</p>
+<p><a href="../"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.78 19.03a.75.75 0 0 1-1.06 0l-6.25-6.25a.75.75 0 0 1 0-1.06l6.25-6.25a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L5.81 11.5h14.44a.75.75 0 0 1 0 1.5H5.81l4.97 4.97a.75.75 0 0 1 0 1.06"/></svg></span> Back to Overview</a></p>
+</li>
+</ul>
+</div>
 <p><code>compensate</code> is on <code>invocations</code>. The saga status is <code>FAILED</code> and the step status is <code>COMPENSATED</code>. There is no saga status <code>compensated</code>.</p>
 <p>See <a href="../../saga/compensation/">Compensation Strategy</a>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">async</span> <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">harness</span><span class="o">.</span><span class="n">saga_mediator</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">OrderContext</span><span class="p">(</span><span class="n">order_id</span><span class="o">=</span><span class="s2">"1"</span><span class="p">)):</span>

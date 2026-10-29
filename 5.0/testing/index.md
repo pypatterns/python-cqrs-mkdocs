@@ -65,56 +65,262 @@ Three delivery channels stay separate. A test that asks `published` for a domain
 
 ## Handlers
 
-- [Command](https://mkdocs.python-cqrs.dev/latest/testing/command/index.md)
-- [Query](https://mkdocs.python-cqrs.dev/latest/testing/query/index.md)
-- [Domain event](https://mkdocs.python-cqrs.dev/latest/testing/domain_event/index.md)
-- [Notification](https://mkdocs.python-cqrs.dev/latest/testing/notification/index.md)
-- [Parallel handlers](https://mkdocs.python-cqrs.dev/latest/testing/parallel_handlers/index.md)
-- [Swallowed handler error](https://mkdocs.python-cqrs.dev/latest/testing/handler_errors/index.md)
-- [Unhandled event](https://mkdocs.python-cqrs.dev/latest/testing/unhandled_event/index.md)
-- [Event mediator](https://mkdocs.python-cqrs.dev/latest/testing/event_mediator/index.md)
-- [Request fallback](https://mkdocs.python-cqrs.dev/latest/testing/request_fallback/index.md)
-- [Event fallback](https://mkdocs.python-cqrs.dev/latest/testing/event_fallback/index.md)
-- [Circuit breaker](https://mkdocs.python-cqrs.dev/latest/testing/circuit_breaker/index.md)
-- [Middleware](https://mkdocs.python-cqrs.dev/latest/testing/middleware/index.md)
-- [ScopeStrategy.SEND](https://mkdocs.python-cqrs.dev/latest/testing/scope_send/index.md)
-- [ScopeStrategy.HANDLER and NONE](https://mkdocs.python-cqrs.dev/latest/testing/scope_handler/index.md)
-- [Chain](https://mkdocs.python-cqrs.dev/latest/testing/chain/index.md)
-- [Stream](https://mkdocs.python-cqrs.dev/latest/testing/streaming/index.md)
-- [Streaming fallback](https://mkdocs.python-cqrs.dev/latest/testing/streaming_fallback/index.md)
-- [Saga step](https://mkdocs.python-cqrs.dev/latest/testing/saga_step/index.md)
-- [Compensation](https://mkdocs.python-cqrs.dev/latest/testing/saga_compensation/index.md)
-- [Saga fallback](https://mkdocs.python-cqrs.dev/latest/testing/saga_fallback/index.md)
-- [Saga circuit breaker](https://mkdocs.python-cqrs.dev/latest/testing/saga_circuit_breaker/index.md)
-- [Saga recovery](https://mkdocs.python-cqrs.dev/latest/testing/saga_recovery/index.md)
-- [Inbox](https://mkdocs.python-cqrs.dev/latest/testing/inbox/index.md)
-- [Inbox handler error](https://mkdocs.python-cqrs.dev/latest/testing/inbox_failure/index.md)
-- [Outbox](https://mkdocs.python-cqrs.dev/latest/testing/outbox/index.md)
-- [Outbox broker error](https://mkdocs.python-cqrs.dev/latest/testing/outbox_broker_error/index.md)
+- **Command**
+
+  Assert the command on the requests and invocations journals.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/command/index.md)
+
+- **Query**
+
+  After a read, the handled, published, and outbox journals are empty.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/query/index.md)
+
+- **Domain event**
+
+  Assert the domain event on the handled and invocations journals.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/domain_event/index.md)
+
+- **Notification**
+
+  Assert the notice on the published journal, including its topic.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/notification/index.md)
+
+- **Parallel handlers**
+
+  Assert both handler classes on the invocations journal.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/parallel_handlers/index.md)
+
+- **Handler errors**
+
+  The command result returns from send; the error is on the handler_errors journal.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/handler_errors/index.md)
+
+- **Unhandled event**
+
+  Assert the event type on the unhandled journal.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/unhandled_event/index.md)
+
+- **Event mediator**
+
+  Assert the handler on the invocations journal, method handle.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/event_mediator/index.md)
+
+- **Request fallback**
+
+  Assert both classes on invocations; the requests journal holds the fallback response.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/request_fallback/index.md)
+
+- **Event fallback**
+
+  Assert both classes on the invocations journal.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/event_fallback/index.md)
+
+- **Circuit breaker**
+
+  An open fake ICircuitBreaker leaves the primary off the invocations journal.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/circuit_breaker/index.md)
+
+- **Middleware**
+
+  The middlewares journal records called_next; requests holds the middleware response.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/middleware/index.md)
+
+- **Scope SEND**
+
+  Assert invocation order on the invocations journal under ScopeStrategy.SEND.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/scope_send/index.md)
+
+- **Scope HANDLER and NONE**
+
+  Assert both handlers on the invocations journal; order is not checked.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/scope_handler/index.md)
+
+- **Chain**
+
+  Assert the entered step on the invocations journal.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/chain/index.md)
+
+- **Streaming**
+
+  Assert values on the yields journal and the event on handled.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/streaming/index.md)
+
+- **Streaming fallback**
+
+  Assert both handlers on the yields and invocations journals.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/streaming_fallback/index.md)
+
+- **Saga step**
+
+  Assert act on the invocations journal and the running saga count.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/saga_step/index.md)
+
+- **Saga compensation**
+
+  Assert compensate on the invocations journal and the failed saga status.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/saga_compensation/index.md)
+
+- **Saga fallback**
+
+  Assert both classes on the invocations journal; the saga stays completed.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/saga_fallback/index.md)
+
+- **Saga circuit breaker**
+
+  A fake ISagaStepCircuitBreaker leaves the primary off the invocations journal.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/saga_circuit_breaker/index.md)
+
+- **Saga recovery**
+
+  Recover through the sagas journal; a finished step does not act again.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/saga_recovery/index.md)
+
+- **Inbox**
+
+  Assert the command on the requests journal and the processed inbox row.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/inbox/index.md)
+
+- **Inbox failure**
+
+  Assert NOT_PROCESSED and flush_counter on the inbox journal.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/inbox_failure/index.md)
+
+- **Outbox**
+
+  Assert the row on the outbox journal, then the notice on published.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/outbox/index.md)
+
+- **Outbox broker error**
+
+  A broker error leaves the outbox row not produced; the published journal stays empty.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/outbox_broker_error/index.md)
 
 ## Models
 
-- [Dataclass](https://mkdocs.python-cqrs.dev/latest/testing/dataclass/index.md)
-- [Pydantic](https://mkdocs.python-cqrs.dev/latest/testing/pydantic/index.md)
-- [JSON](https://mkdocs.python-cqrs.dev/latest/testing/json/index.md)
-- [Protobuf](https://mkdocs.python-cqrs.dev/latest/testing/protobuf/index.md)
-- [di.Container](https://mkdocs.python-cqrs.dev/latest/testing/di/index.md)
+- **Dataclass**
+
+  The response is on requests. The harness adds no validator.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/dataclass/index.md)
+
+- **Pydantic**
+
+  ValidationError is raised by the constructor, before send. A valid send returns the response.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/pydantic/index.md)
+
+- **JSON**
+
+  Default path for a published message. content_type is None.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/json/index.md)
+
+- **Protobuf**
+
+  Published message content_type and payload_bytes. The harness does not import protobuf.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/protobuf/index.md)
+
+- **di**
+
+  ScopeStrategy.SEND on di.Container shares one session. Pass di.Container, not TestContainer.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/di/index.md)
 
 ## Recipes
 
-- [FastAPI](https://mkdocs.python-cqrs.dev/latest/testing/fastapi/index.md)
-- [FastStream](https://mkdocs.python-cqrs.dev/latest/testing/faststream/index.md)
-- [SQLAlchemy](https://mkdocs.python-cqrs.dev/latest/testing/sqlalchemy/index.md)
-- [SQLModel](https://mkdocs.python-cqrs.dev/latest/testing/sqlmodel/index.md)
-- [dishka](https://mkdocs.python-cqrs.dev/latest/testing/dishka/index.md)
-- [dependency-injector](https://mkdocs.python-cqrs.dev/latest/testing/dependency_injector/index.md)
-- [Kafka and AMQP](https://mkdocs.python-cqrs.dev/latest/testing/kafka_amqp/index.md)
+- **FastAPI**
+
+  TestClient and dependency_overrides. Assert requests and outbox. The harness does not import FastAPI.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/fastapi/index.md)
+
+- **FastStream**
+
+  TestKafkaBroker delivers. The harness checks invocations or the inbox and does not import FastStream.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/faststream/index.md)
+
+- **SQLAlchemy**
+
+  Session rollback and SqlAlchemyOutboxedEventRepository on SQLite. The harness does not import SQLAlchemy.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/sqlalchemy/index.md)
+
+- **SQLModel**
+
+  SqlModelOutboxedEventRepository under the sqlmodel marker. The harness does not import SQLModel.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/sqlmodel/index.md)
+
+- **dishka**
+
+  around wraps a mediator that is already built. The harness does not import dishka.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/dishka/index.md)
+
+- **dependency-injector**
+
+  around wraps the mediator. The adapter does not implement SupportsScope, so scope_strategy is not SEND.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/dependency_injector/index.md)
+
+- **Kafka and AMQP**
+
+  The unit test uses CapturingMessageBroker. Real Kafka and AMQP adapters stay in integration tests.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/kafka_amqp/index.md)
 
 ## Outside the harness
 
 These pages are here so the feature is not dropped. They are not a `test_harness` run.
 
-- [Mermaid](https://mkdocs.python-cqrs.dev/latest/testing/mermaid/index.md)
-- [Compressor](https://mkdocs.python-cqrs.dev/latest/testing/compressor/index.md)
-- [Alembic](https://mkdocs.python-cqrs.dev/latest/testing/alembic/index.md)
-- [Transaction log tailing](https://mkdocs.python-cqrs.dev/latest/testing/log_tailing/index.md)
+- **Mermaid**
+
+  CoRMermaid and SagaMermaid draw sequence and class diagrams. They take no part in send.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/mermaid/index.md)
+
+- **Compressor**
+
+  ZlibCompressor is checked by the serializer tests. The harness sees payload_bytes as finished bytes.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/compressor/index.md)
+
+- **Alembic**
+
+  rebind is a migration, not a handler run. The fence is the short form.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/alembic/index.md)
+
+- **Transaction log tailing**
+
+  A process that reads the database log. It is not mediator.send and is not run through the harness.
+
+  [Read More](https://mkdocs.python-cqrs.dev/latest/testing/log_tailing/index.md)

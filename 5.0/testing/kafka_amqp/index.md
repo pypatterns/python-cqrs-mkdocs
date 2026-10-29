@@ -1,5 +1,11 @@
 # Kafka and AMQP
 
+- **Back to Testing Overview**
+
+  Return to the Testing overview page with all topics.
+
+  [Back to Overview](https://mkdocs.python-cqrs.dev/latest/testing/index.md)
+
 The harness does not import Kafka or AMQP. The unit test uses `CapturingMessageBroker` and reads `published`. The real Kafka and AMQP adapters stay in integration tests, so those clients stay out of `published`.
 
 See [Message brokers](https://mkdocs.python-cqrs.dev/latest/bootstrap/message_brokers/index.md) and [Event producing](https://mkdocs.python-cqrs.dev/latest/event_producing/index.md).
