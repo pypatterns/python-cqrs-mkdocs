@@ -202,9 +202,9 @@ Event-Driven Architecture Framework for Distributed Systems
 
 [📦 PyPI](https://pypi.org/project/python-cqrs/) [📊 Downloads](https://clickpy.clickhouse.com/dashboard/python-cqrs)
 
-Documentation for python-cqrs 5.x
+Documentation for python-cqrs 5.6
 
-You are viewing **5.x** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, `Request[Result]` and one-argument handlers since 5.2, new package layout, `SagaMediator.execute`).
+You are viewing **5.6** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, `Request[Result]` and one-argument handlers since 5.2, new package layout, `SagaMediator.execute`). The quick start omits `di_container`. That call works on 5.6.0. On 5.5.0, `bootstrap` still requires `di_container`.
 
 Migrating from 4.x? Follow the [4→5 migration guide](https://mkdocs.python-cqrs.dev/latest/migration/4-to-5/index.md). Use the version selector for frozen **4.0** docs.
 
@@ -318,14 +318,13 @@ uv pip install python-cqrs
 
 Requirements
 
-Python 3.10+ (tested on 3.10–3.14)
+Python 3.10+ (tested on 3.10–3.15)
 
 ______________________________________________________________________
 
 ## Quick Start
 
 ```python
-import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 
@@ -342,20 +341,19 @@ class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand]):
         return CreateUserResponse(user_id=user_id)
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=lambda m: m.bind(CreateUserCommand, CreateUserHandler),
 )
 
 result = await mediator.send(CreateUserCommand(email="user@example.com", name="John"))
 ```
 
-`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. Rules for agents: [For agents](https://mkdocs.python-cqrs.dev/latest/agents/index.md).
+`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. This handler takes no constructor arguments, so no container is passed. A handler that needs a port is constructed with that port and registered under its type: `container.register(CreateUserHandler, CreateUserHandler(port))`. `SimpleContainer` does not pass a registered port into the constructor. Optional containers (`python-cqrs[di]`, `python-cqrs[dependency-injector]`, `python-cqrs[dishka]`) build the handler themselves. Rules for agents: [For agents](https://mkdocs.python-cqrs.dev/latest/agents/index.md).
 
 See [Bootstrap](https://mkdocs.python-cqrs.dev/latest/bootstrap/index.md) for detailed setup instructions.
 
 # Installation
 
-**Python 3.10+** is required (tested on 3.10–3.14).
+**Python 3.10+** is required (tested on 3.10–3.15).
 
 ```bash
 pip install python-cqrs
@@ -363,16 +361,25 @@ pip install python-cqrs
 
 ## Extras (5.0+)
 
-| Extra        | Provides                                                           |
-| ------------ | ------------------------------------------------------------------ |
-| `pydantic`   | `PydanticRequest`, `PydanticResponse`, `Pydantic*Event`            |
-| `sqlalchemy` | SQLAlchemy outbox + saga storage                                   |
-| `sqlmodel`   | SQLModel outbox + saga storage (same behavior as SQLAlchemy; 5.1+) |
-| `kafka`      | Kafka broker (`aiokafka`)                                          |
-| `rabbit`     | AMQP broker                                                        |
-| `protobuf`   | Protobuf serializers                                               |
-| `aiobreaker` | Circuit breaker helpers                                            |
-| `examples`   | FastAPI / FastStream sample stack                                  |
+| Extra                 | Provides                                                                        |
+| --------------------- | ------------------------------------------------------------------------------- |
+| `pydantic`            | `PydanticRequest`, `PydanticResponse`, `Pydantic*Event`                         |
+| `sqlalchemy`          | SQLAlchemy outbox + saga storage                                                |
+| `sqlmodel`            | SQLModel outbox + saga storage (same behavior as SQLAlchemy; 5.1+)              |
+| `kafka`               | Kafka broker (`aiokafka`)                                                       |
+| `rabbit`              | AMQP broker                                                                     |
+| `protobuf`            | Protobuf serializers                                                            |
+| `aiobreaker`          | Circuit breaker helpers                                                         |
+| `di`                  | `di` container. Bootstrap wraps `di.Container`. Needed for `ScopeStrategy.SEND` |
+| `dependency-injector` | `DependencyInjectorCQRSContainer`                                               |
+| `dishka`              | `DishkaCQRSContainer`                                                           |
+| `examples`            | FastAPI / FastStream sample stack                                               |
+
+Breaking change in 5.6.0
+
+These pages match **5.6.0**. `pip install python-cqrs` no longer installs `di` or `dependency-injector`. Install `"python-cqrs[di]"` or `"python-cqrs[dependency-injector]"`. On 5.5.0, `bootstrap` still requires `di_container`. Publish this site with the 5.6.0 release.
+
+The base install does not include a DI library. Omit `di_container` and bootstrap uses `cqrs.SimpleContainer`, which constructs handlers that take no constructor arguments. `SimpleContainer.register` pins an instance when a handler needs one, and every `resolve` returns that same instance. Install `di`, `dependency-injector`, or `dishka` when handlers should be built by that container.
 
 ```bash
 pip install "python-cqrs[pydantic,sqlalchemy]"
@@ -688,15 +695,16 @@ dishka is [Testing dishka](https://mkdocs.python-cqrs.dev/latest/testing/dishka/
 
 The bootstrap functions support multiple DI container implementations.
 
-| Container               | Library                        | Default | Best For                                   |
-| ----------------------- | ------------------------------ | ------- | ------------------------------------------ |
-| **di.Container**        | `di`                           | ✅ Yes  | Most applications                          |
-| **DishkaCQRSContainer** | dishka (`python-cqrs[dishka]`) | ❌ No   | Apps already using dishka / request scopes |
-| **CQRSContainer**       | `dependency-injector`          | ❌ No   | Large, complex applications                |
+| Container               | Library                                                    | Default | Best For                                                                 |
+| ----------------------- | ---------------------------------------------------------- | ------- | ------------------------------------------------------------------------ |
+| **SimpleContainer**     | none (base install)                                        | ✅ Yes  | Handlers with no constructor dependencies, or a few registered instances |
+| **di.Container**        | `di` (`python-cqrs[di]`)                                   | ❌ No   | Type-based injection and `ScopeStrategy.SEND`                            |
+| **DishkaCQRSContainer** | dishka (`python-cqrs[dishka]`)                             | ❌ No   | Apps already using dishka / request scopes                               |
+| **CQRSContainer**       | `dependency-injector` (`python-cqrs[dependency-injector]`) | ❌ No   | Large, complex applications                                              |
 
 Container Choice
 
-Use `di.Container` for most applications. Use dishka when you already rely on it for request scopes. Use `dependency-injector` only if you need advanced features like configuration management or nested containers — it does not implement CQRS `SupportsScope` (see [Scoped Dependencies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/containers/index.md)).
+Omit `di_container` for `SimpleContainer`. Use `di` when handlers need injection or a shared unit of work. Use dishka when you already rely on it for request scopes. Use `dependency-injector` only if you need advanced features like configuration management or nested containers — it does not implement CQRS `SupportsScope` (see [Scoped Dependencies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/containers/index.md)).
 
 Scoped UoW
 
@@ -704,7 +712,7 @@ Pass `scope_strategy=ScopeStrategy.SEND` to bootstrap so generator providers fin
 
 ### di.Container
 
-The `di` library is the default and recommended DI container:
+The `di` library is an optional container (`python-cqrs[di]`):
 
 ```python
 import abc
@@ -1146,7 +1154,6 @@ The `RequestMediator` is the standard mediator for handling commands and queries
 ### Basic Configuration
 
 ```python
-import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 
@@ -1162,9 +1169,8 @@ def events_mapper(mapper: cqrs.EventMap) -> None:
         UserCreatedEventHandler
     )
 
-# Basic bootstrap with di.Container
+# No container: handlers are constructed with no arguments.
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     queries_mapper=queries_mapper,
     domain_events_mapper=events_mapper,
@@ -1174,10 +1180,11 @@ mediator = bootstrap.bootstrap(
 `RequestMediator(..., scope_strategy=ScopeStrategy.SEND)` and `setup_mediator(..., scope_strategy=ScopeStrategy.SEND)` work out of the box: `concurrent_event_handle_enable` defaults to `None` (`False` under SEND, sequential BFS). Do not pass `concurrent_event_handle_enable=True` with SEND — that raises `ValueError`. `requests.bootstrap` still defaults concurrent processing to `False`. For a shared UoW between command, fallback, and domain events, pass `scope_strategy=ScopeStrategy.SEND` (see [Scope Strategies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/strategies/index.md)).
 
 ```python
+import di
 from cqrs import ScopeStrategy
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
+    di_container=di.Container(),  # python-cqrs[di]
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
     scope_strategy=ScopeStrategy.SEND,  # sequential events; no concurrent=False needed
@@ -1189,9 +1196,9 @@ mediator = bootstrap.bootstrap(
 ```python
 from cqrs.message_brokers import devnull, kafka
 
-# Using DevnullMessageBroker (for testing)
+# Using DevnullMessageBroker (for testing). Omit di_container when handlers
+# take no constructor arguments.
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
     message_broker=devnull.DevnullMessageBroker(),
@@ -1206,7 +1213,6 @@ kafka_producer = KafkaProducerAdapter(
 )
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
     message_broker=kafka.KafkaMessageBroker(
@@ -1223,12 +1229,12 @@ Parallel events require `HANDLER` or `NONE` (the default). SEND infers sequentia
 ```python
 from cqrs import ScopeStrategy
 
-# Enable parallel event processing (HANDLER / NONE only)
+# Parallel events use NONE on the default container. HANDLER opens a scope
+# only when the container implements SupportsScope (python-cqrs[di] or dishka).
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
-    scope_strategy=ScopeStrategy.HANDLER,  # or omit for NONE
+    scope_strategy=ScopeStrategy.NONE,
     max_concurrent_event_handlers=5,  # Process up to 5 events concurrently
     concurrent_event_handle_enable=True,  # Enable parallel processing
 )
@@ -1247,7 +1253,6 @@ class CustomMiddleware(base.Middleware):
         return result
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     middlewares=[CustomMiddleware()],
 )
@@ -1265,7 +1270,6 @@ def setup_cache():
     print("Cache initialized")
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     on_startup=[initialize_database, setup_cache],
 )
@@ -1274,7 +1278,6 @@ mediator = bootstrap.bootstrap(
 ### Complete Example
 
 ```python
-import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
@@ -1314,7 +1317,6 @@ def events_mapper(mapper: cqrs.EventMap) -> None:
 
 # Complete configuration
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
     message_broker=devnull.DevnullMessageBroker(),
@@ -1703,17 +1705,18 @@ async with aclosing(
 
 Dependency Injection (DI) is a design pattern that allows injecting dependencies into application components, simplifying their management and improving code testability.
 
-The three containers are [Testing di.Container](https://mkdocs.python-cqrs.dev/latest/testing/di/index.md), [Testing dishka](https://mkdocs.python-cqrs.dev/latest/testing/dishka/index.md), and [Testing dependency-injector](https://mkdocs.python-cqrs.dev/latest/testing/dependency_injector/index.md).
+The default container is `cqrs.SimpleContainer`. The optional ones are [Testing di.Container](https://mkdocs.python-cqrs.dev/latest/testing/di/index.md), [Testing dishka](https://mkdocs.python-cqrs.dev/latest/testing/dishka/index.md), and [Testing dependency-injector](https://mkdocs.python-cqrs.dev/latest/testing/dependency_injector/index.md).
 
 ## Overview
 
-The `python-cqrs` package supports multiple DI container libraries:
+The base install has no DI library. Omit `di_container` and bootstrap uses `cqrs.SimpleContainer`: it calls `Handler()` and returns an instance registered with `register`. Optional containers:
 
-- **`di`** — Lightweight, modern dependency injection library (default)
-- **`dependency-injector`** — Feature-rich DI library with configuration management and FastAPI integration
-- **dishka** — Optional (`pip install python-cqrs[dishka]`) with first-class request scopes
+- **`cqrs.SimpleContainer`** — Default. No extra. No request scope
+- **`di`** — `pip install "python-cqrs[di]"`. Type-based injection and `ScopeStrategy.SEND`
+- **`dependency-injector`** — `pip install "python-cqrs[dependency-injector]"`. Configuration, resources, nested containers. No CQRS request scope
+- **dishka** — `pip install "python-cqrs[dishka]"`. Request scopes when the app already uses dishka
 
-Both `di` and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See [Scoped Dependencies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md).
+`di` and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See [Scoped Dependencies](https://mkdocs.python-cqrs.dev/latest/scoped_dependencies/index.md).
 
 Prerequisites
 
@@ -1725,22 +1728,22 @@ After understanding DI, proceed to [Request Handlers](https://mkdocs.python-cqrs
 
 ## Supported Libraries
 
-| Feature                       | `di`                 | dishka                 | `dependency-injector`                   |
-| ----------------------------- | -------------------- | ---------------------- | --------------------------------------- |
-| **Default**                   | ✅ Yes (default)     | ❌ Optional extra      | ❌ No                                   |
-| **Type-based resolution**     | ✅ Yes               | ✅ Yes                 | ✅ Yes                                  |
-| **Per-request scope (CQRS)**  | ✅ Yes               | ✅ Yes                 | ❌ No (`SupportsScope` not implemented) |
-| **Async generator providers** | ✅ Yes               | ✅ Yes                 | ❌ No                                   |
-| **Configuration management**  | ❌ No                | ❌ No                  | ✅ Yes (YAML, dict, Pydantic)           |
-| **Resource management**       | ❌ No                | ✅ Yes                 | ✅ Yes                                  |
-| **FastAPI integration**       | ✅ Yes               | ✅ Yes                 | ✅ Yes (direct wiring)                  |
-| **Nested containers**         | ❌ No                | ✅ Yes                 | ✅ Yes                                  |
-| **Learning curve**            | 🟢 Easy              | 🟢 Easy                | 🟡 Moderate                             |
-| **Best for**                  | Small to medium apps | Apps already on dishka | Large, complex apps                     |
+| Feature                       | `SimpleContainer`                            | `di`                 | dishka                 | `dependency-injector`                   |
+| ----------------------------- | -------------------------------------------- | -------------------- | ---------------------- | --------------------------------------- |
+| **In the base install**       | ✅ Yes (default)                             | ❌ Extra `di`        | ❌ Extra `dishka`      | ❌ Extra `dependency-injector`          |
+| **Type-based resolution**     | ❌ Register an instance, or call `Handler()` | ✅ Yes               | ✅ Yes                 | ✅ Yes                                  |
+| **Per-request scope (CQRS)**  | ❌ No                                        | ✅ Yes               | ✅ Yes                 | ❌ No (`SupportsScope` not implemented) |
+| **Async generator providers** | ❌ No                                        | ✅ Yes               | ✅ Yes                 | ❌ No                                   |
+| **Configuration management**  | ❌ No                                        | ❌ No                | ❌ No                  | ✅ Yes (YAML, dict, Pydantic)           |
+| **Resource management**       | ❌ No                                        | ❌ No                | ✅ Yes                 | ✅ Yes                                  |
+| **FastAPI integration**       | ✅ Pass the mediator                         | ✅ Yes               | ✅ Yes                 | ✅ Yes (direct wiring)                  |
+| **Nested containers**         | ❌ No                                        | ❌ No                | ✅ Yes                 | ✅ Yes                                  |
+| **Learning curve**            | 🟢 None                                      | 🟢 Easy              | 🟢 Easy                | 🟡 Moderate                             |
+| **Best for**                  | No constructor dependencies                  | Small to medium apps | Apps already on dishka | Large, complex apps                     |
 
 ### `di` Library
 
-The `di` library is the default DI container for `python-cqrs`. It provides:
+The `di` library is the optional container for type-based injection (`python-cqrs[di]`). It provides:
 
 | Feature                   | Description                                          |
 | ------------------------- | ---------------------------------------------------- |
@@ -1751,7 +1754,7 @@ The `di` library is the default DI container for `python-cqrs`. It provides:
 
 When to use `di`
 
-Use `di` for most applications. It's lightweight, simple, and provides everything you need for dependency injection.
+Use `di` when handlers need constructor injection or a shared unit of work. Handlers with no dependencies stay on `SimpleContainer`.
 
 ### `dependency-injector` Library
 

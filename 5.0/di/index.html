@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -5131,15 +5131,16 @@
 
 <h1 id="dependency-injection">Dependency Injection<a class="headerlink" href="#dependency-injection" title="Permanent link">&para;</a></h1>
 <p>Dependency Injection (DI) is a design pattern that allows injecting dependencies into application components, simplifying their management and improving code testability.</p>
-<p>The three containers are <a href="../testing/di/">Testing di.Container</a>, <a href="../testing/dishka/">Testing dishka</a>, and <a href="../testing/dependency_injector/">Testing dependency-injector</a>.</p>
+<p>The default container is <code>cqrs.SimpleContainer</code>. The optional ones are <a href="../testing/di/">Testing di.Container</a>, <a href="../testing/dishka/">Testing dishka</a>, and <a href="../testing/dependency_injector/">Testing dependency-injector</a>.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>The <code>python-cqrs</code> package supports multiple DI container libraries:</p>
+<p>The base install has no DI library. Omit <code>di_container</code> and bootstrap uses <code>cqrs.SimpleContainer</code>: it calls <code>Handler()</code> and returns an instance registered with <code>register</code>. Optional containers:</p>
 <ul>
-<li><strong><code>di</code></strong> — Lightweight, modern dependency injection library (default)</li>
-<li><strong><code>dependency-injector</code></strong> — Feature-rich DI library with configuration management and FastAPI integration</li>
-<li><strong>dishka</strong> — Optional (<code>pip install python-cqrs[dishka]</code>) with first-class request scopes</li>
+<li><strong><code>cqrs.SimpleContainer</code></strong> — Default. No extra. No request scope</li>
+<li><strong><code>di</code></strong> — <code>pip install "python-cqrs[di]"</code>. Type-based injection and <code>ScopeStrategy.SEND</code></li>
+<li><strong><code>dependency-injector</code></strong> — <code>pip install "python-cqrs[dependency-injector]"</code>. Configuration, resources, nested containers. No CQRS request scope</li>
+<li><strong>dishka</strong> — <code>pip install "python-cqrs[dishka]"</code>. Request scopes when the app already uses dishka</li>
 </ul>
-<p>Both <code>di</code> and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See <a href="../scoped_dependencies/">Scoped Dependencies</a>.</p>
+<p><code>di</code> and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See <a href="../scoped_dependencies/">Scoped Dependencies</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Prerequisites</p>
 <p>This section assumes you've already configured <a href="../bootstrap/">Bootstrap</a>. The DI container is passed to bootstrap functions to resolve handlers and their dependencies.</p>
@@ -5153,6 +5154,7 @@
 <thead>
 <tr>
 <th>Feature</th>
+<th><code>SimpleContainer</code></th>
 <th><code>di</code></th>
 <th>dishka</th>
 <th><code>dependency-injector</code></th>
@@ -5160,25 +5162,29 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>Default</strong></td>
+<td><strong>In the base install</strong></td>
 <td>✅ Yes (default)</td>
-<td>❌ Optional extra</td>
-<td>❌ No</td>
+<td>❌ Extra <code>di</code></td>
+<td>❌ Extra <code>dishka</code></td>
+<td>❌ Extra <code>dependency-injector</code></td>
 </tr>
 <tr>
 <td><strong>Type-based resolution</strong></td>
+<td>❌ Register an instance, or call <code>Handler()</code></td>
 <td>✅ Yes</td>
 <td>✅ Yes</td>
 <td>✅ Yes</td>
 </tr>
 <tr>
 <td><strong>Per-request scope (CQRS)</strong></td>
+<td>❌ No</td>
 <td>✅ Yes</td>
 <td>✅ Yes</td>
 <td>❌ No (<code>SupportsScope</code> not implemented)</td>
 </tr>
 <tr>
 <td><strong>Async generator providers</strong></td>
+<td>❌ No</td>
 <td>✅ Yes</td>
 <td>✅ Yes</td>
 <td>❌ No</td>
@@ -5187,16 +5193,19 @@
 <td><strong>Configuration management</strong></td>
 <td>❌ No</td>
 <td>❌ No</td>
+<td>❌ No</td>
 <td>✅ Yes (YAML, dict, Pydantic)</td>
 </tr>
 <tr>
 <td><strong>Resource management</strong></td>
+<td>❌ No</td>
 <td>❌ No</td>
 <td>✅ Yes</td>
 <td>✅ Yes</td>
 </tr>
 <tr>
 <td><strong>FastAPI integration</strong></td>
+<td>✅ Pass the mediator</td>
 <td>✅ Yes</td>
 <td>✅ Yes</td>
 <td>✅ Yes (direct wiring)</td>
@@ -5204,17 +5213,20 @@
 <tr>
 <td><strong>Nested containers</strong></td>
 <td>❌ No</td>
+<td>❌ No</td>
 <td>✅ Yes</td>
 <td>✅ Yes</td>
 </tr>
 <tr>
 <td><strong>Learning curve</strong></td>
+<td>🟢 None</td>
 <td>🟢 Easy</td>
 <td>🟢 Easy</td>
 <td>🟡 Moderate</td>
 </tr>
 <tr>
 <td><strong>Best for</strong></td>
+<td>No constructor dependencies</td>
 <td>Small to medium apps</td>
 <td>Apps already on dishka</td>
 <td>Large, complex apps</td>
@@ -5222,7 +5234,7 @@
 </tbody>
 </table>
 <h3 id="di-library"><code>di</code> Library<a class="headerlink" href="#di-library" title="Permanent link">&para;</a></h3>
-<p>The <code>di</code> library is the default DI container for <code>python-cqrs</code>. It provides:</p>
+<p>The <code>di</code> library is the optional container for type-based injection (<code>python-cqrs[di]</code>). It provides:</p>
 <table>
 <thead>
 <tr>
@@ -5251,7 +5263,7 @@
 </table>
 <div class="admonition tip">
 <p class="admonition-title">When to use <code>di</code></p>
-<p>Use <code>di</code> for most applications. It's lightweight, simple, and provides everything you need for dependency injection.</p>
+<p>Use <code>di</code> when handlers need constructor injection or a shared unit of work. Handlers with no dependencies stay on <code>SimpleContainer</code>.</p>
 </div>
 <h3 id="dependency-injector-library"><code>dependency-injector</code> Library<a class="headerlink" href="#dependency-injector-library" title="Permanent link">&para;</a></h3>
 <p>The <code>dependency-injector</code> library offers advanced features:</p>
@@ -5579,7 +5591,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate", "content.code.select", "navigation.footer"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../javascripts/navigation.js"></script>
       

@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -4995,10 +4995,16 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>di.Container</strong></td>
-<td><code>di</code></td>
+<td><strong>SimpleContainer</strong></td>
+<td>none (base install)</td>
 <td>✅ Yes</td>
-<td>Most applications</td>
+<td>Handlers with no constructor dependencies, or a few registered instances</td>
+</tr>
+<tr>
+<td><strong>di.Container</strong></td>
+<td><code>di</code> (<code>python-cqrs[di]</code>)</td>
+<td>❌ No</td>
+<td>Type-based injection and <code>ScopeStrategy.SEND</code></td>
 </tr>
 <tr>
 <td><strong>DishkaCQRSContainer</strong></td>
@@ -5008,7 +5014,7 @@
 </tr>
 <tr>
 <td><strong>CQRSContainer</strong></td>
-<td><code>dependency-injector</code></td>
+<td><code>dependency-injector</code> (<code>python-cqrs[dependency-injector]</code>)</td>
 <td>❌ No</td>
 <td>Large, complex applications</td>
 </tr>
@@ -5016,14 +5022,14 @@
 </table>
 <div class="admonition tip">
 <p class="admonition-title">Container Choice</p>
-<p>Use <code>di.Container</code> for most applications. Use dishka when you already rely on it for request scopes. Use <code>dependency-injector</code> only if you need advanced features like configuration management or nested containers — it does not implement CQRS <code>SupportsScope</code> (see <a href="../../scoped_dependencies/containers/">Scoped Dependencies</a>).</p>
+<p>Omit <code>di_container</code> for <code>SimpleContainer</code>. Use <code>di</code> when handlers need injection or a shared unit of work. Use dishka when you already rely on it for request scopes. Use <code>dependency-injector</code> only if you need advanced features like configuration management or nested containers — it does not implement CQRS <code>SupportsScope</code> (see <a href="../../scoped_dependencies/containers/">Scoped Dependencies</a>).</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Scoped UoW</p>
 <p>Pass <code>scope_strategy=ScopeStrategy.SEND</code> to bootstrap so generator providers finalize after <code>handle</code>; the default <code>ScopeStrategy.NONE</code> opens no scopes. SEND infers sequential events (<code>concurrent_event_handle_enable=None</code> → <code>False</code>) and shares the same UoW with fallback. A plain container is enough — mediators wrap it internally. Details: <a href="../../scoped_dependencies/">Scoped Dependencies</a>.</p>
 </div>
 <h3 id="dicontainer">di.Container<a class="headerlink" href="#dicontainer" title="Permanent link">&para;</a></h3>
-<p>The <code>di</code> library is the default and recommended DI container:</p>
+<p>The <code>di</code> library is an optional container (<code>python-cqrs[di]</code>):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">abc</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">di</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">di</span><span class="w"> </span><span class="kn">import</span> <span class="n">dependent</span>
@@ -5206,7 +5212,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "content.code.annotate", "content.code.select", "navigation.footer"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../../javascripts/navigation.js"></script>
       

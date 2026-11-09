@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -4991,8 +4991,8 @@
 </div>
 
 <div class="admonition success">
-<p class="admonition-title">Documentation for python-cqrs 5.x</p>
-<p>You are viewing <strong>5.x</strong> docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, <code>Request[Result]</code> and one-argument handlers since 5.2, new package layout, <code>SagaMediator.execute</code>).</p>
+<p class="admonition-title">Documentation for python-cqrs 5.6</p>
+<p>You are viewing <strong>5.6</strong> docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, <code>Request[Result]</code> and one-argument handlers since 5.2, new package layout, <code>SagaMediator.execute</code>). The quick start omits <code>di_container</code>. That call works on 5.6.0. On 5.5.0, <code>bootstrap</code> still requires <code>di_container</code>.</p>
 <p>Migrating from 4.x? Follow the <a href="migration/4-to-5/">4→5 migration guide</a>. Use the version selector for frozen <strong>4.0</strong> docs.</p>
 </div>
 <hr />
@@ -5104,34 +5104,32 @@
 </span></code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Requirements</p>
-<p>Python 3.10+ (tested on 3.10–3.14)</p>
+<p>Python 3.10+ (tested on 3.10–3.15)</p>
 </div>
 <hr />
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">di</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cqrs</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.bootstrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">requests</span> <span class="k">as</span> <span class="n">bootstrap</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">CreateUserResponse</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">CreateUserCommand</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Request</span><span class="p">[</span><span class="n">CreateUserResponse</span><span class="p">]):</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">CreateUserHandler</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">[</span><span class="n">CreateUserCommand</span><span class="p">]):</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">CreateUserCommand</span><span class="p">):</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="n">user_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"user_</span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="k">return</span> <span class="n">CreateUserResponse</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="n">mediator</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="n">di_container</span><span class="o">=</span><span class="n">di</span><span class="o">.</span><span class="n">Container</span><span class="p">(),</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="n">commands_mapper</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">CreateUserCommand</span><span class="p">,</span> <span class="n">CreateUserHandler</span><span class="p">),</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="p">)</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">mediator</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">CreateUserCommand</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">"user@example.com"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"John"</span><span class="p">))</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cqrs</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cqrs.bootstrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">requests</span> <span class="k">as</span> <span class="n">bootstrap</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">CreateUserResponse</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">CreateUserCommand</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">Request</span><span class="p">[</span><span class="n">CreateUserResponse</span><span class="p">]):</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">CreateUserHandler</span><span class="p">(</span><span class="n">cqrs</span><span class="o">.</span><span class="n">RequestHandler</span><span class="p">[</span><span class="n">CreateUserCommand</span><span class="p">]):</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">CreateUserCommand</span><span class="p">):</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="n">user_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"user_</span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="k">return</span> <span class="n">CreateUserResponse</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="n">mediator</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="n">commands_mapper</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">CreateUserCommand</span><span class="p">,</span> <span class="n">CreateUserHandler</span><span class="p">),</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="p">)</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">mediator</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">CreateUserCommand</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">"user@example.com"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"John"</span><span class="p">))</span>
 </span></code></pre></div>
-<p><code>result</code> is <code>CreateUserResponse</code>. Do not add <code>-&gt; CreateUserResponse</code> on <code>handle</code>. Legacy (still supported): <code>RequestHandler[CreateUserCommand, CreateUserResponse]</code> still works and is not the form to copy. Rules for agents: <a href="agents/">For agents</a>.</p>
+<p><code>result</code> is <code>CreateUserResponse</code>. Do not add <code>-&gt; CreateUserResponse</code> on <code>handle</code>. Legacy (still supported): <code>RequestHandler[CreateUserCommand, CreateUserResponse]</code> still works and is not the form to copy. This handler takes no constructor arguments, so no container is passed. A handler that needs a port is constructed with that port and registered under its type: <code>container.register(CreateUserHandler, CreateUserHandler(port))</code>. <code>SimpleContainer</code> does not pass a registered port into the constructor. Optional containers (<code>python-cqrs[di]</code>, <code>python-cqrs[dependency-injector]</code>, <code>python-cqrs[dishka]</code>) build the handler themselves. Rules for agents: <a href="agents/">For agents</a>.</p>
 <p>See <a href="bootstrap/">Bootstrap</a> for detailed setup instructions.</p>
 
 
@@ -5239,7 +5237,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["content.code.copy", "content.code.annotate", "content.code.select", "navigation.footer"], "search": "assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="javascripts/navigation.js"></script>
       
