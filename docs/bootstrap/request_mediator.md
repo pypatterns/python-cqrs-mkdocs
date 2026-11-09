@@ -25,7 +25,6 @@ The `RequestMediator` is the standard mediator for handling commands and queries
 ### Basic Configuration
 
 ```python
-import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 
@@ -41,9 +40,8 @@ def events_mapper(mapper: cqrs.EventMap) -> None:
         UserCreatedEventHandler
     )
 
-# Basic bootstrap with di.Container
+# No container: handlers are constructed with no arguments.
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     queries_mapper=queries_mapper,
     domain_events_mapper=events_mapper,
@@ -53,10 +51,11 @@ mediator = bootstrap.bootstrap(
 `RequestMediator(..., scope_strategy=ScopeStrategy.SEND)` and `setup_mediator(..., scope_strategy=ScopeStrategy.SEND)` work out of the box: `concurrent_event_handle_enable` defaults to `None` (`False` under SEND, sequential BFS). Do not pass `concurrent_event_handle_enable=True` with SEND — that raises `ValueError`. `requests.bootstrap` still defaults concurrent processing to `False`. For a shared UoW between command, fallback, and domain events, pass `scope_strategy=ScopeStrategy.SEND` (see [Scope Strategies](../scoped_dependencies/strategies.md)).
 
 ```python
+import di
 from cqrs import ScopeStrategy
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
+    di_container=di.Container(),  # python-cqrs[di]
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
     scope_strategy=ScopeStrategy.SEND,  # sequential events; no concurrent=False needed
@@ -68,9 +67,9 @@ mediator = bootstrap.bootstrap(
 ```python
 from cqrs.message_brokers import devnull, kafka
 
-# Using DevnullMessageBroker (for testing)
+# Using DevnullMessageBroker (for testing). Omit di_container when handlers
+# take no constructor arguments.
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
     message_broker=devnull.DevnullMessageBroker(),
@@ -85,7 +84,6 @@ kafka_producer = KafkaProducerAdapter(
 )
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
     message_broker=kafka.KafkaMessageBroker(
@@ -102,12 +100,12 @@ Parallel events require `HANDLER` or `NONE` (the default). SEND infers sequentia
 ```python
 from cqrs import ScopeStrategy
 
-# Enable parallel event processing (HANDLER / NONE only)
+# Parallel events use NONE on the default container. HANDLER opens a scope
+# only when the container implements SupportsScope (python-cqrs[di] or dishka).
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
-    scope_strategy=ScopeStrategy.HANDLER,  # or omit for NONE
+    scope_strategy=ScopeStrategy.NONE,
     max_concurrent_event_handlers=5,  # Process up to 5 events concurrently
     concurrent_event_handle_enable=True,  # Enable parallel processing
 )
@@ -126,7 +124,6 @@ class CustomMiddleware(base.Middleware):
         return result
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     middlewares=[CustomMiddleware()],
 )
@@ -144,7 +141,6 @@ def setup_cache():
     print("Cache initialized")
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     on_startup=[initialize_database, setup_cache],
 )
@@ -153,7 +149,6 @@ mediator = bootstrap.bootstrap(
 ### Complete Example
 
 ```python
-import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 from cqrs.message_brokers import devnull
@@ -193,7 +188,6 @@ def events_mapper(mapper: cqrs.EventMap) -> None:
 
 # Complete configuration
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=commands_mapper,
     domain_events_mapper=events_mapper,
     message_broker=devnull.DevnullMessageBroker(),

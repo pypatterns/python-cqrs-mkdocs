@@ -1,6 +1,6 @@
 # Installation
 
-**Python 3.10+** is required (tested on 3.10–3.14).
+**Python 3.10+** is required (tested on 3.10–3.15).
 
 ```bash
 pip install python-cqrs
@@ -17,7 +17,15 @@ pip install python-cqrs
 | `rabbit` | AMQP broker |
 | `protobuf` | Protobuf serializers |
 | `aiobreaker` | Circuit breaker helpers |
+| `di` | `di` container. Bootstrap wraps `di.Container`. Needed for `ScopeStrategy.SEND` |
+| `dependency-injector` | `DependencyInjectorCQRSContainer` |
+| `dishka` | `DishkaCQRSContainer` |
 | `examples` | FastAPI / FastStream sample stack |
+
+!!! warning "Breaking change in 5.6.0"
+    These pages match **5.6.0**. `pip install python-cqrs` no longer installs `di` or `dependency-injector`. Install `"python-cqrs[di]"` or `"python-cqrs[dependency-injector]"`. On 5.5.0, `bootstrap` still requires `di_container`. Publish this site with the 5.6.0 release.
+
+The base install does not include a DI library. Omit `di_container` and bootstrap uses `cqrs.SimpleContainer`, which constructs handlers that take no constructor arguments. `SimpleContainer.register` pins an instance when a handler needs one, and every `resolve` returns that same instance. Install `di`, `dependency-injector`, or `dishka` when handlers should be built by that container.
 
 ```bash
 pip install "python-cqrs[pydantic,sqlalchemy]"
