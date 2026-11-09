@@ -30,8 +30,8 @@ description: Python CQRS framework for event-driven architecture — Saga, Media
 
 </div>
 
-!!! success "Documentation for python-cqrs 5.x"
-    You are viewing **5.x** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, `Request[Result]` and one-argument handlers since 5.2, new package layout, `SagaMediator.execute`).
+!!! success "Documentation for python-cqrs 5.6"
+    You are viewing **5.6** docs (dataclass defaults, optional Pydantic/SQLAlchemy, optional SQLModel storage since 5.1, `Request[Result]` and one-argument handlers since 5.2, new package layout, `SagaMediator.execute`). The quick start omits `di_container`. That call works on 5.6.0. On 5.5.0, `bootstrap` still requires `di_container`.
 
     Migrating from 4.x? Follow the [4→5 migration guide](migration/4-to-5.md). Use the version selector for frozen **4.0** docs.
 
@@ -181,6 +181,6 @@ mediator = bootstrap.bootstrap(
 result = await mediator.send(CreateUserCommand(email="user@example.com", name="John"))
 ```
 
-`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. This handler takes no constructor arguments, so no container is passed. Ports go on `cqrs.SimpleContainer.register`, or through an optional container (`python-cqrs[di]`, `python-cqrs[dependency-injector]`, `python-cqrs[dishka]`). Rules for agents: [For agents](agents.md).
+`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. This handler takes no constructor arguments, so no container is passed. A handler that needs a port is constructed with that port and registered under its type: `container.register(CreateUserHandler, CreateUserHandler(port))`. `SimpleContainer` does not pass a registered port into the constructor. Optional containers (`python-cqrs[di]`, `python-cqrs[dependency-injector]`, `python-cqrs[dishka]`) build the handler themselves. Rules for agents: [For agents](agents.md).
 
 See [Bootstrap](bootstrap/index.md) for detailed setup instructions.

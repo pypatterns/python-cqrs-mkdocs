@@ -14,9 +14,9 @@ The default container is `cqrs.SimpleContainer`. The optional ones are [Testing 
 The base install has no DI library. Omit `di_container` and bootstrap uses `cqrs.SimpleContainer`: it calls `Handler()` and returns an instance registered with `register`. Optional containers:
 
 - **`cqrs.SimpleContainer`** — Default. No extra. No request scope
-- **`di`** — `pip install python-cqrs[di]`. Type-based injection and `ScopeStrategy.SEND`
-- **`dependency-injector`** — `pip install python-cqrs[dependency-injector]`. Configuration, resources, nested containers. No CQRS request scope
-- **dishka** — `pip install python-cqrs[dishka]`. Request scopes when the app already uses dishka
+- **`di`** — `pip install "python-cqrs[di]"`. Type-based injection and `ScopeStrategy.SEND`
+- **`dependency-injector`** — `pip install "python-cqrs[dependency-injector]"`. Configuration, resources, nested containers. No CQRS request scope
+- **dishka** — `pip install "python-cqrs[dishka]"`. Request scopes when the app already uses dishka
 
 `di` and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See [Scoped Dependencies](scoped_dependencies/index.md).
 
