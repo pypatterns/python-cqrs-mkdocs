@@ -26,19 +26,20 @@ The bootstrap functions support multiple DI container implementations.
 
 | Container | Library | Default | Best For |
 |-----------|---------|---------|----------|
-| **di.Container** | `di` | ✅ Yes | Most applications |
+| **SimpleContainer** | none (base install) | ✅ Yes | Handlers with no constructor dependencies, or a few registered instances |
+| **di.Container** | `di` (`python-cqrs[di]`) | ❌ No | Type-based injection and `ScopeStrategy.SEND` |
 | **DishkaCQRSContainer** | dishka (`python-cqrs[dishka]`) | ❌ No | Apps already using dishka / request scopes |
-| **CQRSContainer** | `dependency-injector` | ❌ No | Large, complex applications |
+| **CQRSContainer** | `dependency-injector` (`python-cqrs[dependency-injector]`) | ❌ No | Large, complex applications |
 
 !!! tip "Container Choice"
-    Use `di.Container` for most applications. Use dishka when you already rely on it for request scopes. Use `dependency-injector` only if you need advanced features like configuration management or nested containers — it does not implement CQRS `SupportsScope` (see [Scoped Dependencies](../scoped_dependencies/containers.md)).
+    Omit `di_container` for `SimpleContainer`. Use `di` when handlers need injection or a shared unit of work. Use dishka when you already rely on it for request scopes. Use `dependency-injector` only if you need advanced features like configuration management or nested containers — it does not implement CQRS `SupportsScope` (see [Scoped Dependencies](../scoped_dependencies/containers.md)).
 
 !!! tip "Scoped UoW"
     Pass `scope_strategy=ScopeStrategy.SEND` to bootstrap so generator providers finalize after `handle`; the default `ScopeStrategy.NONE` opens no scopes. SEND infers sequential events (`concurrent_event_handle_enable=None` → `False`) and shares the same UoW with fallback. A plain container is enough — mediators wrap it internally. Details: [Scoped Dependencies](../scoped_dependencies/index.md).
 
 ### di.Container
 
-The `di` library is the default and recommended DI container:
+The `di` library is an optional container (`python-cqrs[di]`):
 
 ```python
 import abc

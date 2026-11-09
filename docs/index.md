@@ -152,14 +152,13 @@ uv pip install python-cqrs
 ```
 
 !!! info "Requirements"
-    Python 3.10+ (tested on 3.10–3.14)
+    Python 3.10+ (tested on 3.10–3.15)
 
 ---
 
 ## Quick Start
 
 ```python
-import di
 import cqrs
 from cqrs.bootstrap import requests as bootstrap
 
@@ -176,13 +175,12 @@ class CreateUserHandler(cqrs.RequestHandler[CreateUserCommand]):
         return CreateUserResponse(user_id=user_id)
 
 mediator = bootstrap.bootstrap(
-    di_container=di.Container(),
     commands_mapper=lambda m: m.bind(CreateUserCommand, CreateUserHandler),
 )
 
 result = await mediator.send(CreateUserCommand(email="user@example.com", name="John"))
 ```
 
-`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. Rules for agents: [For agents](agents.md).
+`result` is `CreateUserResponse`. Do not add `-> CreateUserResponse` on `handle`. Legacy (still supported): `RequestHandler[CreateUserCommand, CreateUserResponse]` still works and is not the form to copy. This handler takes no constructor arguments, so no container is passed. Ports go on `cqrs.SimpleContainer.register`, or through an optional container (`python-cqrs[di]`, `python-cqrs[dependency-injector]`, `python-cqrs[dishka]`). Rules for agents: [For agents](agents.md).
 
 See [Bootstrap](bootstrap/index.md) for detailed setup instructions.

@@ -7,17 +7,18 @@ description: Configure DI containers (di and dependency-injector) for handlers a
 
 Dependency Injection (DI) is a design pattern that allows injecting dependencies into application components, simplifying their management and improving code testability.
 
-The three containers are [Testing di.Container](testing/di.md), [Testing dishka](testing/dishka.md), and [Testing dependency-injector](testing/dependency_injector.md).
+The default container is `cqrs.SimpleContainer`. The optional ones are [Testing di.Container](testing/di.md), [Testing dishka](testing/dishka.md), and [Testing dependency-injector](testing/dependency_injector.md).
 
 ## Overview
 
-The `python-cqrs` package supports multiple DI container libraries:
+The base install has no DI library. Omit `di_container` and bootstrap uses `cqrs.SimpleContainer`: it calls `Handler()` and returns an instance registered with `register`. Optional containers:
 
-- **`di`** — Lightweight, modern dependency injection library (default)
-- **`dependency-injector`** — Feature-rich DI library with configuration management and FastAPI integration
-- **dishka** — Optional (`pip install python-cqrs[dishka]`) with first-class request scopes
+- **`cqrs.SimpleContainer`** — Default. No extra. No request scope
+- **`di`** — `pip install python-cqrs[di]`. Type-based injection and `ScopeStrategy.SEND`
+- **`dependency-injector`** — `pip install python-cqrs[dependency-injector]`. Configuration, resources, nested containers. No CQRS request scope
+- **dishka** — `pip install python-cqrs[dishka]`. Request scopes when the app already uses dishka
 
-Both `di` and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See [Scoped Dependencies](scoped_dependencies/index.md).
+`di` and dishka allow generator providers whose cleanup runs when the CQRS scope exits. See [Scoped Dependencies](scoped_dependencies/index.md).
 
 !!! note "Prerequisites"
     This section assumes you've already configured [Bootstrap](bootstrap/index.md). The DI container is passed to bootstrap functions to resolve handlers and their dependencies.
@@ -27,22 +28,22 @@ Both `di` and dishka allow generator providers whose cleanup runs when the CQRS 
 
 ## Supported Libraries
 
-| Feature | `di` | dishka | `dependency-injector` |
-|---------|------|--------|----------------------|
-| **Default** | ✅ Yes (default) | ❌ Optional extra | ❌ No |
-| **Type-based resolution** | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Per-request scope (CQRS)** | ✅ Yes | ✅ Yes | ❌ No (`SupportsScope` not implemented) |
-| **Async generator providers** | ✅ Yes | ✅ Yes | ❌ No |
-| **Configuration management** | ❌ No | ❌ No | ✅ Yes (YAML, dict, Pydantic) |
-| **Resource management** | ❌ No | ✅ Yes | ✅ Yes |
-| **FastAPI integration** | ✅ Yes | ✅ Yes | ✅ Yes (direct wiring) |
-| **Nested containers** | ❌ No | ✅ Yes | ✅ Yes |
-| **Learning curve** | 🟢 Easy | 🟢 Easy | 🟡 Moderate |
-| **Best for** | Small to medium apps | Apps already on dishka | Large, complex apps |
+| Feature | `SimpleContainer` | `di` | dishka | `dependency-injector` |
+|---------|-----------------|------|--------|----------------------|
+| **In the base install** | ✅ Yes (default) | ❌ Extra `di` | ❌ Extra `dishka` | ❌ Extra `dependency-injector` |
+| **Type-based resolution** | ❌ Register an instance, or call `Handler()` | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Per-request scope (CQRS)** | ❌ No | ✅ Yes | ✅ Yes | ❌ No (`SupportsScope` not implemented) |
+| **Async generator providers** | ❌ No | ✅ Yes | ✅ Yes | ❌ No |
+| **Configuration management** | ❌ No | ❌ No | ❌ No | ✅ Yes (YAML, dict, Pydantic) |
+| **Resource management** | ❌ No | ❌ No | ✅ Yes | ✅ Yes |
+| **FastAPI integration** | ✅ Pass the mediator | ✅ Yes | ✅ Yes | ✅ Yes (direct wiring) |
+| **Nested containers** | ❌ No | ❌ No | ✅ Yes | ✅ Yes |
+| **Learning curve** | 🟢 None | 🟢 Easy | 🟢 Easy | 🟡 Moderate |
+| **Best for** | No constructor dependencies | Small to medium apps | Apps already on dishka | Large, complex apps |
 
 ### `di` Library
 
-The `di` library is the default DI container for `python-cqrs`. It provides:
+The `di` library is the optional container for type-based injection (`python-cqrs[di]`). It provides:
 
 | Feature | Description |
 |---------|-------------|
@@ -52,7 +53,7 @@ The `di` library is the default DI container for `python-cqrs`. It provides:
 | **Type safety** | Full type checking support |
 
 !!! tip "When to use `di`"
-    Use `di` for most applications. It's lightweight, simple, and provides everything you need for dependency injection.
+    Use `di` when handlers need constructor injection or a shared unit of work. Handlers with no dependencies stay on `SimpleContainer`.
 
 ### `dependency-injector` Library
 
