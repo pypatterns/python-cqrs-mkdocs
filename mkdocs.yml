@@ -144,6 +144,7 @@ nav:
       - dishka: testing/dishka.md
       - dependency-injector: testing/dependency_injector.md
       - Kafka and AMQP: testing/kafka_amqp.md
+      - Transport: testing/transport.md
     - Outside the harness:
       - Mermaid: testing/mermaid.md
       - Compressor: testing/compressor.md

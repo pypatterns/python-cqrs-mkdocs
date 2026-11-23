@@ -41,12 +41,31 @@ Message brokers are used to publish `NotificationEvent` and `ECSTEvent` events t
 
 </details>
 
+### Transport versus MessageBroker
+
+A `MessageBroker` publishes. `send_message` is the only publish method. `KafkaMessageBroker`, `AMQPMessageBroker`, and `EventProducer` are that path.
+
+A `Transport` is a `MessageBroker` that can also subscribe. Use it when this process receives the message, or when a test should swap the backend. `bootstrap(..., message_broker=transport)` and `test_harness(message_broker=transport)` need no new argument. Subscribe on the transport. The harness still records `published`.
+
+`InMemoryTransport` runs the full command, saga, notification, and subscriber path in one process. `await transport.drain()` waits until handlers have acked. `delivery="inline"` makes `send_message` wait for that message and for anything the handlers published before they returned. The body a subscriber reads is bytes (`message_wire_bytes`), not a `Message` object. See [Transport](../testing/transport.md).
+
+| Backend | Ordering per key | Native DLQ | Delayed redelivery | Headers | What `topic` means |
+| --- | --- | --- | --- | --- | --- |
+| In-memory | yes | no, republish to `{topic}.dlq` | yes (`redelivery_delay`) | yes | logical name shared by publisher and subscribers |
+| Kafka | yes, when `key` is set (partition key) | no, republish to `{topic}.dlq` | no | yes | Kafka topic. `group` is the consumer `group_id` |
+| AMQP | no. `message.key` is header `key` and does not change the route | no, republish to `{topic}.dlq` | no | yes | direct-exchange routing key. `group` is the queue name. Optional `?exchange=` on the URL |
+| Redis | no. `key` is a stream field | no, republish to `{topic}.dlq` | yes (`XCLAIM` / `XAUTOCLAIM`) | yes | Redis stream key. `group` is the consumer group |
+| NATS | no. `key` is a header only. An in-process per-key lock is not a cross-process guarantee | no, republish to `{topic}.dlq` | no | yes | JetStream subject as given. `group` is the durable consumer name |
+| SQS | no on a standard queue. A name ending in `.fifo` also sends `MessageGroupId` | no. Emulated dead-letter queue is `{topic}-dlq` (hyphen, not a dot) | yes (visibility timeout) | yes (message attributes) | queue name, unchanged. Group fan-out on this instance is `{name}-{group}`. Dots in the name are not rewritten, and creation fails |
+
+`create_transport` builds these from `kafka://`, `amqp://`, `redis://`, `nats://`, and `sqs://`. Install `python-cqrs[kafka]`, `[rabbit]`, `[redis]`, `[nats]`, `[sqs]`, or all of them with `[transports]`. `KafkaMessageBroker` and `AMQPMessageBroker` stay publish-only: the AMQP broker still declares a queue named `message.topic`, and `AMQPTransport` does not replace it.
+
 ### DevnullMessageBroker
 
-The `DevnullMessageBroker` is a no-op broker used for testing. It doesn't actually send messages anywhere but logs warnings.
+The `DevnullMessageBroker` records a message and does not deliver it. It logs a warning.
 
-!!! warning "Development Only"
-    Never use `DevnullMessageBroker` in production. It's designed for testing and development only.
+!!! warning "Deprecated when a subscriber must receive the message"
+    Do not read `DevnullMessageBroker.MESSAGE_BUS`. That list does not deliver. Use `InMemoryTransport` when the message must reach a subscriber in a test or a local process. Do not use `DevnullMessageBroker` in production.
 
 ```python
 from cqrs.message_brokers import devnull
