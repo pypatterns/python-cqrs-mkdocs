@@ -58,7 +58,7 @@ A `Transport` is a `MessageBroker` that can also subscribe. Use it when this pro
 | NATS | no. `key` is a header only. An in-process per-key lock is not a cross-process guarantee | no, republish to `{topic}.dlq` | no | yes | JetStream subject as given. `group` is the durable consumer name |
 | SQS | no on a standard queue. A name ending in `.fifo` also sends `MessageGroupId` | no. Emulated dead-letter queue is `{topic}-dlq` (hyphen, not a dot) | yes (visibility timeout) | yes (message attributes) | queue name, unchanged. Group fan-out on this instance is `{name}-{group}`. Dots in the name are not rewritten, and creation fails |
 
-`create_transport` builds these from `kafka://`, `amqp://`, `redis://`, `nats://`, and `sqs://`. Install `python-cqrs[kafka]`, `[rabbit]`, `[redis]`, `[nats]`, or `[sqs]`. `KafkaMessageBroker` and `AMQPMessageBroker` stay publish-only: the AMQP broker still declares a queue named `message.topic`, and `AMQPTransport` does not replace it.
+Import `create_transport` from the backend module (`cqrs.transport.memory` or `cqrs.message_brokers.kafka`, `amqp`, `redis`, `nats`, or `sqs`). Each builds a transport from that scheme's URL (`kafka://`, `amqp://`, `redis://`, `nats://`, `sqs://`, or `memory://`). Install `python-cqrs[kafka]`, `[rabbit]`, `[redis]`, `[nats]`, or `[sqs]` before importing a broker module. `KafkaMessageBroker` and `AMQPMessageBroker` stay publish-only: the AMQP broker still declares a queue named `message.topic`, and `AMQPTransport` does not replace it.
 
 ### DevnullMessageBroker
 
