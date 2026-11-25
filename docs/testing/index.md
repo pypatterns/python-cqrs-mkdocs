@@ -59,7 +59,7 @@ The library keeps each page's test in [`examples/testing/`](https://github.com/v
 
 `TestContainer` is `register(type, instance)` and `async resolve`. For `ScopeStrategy.SEND`, pass `di.Container`, not `TestContainer`.
 
-If the mediator holds `DevnullMessageBroker`, the harness replaces it with `CapturingMessageBroker` for the block and restores it afterwards. Do not read `DevnullMessageBroker.MESSAGE_BUS`.
+If the mediator holds `DevnullMessageBroker`, the harness replaces it with `CapturingMessageBroker` for the block and restores it afterwards. Do not read `DevnullMessageBroker.MESSAGE_BUS`. When a subscriber in the same test must receive the notice, pass `InMemoryTransport` as `message_broker` and `await transport.drain()`. See [Transport](transport.md).
 
 `contains` is a boolean. `assert_contains`, `assert_one`, and `assert_empty` raise `AssertionError` and list what was recorded. There is no pytest plugin. The same calls work under unittest.
 
@@ -326,6 +326,12 @@ Three delivery channels stay separate. A test that asks `published` for a domain
     The unit test uses CapturingMessageBroker. Real Kafka and AMQP adapters stay in integration tests.
 
     [:octicons-arrow-right-24: Read More](kafka_amqp.md)
+
+-   :material-message-processing: **Transport**
+
+    InMemoryTransport delivers to a subscriber in the unit test. drain waits for ack. The body is bytes.
+
+    [:octicons-arrow-right-24: Read More](transport.md)
 
 </div>
 
